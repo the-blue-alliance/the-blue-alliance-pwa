@@ -1,16 +1,13 @@
-import React, { useState, useEffect } from 'react'
+import React, { useEffect } from 'react'
+import PropTypes from 'prop-types'
 import { useSelector, useDispatch } from 'react-redux'
 import { createSelector } from 'reselect'
 import Link from 'next/link'
 import { fetchEventListPage } from '../actions'
 
-const getEventsByKey = (state) => {
-  return state.getIn(['models', 'events', 'byKey'])
-}
+const getEventsByKey = state => state.getIn(['models', 'events', 'byKey'])
 
-const getYearEventKeys = (state, year) => {
-  return state.getIn(['models', 'events', 'collections', 'byYear', year])
-}
+const getYearEventKeys = (state, year) => state.getIn(['models', 'events', 'collections', 'byYear', year])
 
 const getYearEvents = createSelector(
   getEventsByKey,
@@ -22,10 +19,8 @@ const getYearEvents = createSelector(
   }
 )
 
-const useFetch = refetchOnLoad => {
-  const [events, fetching] = useSelector(state => {
-    return [getYearEvents(state, 2019), state.getIn(['models', 'events', 2019, 'fetching'])]
-  })
+const useFetch = (refetchOnLoad) => {
+  const [events, fetching] = useSelector(state => [getYearEvents(state, 2019), state.getIn(['models', 'events', 2019, 'fetching'])])
   const dispatch = useDispatch()
   useEffect(() => {
     if (refetchOnLoad) {
@@ -42,11 +37,15 @@ const Events = ({ refetchOnLoad }) => {
       <h1>Events</h1>
       <button onClick={refetch}>Refetch</button>
       {fetching ? <div>Fetching...</div> : <div>Done!</div>}
-      <Link href='/'><a>Home</a></Link>
+      <Link href="/"><a>Home</a></Link>
       {events.map(event => (
         <div key={event.key}>
           <Link href={`/event?eventKey=${event.key}`} as={`/event/${event.key}`}>
-            <a>{event.year} {event.safeShortName()}</a>
+            <a>
+              {event.year}
+              {' '}
+              {event.safeShortName()}
+            </a>
           </Link>
         </div>
       ))}
@@ -54,12 +53,16 @@ const Events = ({ refetchOnLoad }) => {
   )
 }
 
-Events.getInitialProps = async ({ reduxStore, req }) => {
+Events.getInitialProps = async ({ reduxStore }) => {
   if (!reduxStore.getState().getIn(['models', 'events', 2019, 'data'])) {
     await reduxStore.dispatch(fetchEventListPage(2019))
     return { refetchOnLoad: false }
   }
   return { refetchOnLoad: true }
+}
+
+Events.propTypes = {
+  refetchOnLoad: PropTypes.bool,
 }
 
 export default Events

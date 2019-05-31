@@ -45,28 +45,28 @@ export default class Event extends Record({
   gmaps_url: undefined,
   website: undefined,
   webcasts: undefined,
-  playoff_type: undefined,
+  playoff_type: undefined
 }) {
   // Name
-  safeShortName() {
+  safeShortName () {
     return this.short_name ? this.short_name : this.name
   }
 
   // Location
-  getCityStateCountry() {
+  getCityStateCountry () {
     if (this.cityStateCountry === undefined) {
       this.cityStateCountry = ''
       if (this.city) {
-          this.cityStateCountry += `${this.city}`
+        this.cityStateCountry += `${this.city}`
       }
       if (this.state_prov) {
-          this.cityStateCountry += `, ${this.state_prov}`
+        this.cityStateCountry += `, ${this.state_prov}`
       }
       if (this.country) {
-          this.cityStateCountry += `, ${this.country}`
+        this.cityStateCountry += `, ${this.country}`
       }
       if (this.cityStateCountry === '') {
-          this.cityStateCountry = null
+        this.cityStateCountry = null
       }
     }
     return this.cityStateCountry

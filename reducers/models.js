@@ -1,6 +1,6 @@
 import { fromJS, Map } from 'immutable'
 import * as types from '../constants/ActionTypes'
-import { updateSingle, updateMulti } from '../lib/reduxImmutableMergeHelpers'
+import { updateMulti } from '../lib/reduxImmutableMergeHelpers'
 import Event from '../database/Event'
 
 // const models = (state = Map(), action) => {
@@ -24,7 +24,8 @@ const models = (state = Map(), action) => {
         state,
         'events',
         ['byYear', action.year],
-        fromJS(action.events).map(o => new Event(o)))
+        fromJS(action.events).map(o => new Event(o))
+      )
     default:
       return state
   }

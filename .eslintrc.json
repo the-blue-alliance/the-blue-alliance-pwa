@@ -4,7 +4,10 @@
         "es6": true,
         "node": true
     },
-    "extends": "airbnb",
+    "extends": [
+      "eslint:recommended",
+      "plugin:react/recommended"
+    ],
     "globals": {
         "Atomics": "readonly",
         "SharedArrayBuffer": "readonly"
