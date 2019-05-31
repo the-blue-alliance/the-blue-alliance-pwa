@@ -1,47 +1,27 @@
 import { createStore, applyMiddleware } from 'redux'
+import thunk from 'redux-thunk'
 import { composeWithDevTools } from 'redux-devtools-extension'
 import { fromJS } from 'immutable'
+import * as types from './constants/ActionTypes'
 
-const initialState = fromJS({
-  events: null,
-  source: null,
-})
+const initialState = fromJS({})
 
-export const actionTypes = {
-  SET_EVENT_LIST: 'SET_EVENT_LIST',
-  SET_SOURCE: 'SET_SOURCE',
-}
-
-// REDUCERS
 export const reducer = (state = initialState, action) => {
   switch (action.type) {
-    case actionTypes.SET_EVENT_LIST:
-      return state.merge({
-        events: fromJS(action.events),
-        source: action.source,
-      })
-      case actionTypes.SET_SOURCE:
-        return state.merge({
-          source: action.source,
-        })
+    case types.FETCH_YEAR_EVENTS:
+      return state.setIn(['models', 'events', `${action.year}`, 'fetching'], true)
+    case types.SET_YEAR_EVENTS:
+      state = state.setIn(['models', 'events', `${action.year}`, 'fetching'], false)
+      return state.setIn(['models', 'events', `${action.year}`, 'data'], fromJS(action.events))
     default:
       return state
   }
-}
-
-// ACTIONS
-export const setEventList = (events, source) => {
-  return { type: actionTypes.SET_EVENT_LIST, events, source}
-}
-
-export const setSource = (source) => {
-  return { type: actionTypes.SET_SOURCE, source}
 }
 
 export function initializeStore (state = initialState) {
   return createStore(
     reducer,
     state,
-    composeWithDevTools(applyMiddleware())
+    composeWithDevTools(applyMiddleware(thunk))
   )
 }
