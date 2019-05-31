@@ -1,11 +1,30 @@
 import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
+import { createSelector } from 'reselect'
 import Link from 'next/link'
 import { fetchEventListPage } from '../actions'
 
+const getEventsByKey = (state) => {
+  return state.getIn(['models', 'events', 'byKey'])
+}
+
+const getYearEventKeys = (state, year) => {
+  return state.getIn(['models', 'events', 'collections', 'byYear', year])
+}
+
+const getYearEvents = createSelector(
+  getEventsByKey,
+  getYearEventKeys,
+  (eventsByKey, keys) => {
+    if (keys) {
+      return keys.toSeq().map(key => eventsByKey.get(key))
+    }
+  }
+)
+
 const useFetch = refetchOnLoad => {
   const [events, fetching] = useSelector(state => {
-    return [state.getIn(['models', 'events', '2019', 'data']), state.getIn(['models', 'events', '2019', 'fetching'])]
+    return [getYearEvents(state, 2019), state.getIn(['models', 'events', 2019, 'fetching'])]
   })
   const dispatch = useDispatch()
   useEffect(() => {
@@ -25,9 +44,9 @@ const Events = ({ refetchOnLoad }) => {
       {fetching ? <div>Fetching...</div> : <div>Done!</div>}
       <Link href='/'><a>Home</a></Link>
       {events.map(event => (
-        <div key={event.get('key')}>
-          <Link href={`/event?eventKey=${event.get('key')}`} as={`/event/${event.get('key')}`}>
-            <a>{event.get('year')} {event.get('name')}</a>
+        <div key={event.key}>
+          <Link href={`/event?eventKey=${event.key}`} as={`/event/${event.key}`}>
+            <a>{event.year} {event.safeShortName()}</a>
           </Link>
         </div>
       ))}
@@ -36,7 +55,7 @@ const Events = ({ refetchOnLoad }) => {
 }
 
 Events.getInitialProps = async ({ reduxStore, req }) => {
-  if (!reduxStore.getState().getIn(['models', 'events', '2019', 'data'])) {
+  if (!reduxStore.getState().getIn(['models', 'events', 2019, 'data'])) {
     await reduxStore.dispatch(fetchEventListPage(2019))
     return { refetchOnLoad: false }
   }
