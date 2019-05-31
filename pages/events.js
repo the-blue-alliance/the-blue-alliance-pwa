@@ -3,24 +3,26 @@ import { useSelector, useDispatch } from 'react-redux'
 import Link from 'next/link'
 import { fetchEventListPage } from '../actions'
 
-const useFetch = refetch => {
+const useFetch = refetchOnLoad => {
   const [events, fetching] = useSelector(state => {
     return [state.getIn(['models', 'events', '2019', 'data']), state.getIn(['models', 'events', '2019', 'fetching'])]
   })
   const dispatch = useDispatch()
   useEffect(() => {
-    if (refetch) {
+    if (refetchOnLoad) {
       dispatch(fetchEventListPage(2019))
     }
   }, [])
-  return [events, fetching]
+  return [events, fetching, () => dispatch(fetchEventListPage(2019))]
 }
 
-const Events = ({ refetch }) => {
-  const [events, fetching] = useFetch(refetch)
+const Events = ({ refetchOnLoad }) => {
+  const [events, fetching, refetch] = useFetch(refetchOnLoad)
   return (
     <div>
       <h1>Events</h1>
+      <button onClick={refetch}>Refetch</button>
+      {fetching ? <div>Fetching...</div> : <div>Done!</div>}
       <Link href='/'><a>Home</a></Link>
       {events.map(event => (
         <div key={event.get('key')}>
@@ -36,11 +38,9 @@ const Events = ({ refetch }) => {
 Events.getInitialProps = async ({ reduxStore, req }) => {
   if (!reduxStore.getState().getIn(['models', 'events', '2019', 'data'])) {
     await reduxStore.dispatch(fetchEventListPage(2019))
-    return { refetch: false }
-  } else {
-    return { refetch: true }
+    return { refetchOnLoad: false }
   }
-  return {}
+  return { refetchOnLoad: true }
 }
 
 export default Events
