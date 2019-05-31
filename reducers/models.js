@@ -16,16 +16,42 @@ import Event from '../database/Event'
 //
 // export default models
 
+// From https://github.com/immutable-js/immutable-js/issues/1452#issuecomment-386162309
+const isMergeable = (a) => (
+    a && typeof a === 'object' && typeof a.mergeWith === 'function' && !List.isList(a)
+);
+
+// Default mergeDeep behavior concatenates Lists. We want to merge by index.
+export const mergeDeep = (a, b) => {
+    // If b is null, it would overwrite a, even if a is mergeable
+    if (isMergeable(a) && b !== null) {
+        return a.mergeWith(mergeDeep, b);
+    }
+
+    if (!List.isList(a) || !List.isList(b)) {
+        return b;
+    }
+
+    return b.reduce((acc, nextItem, index) => {
+        const existingItem = acc.get(index);
+        if (isMergeable(existingItem)) {
+            return acc.set(index, existingItem.mergeWith(mergeDeep, nextItem));
+        }
+
+        return acc.set(index, nextItem);
+    }, a);
+};
+
 const mergeDeepSingle = (state, data) => {
   if (state === undefined) {
     return data
   }
-  return state.mergeDeep(data)
+  return state = mergeDeep(state, data)
 }
 
 const mergeDeepMulti = (state = Map(), data) => {
   // Wrapper for Map.mergeDeep that handles undefined state
-  return state.mergeDeep(data)
+  return state = mergeDeep(state, data)
 }
 
 const updateSingle = (state, modelType, modelKey, newModel) => {
