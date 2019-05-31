@@ -1,10 +1,11 @@
 import { createStore, applyMiddleware } from 'redux'
 import { composeWithDevTools } from 'redux-devtools-extension'
+import { fromJS } from 'immutable'
 
-const exampleInitialState = {
+const initialState = fromJS({
   events: null,
   source: null,
-}
+})
 
 export const actionTypes = {
   SET_EVENT_LIST: 'SET_EVENT_LIST',
@@ -12,15 +13,15 @@ export const actionTypes = {
 }
 
 // REDUCERS
-export const reducer = (state = exampleInitialState, action) => {
+export const reducer = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.SET_EVENT_LIST:
-      return Object.assign({}, state, {
-        events: action.events,
+      return state.merge({
+        events: fromJS(action.events),
         source: action.source,
       })
       case actionTypes.SET_SOURCE:
-        return Object.assign({}, state, {
+        return state.merge({
           source: action.source,
         })
     default:
@@ -37,10 +38,10 @@ export const setSource = (source) => {
   return { type: actionTypes.SET_SOURCE, source}
 }
 
-export function initializeStore (initialState = exampleInitialState) {
+export function initializeStore (state = initialState) {
   return createStore(
     reducer,
-    initialState,
+    state,
     composeWithDevTools(applyMiddleware())
   )
 }

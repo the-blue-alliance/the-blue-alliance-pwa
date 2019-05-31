@@ -6,10 +6,10 @@ import fetch from 'isomorphic-unfetch'
 
 const useFetch = () => {
   const events = useSelector(state => {
-    return state.events
+    return state.get('events')
   })
   const source = useSelector(state => {
-    return state.source
+    return state.get('source')
   })
   const dispatch = useDispatch()
   useEffect(() => {
@@ -32,9 +32,9 @@ const Events = () => {
       <Link href='/'><a>Home</a></Link>
       <div>{source}</div>
       {events.map(event => (
-        <div key={event.key}>
-          <Link href={`/event?eventKey=${event.key}`} as={`/event/${event.key}`}>
-            <a>{event.year} {event.name}</a>
+        <div key={event.get('key')}>
+          <Link href={`/event?eventKey=${event.get('key')}`} as={`/event/${event.get('key')}`}>
+            <a>{event.get('year')} {event.get('name')}</a>
           </Link>
         </div>
       ))}
@@ -43,7 +43,7 @@ const Events = () => {
 }
 
 Events.getInitialProps = async ({ reduxStore, req }) => {
-  if (reduxStore.getState().events) {
+  if (reduxStore.getState().get('events')) {
     reduxStore.dispatch(setSource('cache'))
   } else {
     await fetch('https://www.thebluealliance.com/api/v3/events/2019', {
