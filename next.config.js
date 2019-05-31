@@ -11,7 +11,10 @@ module.exports = {
       newConfig.module.rules.push({
         test: /\.js$/,
         exclude: /node_modules/,
-        loader: 'eslint-loader'
+        loader: 'eslint-loader',
+        options: {
+          emitWarning: true
+        }
       })
     }
 
