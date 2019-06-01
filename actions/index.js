@@ -7,16 +7,17 @@ const fetchOptions = {
   }
 }
 
-export const fetchEventListPage = year => (dispatch) => {
+export const fetchEventListPage = year => dispatch => {
   dispatch({
-    type: types.FETCH_YEAR_EVENTS,
-    year
+    type: types.FETCH_YEAR_EVENTS_REQUEST,
+    year,
   })
   return fetch(`https://www.thebluealliance.com/api/v3/events/${year}`, fetchOptions)
     .then(events => events.json())
     .then(events => dispatch({
-      type: types.SET_YEAR_EVENTS,
+      type: types.FETCH_YEAR_EVENTS_SUCCESS,
       year,
-      events
+      status: 'success',
+      data: events,
     }))
 }

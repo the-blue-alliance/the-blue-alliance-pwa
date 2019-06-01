@@ -3,29 +3,18 @@ import * as types from '../constants/ActionTypes'
 import { updateMulti } from '../lib/reduxImmutableMergeHelpers'
 import Event from '../database/Event'
 
-// const models = (state = Map(), action) => {
-//   switch (action.type) {
-//     case types.FETCH_YEAR_EVENTS:
-//       return state.setIn(['events', `${action.year}`, 'fetching'], true)
-//     case types.SET_YEAR_EVENTS:
-//       state = state.setIn(['events', `${action.year}`, 'fetching'], false)
-//       return state.setIn(['events', `${action.year}`, 'data'], fromJS(action.events))
-//     default:
-//       return state
-//   }
-// }
-//
-// export default models
-
 const models = (state = Map(), action) => {
   switch (action.type) {
-    case types.SET_YEAR_EVENTS:
-      return updateMulti(
+    case types.FETCH_YEAR_EVENTS_REQUEST:
+      return state.setIn(['eventsStatus', 'collections', 'byYear', `${action.year}`], 'fetching')
+    case types.FETCH_YEAR_EVENTS_SUCCESS:
+      state = updateMulti(
         state,
         'events',
-        ['byYear', action.year],
-        fromJS(action.events).map(o => new Event(o))
+        ['byYear', `${action.year}`],
+        fromJS(action.data).map(o => new Event(o))
       )
+      return state.setIn(['eventsStatus', 'collections', 'byYear', `${action.year}`], 'success')
     default:
       return state
   }

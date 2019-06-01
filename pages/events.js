@@ -1,42 +1,29 @@
 import React, { useEffect } from 'react'
 import PropTypes from 'prop-types'
 import { useSelector, useDispatch } from 'react-redux'
-import { createSelector } from 'reselect'
 import Link from 'next/link'
 import { fetchEventListPage } from '../actions'
-
-const getEventsByKey = state => state.getIn(['models', 'events', 'byKey'])
-
-const getYearEventKeys = (state, year) => state.getIn(['models', 'events', 'collections', 'byYear', year])
-
-const getYearEvents = createSelector(
-  getEventsByKey,
-  getYearEventKeys,
-  (eventsByKey, keys) => {
-    if (keys) {
-      return keys.toSeq().map(key => eventsByKey.get(key))
-    }
-  }
-)
+import { getYearEventsStatus, getYearEvents } from '../selectors/EventSelectors'
 
 const useFetch = (refetchOnLoad) => {
-  const [events, fetching] = useSelector(state => [getYearEvents(state, 2019), state.getIn(['models', 'events', 2019, 'fetching'])])
+  const status = useSelector(state => getYearEventsStatus(state, 2019))
+  const events = useSelector(state => getYearEvents(state, 2019))
   const dispatch = useDispatch()
   useEffect(() => {
     if (refetchOnLoad) {
       dispatch(fetchEventListPage(2019))
     }
   }, [])
-  return [events, fetching, () => dispatch(fetchEventListPage(2019))]
+  return [events, status, () => dispatch(fetchEventListPage(2019))]
 }
 
 const Events = ({ refetchOnLoad }) => {
-  const [events, fetching, refetch] = useFetch(refetchOnLoad)
+  const [events, status, refetch] = useFetch(refetchOnLoad)
   return (
     <div>
       <h1>Events</h1>
       <button onClick={refetch}>Refetch</button>
-      {fetching ? <div>Fetching...</div> : <div>Done!</div>}
+      <div>{status}</div>
       <Link href="/"><a>Home</a></Link>
       {events.map(event => (
         <div key={event.key}>
@@ -52,7 +39,7 @@ const Events = ({ refetchOnLoad }) => {
 }
 
 Events.getInitialProps = async ({ reduxStore }) => {
-  if (!reduxStore.getState().getIn(['models', 'events', 2019, 'data'])) {
+  if (getYearEventsStatus(reduxStore.getState(), 2019) !== 'success') {
     await reduxStore.dispatch(fetchEventListPage(2019))
     return { refetchOnLoad: false }
   }
