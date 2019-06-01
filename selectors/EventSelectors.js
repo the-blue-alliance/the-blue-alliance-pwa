@@ -15,3 +15,7 @@ export const getYearEvents = createSelector(
     }
   }
 )
+
+export const getEventStatus = (state, eventKey) => state.getIn(['models', 'eventsStatus', 'byKey', eventKey])
+
+export const getEvent = (state, eventKey) => state.getIn(['models', 'events', 'byKey', eventKey])

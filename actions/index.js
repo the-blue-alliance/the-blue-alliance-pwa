@@ -21,3 +21,18 @@ export const fetchEventListPage = year => dispatch => {
       data: events,
     }))
 }
+
+export const fetchEventPage = eventKey => dispatch => {
+  dispatch({
+    type: types.FETCH_EVENT_REQUEST,
+    eventKey,
+  })
+  return fetch(`https://www.thebluealliance.com/api/v3/event/${eventKey}`, fetchOptions)
+    .then(event => event.json())
+    .then(event => dispatch({
+      type: types.FETCH_EVENT_SUCCESS,
+      eventKey,
+      status: 'success',
+      data: event,
+    }))
+}

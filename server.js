@@ -11,10 +11,10 @@ app.prepare().then(() => {
   const server = express()
   server.use(compression())
 
-  // // Map clean URLs
-  // server.get('/event/:eventKey', (req, res) => {
-  //   return app.render(req, res, '/event', { eventKey: req.params.eventKey })
-  // })
+  // Map clean URLs
+  server.get('/event/:eventKey', (req, res) => {
+    return app.render(req, res, '/event', { eventKey: req.params.eventKey })
+  })
   // server.get('/match/:matchKey', (req, res) => {
   //   return app.render(req, res, '/match', { matchKey: req.params.matchKey })
   // })
