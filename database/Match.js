@@ -8,21 +8,21 @@ const COMP_LEVELS = {
   sf: "Semis",
   f: "Finals"
 };
-const PLAY_ORDER = {
-  qm: 1,
-  ef: 2,
-  qf: 3,
-  sf: 4,
-  f: 5
-};
-const rpAText = {
-  2017: "Pressure Reached",
-  2018: "Auto Quest"
-};
-const rpBText = {
-  2017: "All Rotors Engaged",
-  2018: "Face the Boss"
-};
+// const PLAY_ORDER = {
+//   qm: 1,
+//   ef: 2,
+//   qf: 3,
+//   sf: 4,
+//   f: 5
+// };
+// const rpAText = {
+//   2017: "Pressure Reached",
+//   2018: "Auto Quest"
+// };
+// const rpBText = {
+//   2017: "All Rotors Engaged",
+//   2018: "Face the Boss"
+// };
 
 export default class Match extends Record({
   key: undefined,
