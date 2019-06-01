@@ -17,7 +17,6 @@ export const fetchEventListPage = year => dispatch => {
     .then(events => dispatch({
       type: types.FETCH_YEAR_EVENTS_SUCCESS,
       year,
-      status: 'success',
       data: events,
     }))
 }
@@ -32,7 +31,6 @@ export const fetchEventPage = eventKey => dispatch => {
     .then(event => dispatch({
       type: types.FETCH_EVENT_SUCCESS,
       eventKey,
-      status: 'success',
       data: event,
     }))
 }
