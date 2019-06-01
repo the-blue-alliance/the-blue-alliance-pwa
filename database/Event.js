@@ -1,15 +1,15 @@
-import { Record } from 'immutable'
+import { Record } from "immutable";
 // import moment from 'moment-timezone'
 
-export const REGIONAL = 0
-export const DISTRICT = 1
-export const DISTRICT_CMP = 2
-export const CMP_DIVISION = 3
-export const CMP_FINALS = 4
-export const DISTRICT_CMP_DIVISION = 5
-export const FOC = 6
-export const OFFSEASON = 99
-export const PRESEASON = 100
+export const REGIONAL = 0;
+export const DISTRICT = 1;
+export const DISTRICT_CMP = 2;
+export const CMP_DIVISION = 3;
+export const CMP_FINALS = 4;
+export const DISTRICT_CMP_DIVISION = 5;
+export const FOC = 6;
+export const OFFSEASON = 99;
+export const PRESEASON = 100;
 
 // const CMP_TYPES = new Set([
 //   CMP_DIVISION,
@@ -48,28 +48,28 @@ export default class Event extends Record({
   playoff_type: undefined
 }) {
   // Name
-  safeShortName () {
-    return this.short_name ? this.short_name : this.name
+  safeShortName() {
+    return this.short_name ? this.short_name : this.name;
   }
 
   // Location
-  getCityStateCountry () {
+  getCityStateCountry() {
     if (this.cityStateCountry === undefined) {
-      this.cityStateCountry = ''
+      this.cityStateCountry = "";
       if (this.city) {
-        this.cityStateCountry += `${this.city}`
+        this.cityStateCountry += `${this.city}`;
       }
       if (this.state_prov) {
-        this.cityStateCountry += `, ${this.state_prov}`
+        this.cityStateCountry += `, ${this.state_prov}`;
       }
       if (this.country) {
-        this.cityStateCountry += `, ${this.country}`
+        this.cityStateCountry += `, ${this.country}`;
       }
-      if (this.cityStateCountry === '') {
-        this.cityStateCountry = null
+      if (this.cityStateCountry === "") {
+        this.cityStateCountry = null;
       }
     }
-    return this.cityStateCountry
+    return this.cityStateCountry;
   }
 
   // getCityStateCountryLower() {

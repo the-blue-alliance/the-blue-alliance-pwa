@@ -1,28 +1,28 @@
-import { Record } from 'immutable'
+import { Record } from "immutable";
 // import moment from 'moment'
 
 const COMP_LEVELS = {
-  'qm': 'Quals',
-  'ef': 'Octos',
-  'qf': 'Quarters',
-  'sf': 'Semis',
-  'f': 'Finals',
-}
+  qm: "Quals",
+  ef: "Octos",
+  qf: "Quarters",
+  sf: "Semis",
+  f: "Finals"
+};
 const PLAY_ORDER = {
   qm: 1,
   ef: 2,
   qf: 3,
   sf: 4,
-  f: 5,
-}
+  f: 5
+};
 const rpAText = {
-  2017: 'Pressure Reached',
-  2018: 'Auto Quest',
-}
+  2017: "Pressure Reached",
+  2018: "Auto Quest"
+};
 const rpBText = {
-  2017: 'All Rotors Engaged',
-  2018: 'Face the Boss',
-}
+  2017: "All Rotors Engaged",
+  2018: "Face the Boss"
+};
 
 export default class Match extends Record({
   key: undefined,
@@ -35,13 +35,15 @@ export default class Match extends Record({
   predicted_time: undefined,
   winning_alliance: undefined,
   score_breakdown: undefined,
-  videos: undefined,
+  videos: undefined
 }) {
-  getDisplayName(short=false) {
-    if (this.comp_level === 'qm' || this.comp_level === 'f') {
-      return `${COMP_LEVELS[this.comp_level]} ${this.match_number}`
+  getDisplayName(short = false) {
+    if (this.comp_level === "qm" || this.comp_level === "f") {
+      return `${COMP_LEVELS[this.comp_level]} ${this.match_number}`;
     } else {
-      return `${COMP_LEVELS[this.comp_level]} ${this.set_number}${short ? '\u00A0-\u00A0' : ' Match '}${this.match_number}`
+      return `${COMP_LEVELS[this.comp_level]} ${this.set_number}${
+        short ? "\u00A0-\u00A0" : " Match "
+      }${this.match_number}`;
     }
   }
   //

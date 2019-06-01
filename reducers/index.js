@@ -1,7 +1,8 @@
-import { combineReducers } from 'redux-immutable'
+import { combineReducers } from "redux-immutable";
 
-import models from './models'
+import models from "./models";
 
-export default () => combineReducers({
-  models
-})
+export default () =>
+  combineReducers({
+    models
+  });

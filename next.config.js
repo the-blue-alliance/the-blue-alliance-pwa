@@ -1,23 +1,23 @@
 module.exports = {
   webpack: (config, { dev }) => {
-    const newConfig = config
+    const newConfig = config;
 
     // Fixes npm packages that depend on `fs` module
     newConfig.node = {
-      fs: 'empty'
-    }
+      fs: "empty"
+    };
 
     if (dev) {
       newConfig.module.rules.push({
         test: /\.js$/,
         exclude: /node_modules/,
-        loader: 'eslint-loader',
+        loader: "eslint-loader",
         options: {
           emitWarning: true
         }
-      })
+      });
     }
 
-    return newConfig
+    return newConfig;
   }
-}
+};
