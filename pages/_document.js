@@ -18,6 +18,11 @@ class MyDocument extends Document {
           {/* PWA primary color */}
           <meta name="theme-color" content={indigo["500"]} />
           <link
+            rel="preconnect"
+            href="https://fonts.gstatic.com"
+            crossOrigin="anonymous"
+          />
+          <link
             rel="stylesheet"
             href="https://fonts.googleapis.com/css?family=Roboto:300,400,500&display=swap"
           />
