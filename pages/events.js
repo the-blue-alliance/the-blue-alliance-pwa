@@ -8,6 +8,7 @@ import {
 import { fetchYearEvents } from "../actions";
 import useData from "../lib/useData";
 import Page from "../components/Page";
+import Typography from "@material-ui/core/Typography";
 
 const Events = ({ year, refetchOnLoad }) => {
   const [events, eventsFetchStatus, refetchEvents] = useData(
@@ -22,7 +23,7 @@ const Events = ({ year, refetchOnLoad }) => {
       title={`${year} Events`}
       metaDescription={`List of events for the ${year} FIRST Robotics Competition.`}
     >
-      <h1>{year} Events</h1>
+      <Typography variant="h4">{year} Events</Typography>
       <button onClick={refetchEvents}>Refetch</button>
       <div>{eventsFetchStatus}</div>
       <Link href="/">

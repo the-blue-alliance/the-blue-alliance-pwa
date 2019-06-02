@@ -1,10 +1,11 @@
 import React from "react";
 import Link from "next/link";
 import Page from "../components/Page";
+import Typography from "@material-ui/core/Typography";
 
 const Home = () => (
   <Page metaDescription="Team information and match videos and results from the FIRST Robotics Competition.">
-    <h1>Home</h1>
+    <Typography variant="h4">Home</Typography>
     <Link href="/events">
       <a>Events</a>
     </Link>

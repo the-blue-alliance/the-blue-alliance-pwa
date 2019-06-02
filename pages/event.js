@@ -10,6 +10,7 @@ import {
 import { fetchEvent, fetchEventMatches } from "../actions";
 import useData from "../lib/useData";
 import Page from "../components/Page";
+import Typography from "@material-ui/core/Typography";
 
 const openMatchModal = (e, eventKey, matchKey) => {
   e.preventDefault();
@@ -54,7 +55,7 @@ const Events = ({ router, eventKey, refetchOnLoad }) => {
         </>
       }
     >
-      <h1>{event.name}</h1>
+      <Typography variant="h4">{event.name}</Typography>
       <button
         onClick={() => {
           refetchEvent();
