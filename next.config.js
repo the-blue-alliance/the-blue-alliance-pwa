@@ -16,7 +16,7 @@ module.exports = {
           options: {
             context: "",
             outputPath: "static",
-            publicPath: "_next/static",
+            publicPath: "/_next/static",
             name: "[path][name].[hash].[ext]"
           }
         }
