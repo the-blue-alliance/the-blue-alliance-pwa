@@ -7,6 +7,23 @@ module.exports = {
       fs: "empty"
     };
 
+    // Hash static assets
+    config.module.rules.push({
+      test: /\.(txt|jpg|png|svg)$/,
+      use: [
+        {
+          loader: "file-loader",
+          options: {
+            context: "",
+            outputPath: "static",
+            publicPath: "_next/static",
+            name: "[path][name].[hash].[ext]"
+          }
+        }
+      ]
+    });
+
+    // Setup eslint on dev
     if (dev) {
       newConfig.module.rules.push({
         test: /\.js$/,

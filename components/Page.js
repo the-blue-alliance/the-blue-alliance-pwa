@@ -7,7 +7,13 @@ import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 
+import TBALogoSVG from "../icons/tba_lamp.svg";
+
 const useStyles = makeStyles(theme => ({
+  logo: {
+    height: 48,
+    width: 48
+  },
   container: {
     marginTop: 56,
     [`${theme.breakpoints.up("xs")} and (orientation: landscape)`]: {
@@ -68,6 +74,7 @@ const Page = ({
       </Head>
       <AppBar position="fixed" color="primary">
         <Toolbar>
+          <img className={classes.logo} src={TBALogoSVG} alt="TBA Logo" />
           <Typography variant="h6" color="inherit">
             {title ? title : "The Blue Alliance"}
           </Typography>
