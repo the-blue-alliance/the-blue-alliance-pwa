@@ -9,6 +9,7 @@ import {
 } from "../selectors/MatchSelectors";
 import { fetchEvent, fetchEventMatches } from "../actions";
 import useData from "../lib/useData";
+import Head from "../components/Head";
 
 const openMatchModal = (e, eventKey, matchKey) => {
   e.preventDefault();
@@ -41,6 +42,7 @@ const Events = ({ router, eventKey, refetchOnLoad }) => {
 
   return (
     <div>
+      <Head title={`${event.name} (${event.year})`} />
       <h1>{event.name}</h1>
       <button
         onClick={() => {

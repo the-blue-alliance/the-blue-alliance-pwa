@@ -1,8 +1,10 @@
 import React from "react";
 import Link from "next/link";
+import Head from "../components/Head";
 
 const Home = () => (
   <div>
+    <Head />
     <h1>Home</h1>
     <Link href="/events">
       <a>Events</a>
