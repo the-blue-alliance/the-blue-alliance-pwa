@@ -3,7 +3,7 @@ import Link from "next/link";
 import Head from "../components/Head";
 
 const Home = () => (
-  <div>
+  <>
     <Head />
     <h1>Home</h1>
     <Link href="/events">
@@ -13,7 +13,7 @@ const Home = () => (
     <Link href="/event?eventKey=2019casj" as="/event/2019casj">
       <a>2019casj</a>
     </Link>
-  </div>
+  </>
 );
 
 export default Home;

@@ -41,7 +41,7 @@ const Events = ({ router, eventKey, refetchOnLoad }) => {
   );
 
   return (
-    <div>
+    <>
       <Head title={`${event.name} (${event.year})`} />
       <h1>{event.name}</h1>
       <button
@@ -70,7 +70,7 @@ const Events = ({ router, eventKey, refetchOnLoad }) => {
           </a>
         </div>
       ))}
-    </div>
+    </>
   );
 };
 

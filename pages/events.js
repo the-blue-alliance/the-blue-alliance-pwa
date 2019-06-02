@@ -18,7 +18,7 @@ const Events = ({ year, refetchOnLoad }) => {
   );
 
   return (
-    <div>
+    <>
       <Head title={`${year} Events`} />
       <h1>{year} Events</h1>
       <button onClick={refetchEvents}>Refetch</button>
@@ -38,7 +38,7 @@ const Events = ({ year, refetchOnLoad }) => {
           </Link>
         </div>
       ))}
-    </div>
+    </>
   );
 };
 
