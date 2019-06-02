@@ -2,12 +2,12 @@ import React from "react";
 import PropTypes from "prop-types";
 import Link from "next/link";
 import Router, { withRouter } from "next/router";
-import { fetchEvent, fetchEventMatches } from "../actions";
 import { getEventFetchStatus, getEvent } from "../selectors/EventSelectors";
 import {
   getEventMatchesFetchStatus,
   getEventMatches
 } from "../selectors/MatchSelectors";
+import { fetchEvent, fetchEventMatches } from "../actions";
 import useData from "../lib/useData";
 
 const openMatchModal = (e, eventKey, matchKey) => {

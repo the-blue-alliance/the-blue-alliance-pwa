@@ -1,32 +1,26 @@
-import React, { useEffect } from "react";
+import React from "react";
 import PropTypes from "prop-types";
-import { useSelector, useDispatch } from "react-redux";
 import Link from "next/link";
-import { fetchYearEvents } from "../actions";
 import {
-  getYearEventsStatus,
+  getYearEventsFetchStatus,
   getYearEvents
 } from "../selectors/EventSelectors";
+import { fetchYearEvents } from "../actions";
+import useData from "../lib/useData";
 
-const useFetch = refetchOnLoad => {
-  const status = useSelector(state => getYearEventsStatus(state, 2019));
-  const events = useSelector(state => getYearEvents(state, 2019));
-  const dispatch = useDispatch();
-  useEffect(() => {
-    if (refetchOnLoad) {
-      dispatch(fetchYearEvents(2019));
-    }
-  }, []);
-  return [events, status, () => dispatch(fetchYearEvents(2019))];
-};
+const Events = ({ year, refetchOnLoad }) => {
+  const [events, eventsFetchStatus, refetchEvents] = useData(
+    state => getYearEventsFetchStatus(state, year),
+    state => getYearEvents(state, year),
+    fetchYearEvents(year),
+    refetchOnLoad.events
+  );
 
-const Events = ({ refetchOnLoad }) => {
-  const [events, status, refetch] = useFetch(refetchOnLoad);
   return (
     <div>
-      <h1>Events</h1>
-      <button onClick={refetch}>Refetch</button>
-      <div>{status}</div>
+      <h1>{year} Events</h1>
+      <button onClick={refetchEvents}>Refetch</button>
+      <div>{eventsFetchStatus}</div>
       <Link href="/">
         <a>Home</a>
       </Link>
@@ -46,16 +40,30 @@ const Events = ({ refetchOnLoad }) => {
   );
 };
 
-Events.getInitialProps = async ({ reduxStore }) => {
-  if (getYearEventsStatus(reduxStore.getState(), 2019) !== "success") {
-    await reduxStore.dispatch(fetchYearEvents(2019));
-    return { refetchOnLoad: false };
+Events.getInitialProps = async ({ reduxStore, query }) => {
+  const year = parseInt(query.year, 10) || 2019;
+  const state = reduxStore.getState();
+
+  const eventsFetchInitial =
+    getYearEventsFetchStatus(state, year) !== "success";
+
+  const fetchPromises = [];
+  if (eventsFetchInitial) {
+    fetchPromises.push(reduxStore.dispatch(fetchYearEvents(year)));
   }
-  return { refetchOnLoad: true };
+  await Promise.all(fetchPromises);
+
+  return {
+    year,
+    refetchOnLoad: {
+      events: !eventsFetchInitial
+    }
+  };
 };
 
 Events.propTypes = {
-  refetchOnLoad: PropTypes.bool
+  year: PropTypes.number,
+  refetchOnLoad: PropTypes.object
 };
 
 export default Events;

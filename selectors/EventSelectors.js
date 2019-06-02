@@ -5,7 +5,7 @@ const getEventsByKey = state => state.getIn(["models", "events", "byKey"]);
 const getYearEventKeys = (state, year) =>
   state.getIn(["models", "events", "collections", "byYear", `${year}`]);
 
-export const getYearEventsStatus = (state, year) =>
+export const getYearEventsFetchStatus = (state, year) =>
   state.getIn(["models", "eventsStatus", "collections", "byYear", `${year}`]);
 
 export const getYearEvents = createSelector(
