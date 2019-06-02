@@ -10,6 +10,7 @@ const handle = app.getRequestHandler();
 app.prepare().then(() => {
   const server = express();
   server.use(compression());
+  server.use(express.static("public"));
 
   // Map clean URLs
   server.get("/event/:eventKey", (req, res) => {

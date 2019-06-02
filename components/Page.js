@@ -19,6 +19,7 @@ const Page = ({
     <>
       <Head>
         <title>{title && `${title} - `}The Blue Alliance</title>
+        <link rel="shortcut icon" href="/favicon.ico" />
         <meta name="description" content={metaDescription} />
         <link rel="canonical" href={canonicalUrl} />
         <meta property="og:url" content={canonicalUrl} />
