@@ -1,11 +1,9 @@
 import React from "react";
 import Link from "next/link";
 import Page from "../components/Page";
-import Head from "../components/Head";
 
 const Home = () => (
-  <Page title="The Blue Alliance">
-    <Head />
+  <Page metaDescription="Team information and match videos and results from the FIRST Robotics Competition.">
     <h1>Home</h1>
     <Link href="/events">
       <a>Events</a>

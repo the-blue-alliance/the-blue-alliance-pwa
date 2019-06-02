@@ -10,7 +10,6 @@ import {
 import { fetchEvent, fetchEventMatches } from "../actions";
 import useData from "../lib/useData";
 import Page from "../components/Page";
-import Head from "../components/Head";
 
 const openMatchModal = (e, eventKey, matchKey) => {
   e.preventDefault();
@@ -42,8 +41,12 @@ const Events = ({ router, eventKey, refetchOnLoad }) => {
   );
 
   return (
-    <Page title={`${event.name} (${event.year})`}>
-      <Head title={`${event.name} (${event.year})`} />
+    <Page
+      title={`${event.name} (${event.year})`}
+      metaDescription={`Videos and match results for the ${event.year} ${
+        event.name
+      } FIRST Robotics Competition in ${event.getCityStateCountry()}.`}
+    >
       <h1>{event.name}</h1>
       <button
         onClick={() => {

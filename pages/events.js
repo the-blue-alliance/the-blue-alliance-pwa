@@ -8,7 +8,6 @@ import {
 import { fetchYearEvents } from "../actions";
 import useData from "../lib/useData";
 import Page from "../components/Page";
-import Head from "../components/Head";
 
 const Events = ({ year, refetchOnLoad }) => {
   const [events, eventsFetchStatus, refetchEvents] = useData(
@@ -19,8 +18,10 @@ const Events = ({ year, refetchOnLoad }) => {
   );
 
   return (
-    <Page title={`${year} Events`}>
-      <Head title={`${year} Events`} />
+    <Page
+      title={`${year} Events`}
+      metaDescription={`List of events for the ${year} FIRST Robotics Competition.`}
+    >
       <h1>{year} Events</h1>
       <button onClick={refetchEvents}>Refetch</button>
       <div>{eventsFetchStatus}</div>
