@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { default as NextHead } from "next/head";
 
-const Head = ({ title, children }) => (
+const Head = ({ children, title }) => (
   <NextHead>
     <title>{title && `${title} - `}The Blue Alliance</title>
     {children}
@@ -10,8 +10,11 @@ const Head = ({ title, children }) => (
 );
 
 Head.propTypes = {
-  title: PropTypes.string,
-  children: PropTypes.element
+  children: PropTypes.oneOfType([
+    PropTypes.node,
+    PropTypes.arrayOf(PropTypes.node)
+  ]),
+  title: PropTypes.string
 };
 
 export default Head;

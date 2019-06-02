@@ -7,6 +7,7 @@ import {
 } from "../selectors/EventSelectors";
 import { fetchYearEvents } from "../actions";
 import useData from "../lib/useData";
+import Page from "../components/Page";
 import Head from "../components/Head";
 
 const Events = ({ year, refetchOnLoad }) => {
@@ -18,7 +19,7 @@ const Events = ({ year, refetchOnLoad }) => {
   );
 
   return (
-    <>
+    <Page title={`${year} Events`}>
       <Head title={`${year} Events`} />
       <h1>{year} Events</h1>
       <button onClick={refetchEvents}>Refetch</button>
@@ -38,7 +39,7 @@ const Events = ({ year, refetchOnLoad }) => {
           </Link>
         </div>
       ))}
-    </>
+    </Page>
   );
 };
 
