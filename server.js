@@ -15,6 +15,9 @@ app.prepare().then(() => {
   server.get("/event/:eventKey", (req, res) => {
     return app.render(req, res, "/event", { eventKey: req.params.eventKey });
   });
+  server.get("/events/:year", (req, res) => {
+    return app.render(req, res, "/events", { year: req.params.year });
+  });
   // server.get('/match/:matchKey', (req, res) => {
   //   return app.render(req, res, '/match', { matchKey: req.params.matchKey })
   // })
