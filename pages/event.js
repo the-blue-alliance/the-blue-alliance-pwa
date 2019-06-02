@@ -1,27 +1,14 @@
-import React, { useEffect } from "react";
+import React from "react";
 import PropTypes from "prop-types";
-import { useSelector, useDispatch } from "react-redux";
 import Link from "next/link";
 import Router, { withRouter } from "next/router";
-import { fetchEventPage } from "../actions";
-import { getEventStatus, getEvent } from "../selectors/EventSelectors";
+import { fetchEvent, fetchEventMatches } from "../actions";
+import { getEventFetchStatus, getEvent } from "../selectors/EventSelectors";
 import {
-  getEventMatchesStatus,
+  getEventMatchesFetchStatus,
   getEventMatches
 } from "../selectors/MatchSelectors";
-
-const useFetch = (eventKey, refetchOnLoad) => {
-  const status = useSelector(state => getEventStatus(state, eventKey));
-  const events = useSelector(state => getEvent(state, eventKey));
-  const matches = useSelector(state => getEventMatches(state, eventKey));
-  const dispatch = useDispatch();
-  useEffect(() => {
-    if (refetchOnLoad) {
-      dispatch(fetchEventPage(eventKey));
-    }
-  }, []);
-  return [events, matches, status, () => dispatch(fetchEventPage(eventKey))];
-};
+import useData from "../lib/useData";
 
 const openMatchModal = (e, eventKey, matchKey) => {
   e.preventDefault();
@@ -39,12 +26,32 @@ const closeMatchModal = eventKey => {
 };
 
 const Events = ({ router, eventKey, refetchOnLoad }) => {
-  const [event, matches, status, refetch] = useFetch(eventKey, refetchOnLoad);
+  const [event, eventFetchStatus, refetchEvent] = useData(
+    state => getEventFetchStatus(state, eventKey),
+    state => getEvent(state, eventKey),
+    fetchEvent(eventKey),
+    refetchOnLoad.event
+  );
+  const [matches, matchesFetchStatus, refetchMatches] = useData(
+    state => getEventMatchesFetchStatus(state, eventKey),
+    state => getEventMatches(state, eventKey),
+    fetchEventMatches(eventKey),
+    refetchOnLoad.eventMatches
+  );
+
   return (
     <div>
       <h1>{event.name}</h1>
-      <button onClick={refetch}>Refetch</button>
-      <div>{status}</div>
+      <button
+        onClick={() => {
+          refetchEvent();
+          refetchMatches();
+        }}
+      >
+        Refetch
+      </button>
+      <div>{eventFetchStatus}</div>
+      <div>{matchesFetchStatus}</div>
       <div onClick={() => closeMatchModal(eventKey)}>
         {router.query.matchKey}
       </div>
@@ -68,20 +75,33 @@ const Events = ({ router, eventKey, refetchOnLoad }) => {
 Events.getInitialProps = async ({ reduxStore, query }) => {
   const eventKey = query.eventKey;
   const state = reduxStore.getState();
-  if (
-    getEventStatus(state, eventKey) !== "success" ||
-    getEventMatchesStatus(state, eventKey) !== "success"
-  ) {
-    await reduxStore.dispatch(fetchEventPage(eventKey));
-    return { eventKey, refetchOnLoad: false };
+
+  const eventFetchInitial = getEventFetchStatus(state, eventKey) !== "success";
+  const eventMatchesFetchInitial =
+    getEventMatchesFetchStatus(state, eventKey) !== "success";
+
+  const fetchPromises = [];
+  if (eventFetchInitial) {
+    fetchPromises.push(reduxStore.dispatch(fetchEvent(eventKey)));
   }
-  return { eventKey, refetchOnLoad: true };
+  if (eventMatchesFetchInitial) {
+    fetchPromises.push(reduxStore.dispatch(fetchEventMatches(eventKey)));
+  }
+  await Promise.all(fetchPromises);
+
+  return {
+    eventKey,
+    refetchOnLoad: {
+      event: !eventFetchInitial,
+      eventMatches: !eventMatchesFetchInitial
+    }
+  };
 };
 
 Events.propTypes = {
   router: PropTypes.object,
   eventKey: PropTypes.string,
-  refetchOnLoad: PropTypes.bool
+  refetchOnLoad: PropTypes.object
 };
 
 export default withRouter(Events);

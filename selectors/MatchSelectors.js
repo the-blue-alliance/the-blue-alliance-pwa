@@ -5,7 +5,7 @@ const getMatchesByKey = state => state.getIn(["models", "matches", "byKey"]);
 const getEventMatchKeys = (state, eventKey) =>
   state.getIn(["models", "matches", "collections", "byEvent", eventKey]);
 
-export const getEventMatchesStatus = (state, eventKey) =>
+export const getEventMatchesFetchStatus = (state, eventKey) =>
   state.getIn(["models", "matchesStatus", "collections", "byEvent", eventKey]);
 
 export const getEventMatches = createSelector(

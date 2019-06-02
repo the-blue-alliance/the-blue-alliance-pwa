@@ -18,7 +18,7 @@ export const getYearEvents = createSelector(
   }
 );
 
-export const getEventStatus = (state, eventKey) =>
+export const getEventFetchStatus = (state, eventKey) =>
   state.getIn(["models", "eventsStatus", "byKey", eventKey]);
 
 export const getEvent = (state, eventKey) =>

@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import PropTypes from "prop-types";
 import { useSelector, useDispatch } from "react-redux";
 import Link from "next/link";
-import { fetchEventListPage } from "../actions";
+import { fetchYearEvents } from "../actions";
 import {
   getYearEventsStatus,
   getYearEvents
@@ -14,10 +14,10 @@ const useFetch = refetchOnLoad => {
   const dispatch = useDispatch();
   useEffect(() => {
     if (refetchOnLoad) {
-      dispatch(fetchEventListPage(2019));
+      dispatch(fetchYearEvents(2019));
     }
   }, []);
-  return [events, status, () => dispatch(fetchEventListPage(2019))];
+  return [events, status, () => dispatch(fetchYearEvents(2019))];
 };
 
 const Events = ({ refetchOnLoad }) => {
@@ -48,7 +48,7 @@ const Events = ({ refetchOnLoad }) => {
 
 Events.getInitialProps = async ({ reduxStore }) => {
   if (getYearEventsStatus(reduxStore.getState(), 2019) !== "success") {
-    await reduxStore.dispatch(fetchEventListPage(2019));
+    await reduxStore.dispatch(fetchYearEvents(2019));
     return { refetchOnLoad: false };
   }
   return { refetchOnLoad: true };

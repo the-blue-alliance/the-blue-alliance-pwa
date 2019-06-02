@@ -8,7 +8,8 @@ const fetchOptions = {
   }
 };
 
-export const fetchEventListPage = year => dispatch => {
+// Event list page
+export const fetchYearEvents = year => dispatch => {
   dispatch({
     type: types.FETCH_YEAR_EVENTS_REQUEST,
     year
@@ -27,39 +28,41 @@ export const fetchEventListPage = year => dispatch => {
     );
 };
 
-export const fetchEventPage = eventKey => dispatch => {
+// Event details page
+export const fetchEvent = eventKey => dispatch => {
   dispatch({
     type: types.FETCH_EVENT_REQUEST,
     eventKey
   });
+  return fetch(
+    `https://www.thebluealliance.com/api/v3/event/${eventKey}`,
+    fetchOptions
+  )
+    .then(event => event.json())
+    .then(event =>
+      dispatch({
+        type: types.FETCH_EVENT_SUCCESS,
+        eventKey,
+        data: event
+      })
+    );
+};
+
+export const fetchEventMatches = eventKey => dispatch => {
   dispatch({
     type: types.FETCH_EVENT_MATCHES_REQUEST,
     eventKey
   });
-  return Promise.all([
-    fetch(
-      `https://www.thebluealliance.com/api/v3/event/${eventKey}`,
-      fetchOptions
-    )
-      .then(event => event.json())
-      .then(event =>
-        dispatch({
-          type: types.FETCH_EVENT_SUCCESS,
-          eventKey,
-          data: event
-        })
-      ),
-    fetch(
-      `https://www.thebluealliance.com/api/v3/event/${eventKey}/matches`,
-      fetchOptions
-    )
-      .then(matches => matches.json())
-      .then(matches =>
-        dispatch({
-          type: types.FETCH_EVENT_MATCHES_SUCCESS,
-          eventKey,
-          data: matches
-        })
-      )
-  ]);
+  return fetch(
+    `https://www.thebluealliance.com/api/v3/event/${eventKey}/matches`,
+    fetchOptions
+  )
+    .then(matches => matches.json())
+    .then(matches =>
+      dispatch({
+        type: types.FETCH_EVENT_MATCHES_SUCCESS,
+        eventKey,
+        data: matches
+      })
+    );
 };
