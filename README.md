@@ -18,3 +18,4 @@ A universally (server + client) rendered React PWA for The Blue Alliance.
 
 - [React](https://github.com/facebook/react)
 - [Next.js](https://github.com/zeit/next.js)
+- [Material UI](https://github.com/mui-org/material-ui)
