@@ -46,6 +46,13 @@ const Events = ({ router, eventKey, refetchOnLoad }) => {
       metaDescription={`Videos and match results for the ${event.year} ${
         event.name
       } FIRST Robotics Competition in ${event.getCityStateCountry()}.`}
+      additionalMetas={
+        <>
+          <meta property="og:location" content={event.getCityStateCountry()} />
+          <meta property="og:start_time" content={event.start_date} />
+          <meta property="og:end_time" content={event.end_date} />
+        </>
+      }
     >
       <h1>{event.name}</h1>
       <button
