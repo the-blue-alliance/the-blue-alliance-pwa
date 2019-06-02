@@ -22,6 +22,11 @@ const models = (state = Map(), action) => {
         ["eventsStatus", "collections", "byYear", `${action.year}`],
         "success"
       );
+    case types.FETCH_YEAR_EVENTS_ERROR:
+      return state.setIn(
+        ["eventsStatus", "collections", "byYear", `${action.year}`],
+        "error"
+      );
     case types.FETCH_EVENT_REQUEST:
       return state.setIn(
         ["eventsStatus", "byKey", `${action.eventKey}`],
@@ -38,6 +43,11 @@ const models = (state = Map(), action) => {
         ["eventsStatus", "byKey", `${action.eventKey}`],
         "success"
       );
+    case types.FETCH_EVENT_ERROR:
+      return state.setIn(
+        ["eventsStatus", "byKey", `${action.eventKey}`],
+        "error"
+      );
     case types.FETCH_EVENT_MATCHES_REQUEST:
       return state.setIn(
         ["matchesStatus", "collections", "byEvent", `${action.eventKey}`],
@@ -53,6 +63,11 @@ const models = (state = Map(), action) => {
       return state.setIn(
         ["matchesStatus", "collections", "byEvent", `${action.eventKey}`],
         "success"
+      );
+    case types.FETCH_EVENT_MATCHES_ERROR:
+      return state.setIn(
+        ["matchesStatus", "collections", "byEvent", `${action.eventKey}`],
+        "error"
       );
     default:
       return state;

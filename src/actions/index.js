@@ -8,6 +8,13 @@ const fetchOptions = {
   }
 };
 
+const handleErrors = response => {
+  if (!response.ok) {
+    throw new Error(response.statusText);
+  }
+  return response.json();
+};
+
 // Event list page
 export const fetchYearEvents = year => dispatch => {
   dispatch({
@@ -18,14 +25,20 @@ export const fetchYearEvents = year => dispatch => {
     `https://www.thebluealliance.com/api/v3/events/${year}`,
     fetchOptions
   )
-    .then(events => events.json())
+    .then(handleErrors)
     .then(events =>
       dispatch({
         type: types.FETCH_YEAR_EVENTS_SUCCESS,
         year,
         data: events
       })
-    );
+    )
+    .catch(() => {
+      dispatch({
+        type: types.FETCH_YEAR_EVENTS_ERROR,
+        year
+      });
+    });
 };
 
 // Event details page
@@ -38,14 +51,20 @@ export const fetchEvent = eventKey => dispatch => {
     `https://www.thebluealliance.com/api/v3/event/${eventKey}`,
     fetchOptions
   )
-    .then(event => event.json())
+    .then(handleErrors)
     .then(event =>
       dispatch({
         type: types.FETCH_EVENT_SUCCESS,
         eventKey,
         data: event
       })
-    );
+    )
+    .catch(() => {
+      dispatch({
+        type: types.FETCH_EVENT_ERROR,
+        eventKey
+      });
+    });
 };
 
 export const fetchEventMatches = eventKey => dispatch => {
@@ -57,12 +76,18 @@ export const fetchEventMatches = eventKey => dispatch => {
     `https://www.thebluealliance.com/api/v3/event/${eventKey}/matches`,
     fetchOptions
   )
-    .then(matches => matches.json())
+    .then(handleErrors)
     .then(matches =>
       dispatch({
         type: types.FETCH_EVENT_MATCHES_SUCCESS,
         eventKey,
         data: matches
       })
-    );
+    )
+    .catch(() => {
+      dispatch({
+        type: types.FETCH_EVENT_MATCHES_ERROR,
+        eventKey
+      });
+    });
 };

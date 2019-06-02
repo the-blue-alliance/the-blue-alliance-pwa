@@ -6,6 +6,7 @@ import {
 } from "../selectors/EventSelectors";
 import { fetchYearEvents } from "../actions";
 import useData from "../lib/useData";
+import notFoundError from "../lib/notFoundError";
 import Page from "../components/Page";
 import Link from "../components/Link";
 import Typography from "@material-ui/core/Typography";
@@ -17,6 +18,10 @@ const Events = ({ year, refetchOnLoad }) => {
     fetchYearEvents(year),
     refetchOnLoad.events
   );
+
+  if (!events) {
+    return notFoundError();
+  }
 
   return (
     <Page

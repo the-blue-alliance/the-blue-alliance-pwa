@@ -8,6 +8,7 @@ import {
 } from "../selectors/MatchSelectors";
 import { fetchEvent, fetchEventMatches } from "../actions";
 import useData from "../lib/useData";
+import notFoundError from "../lib/notFoundError";
 import Page from "../components/Page";
 import Link from "../components/Link";
 import Typography from "@material-ui/core/Typography";
@@ -40,6 +41,10 @@ const Events = ({ router, eventKey, refetchOnLoad }) => {
     fetchEventMatches(eventKey),
     refetchOnLoad.eventMatches
   );
+
+  if (!event) {
+    return notFoundError();
+  }
 
   return (
     <Page
