@@ -1,17 +1,15 @@
 import React from "react";
-import Link from "next/link";
 import Page from "../components/Page";
+import Link from "../components/Link";
 import Typography from "@material-ui/core/Typography";
 
 const Home = () => (
   <Page metaDescription="Team information and match videos and results from the FIRST Robotics Competition.">
     <Typography variant="h4">Home</Typography>
-    <Link href="/events">
-      <a>Events</a>
-    </Link>
+    <Link href="/events">Events</Link>
     <br />
     <Link href="/event?eventKey=2019casj" as="/event/2019casj">
-      <a>2019casj</a>
+      2019casj
     </Link>
   </Page>
 );

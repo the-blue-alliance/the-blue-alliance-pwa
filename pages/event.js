@@ -1,6 +1,5 @@
 import React from "react";
 import PropTypes from "prop-types";
-import Link from "next/link";
 import Router, { withRouter } from "next/router";
 import { getEventFetchStatus, getEvent } from "../selectors/EventSelectors";
 import {
@@ -10,6 +9,7 @@ import {
 import { fetchEvent, fetchEventMatches } from "../actions";
 import useData from "../lib/useData";
 import Page from "../components/Page";
+import Link from "../components/Link";
 import Typography from "@material-ui/core/Typography";
 
 const openMatchModal = (e, eventKey, matchKey) => {
@@ -69,17 +69,15 @@ const Events = ({ router, eventKey, refetchOnLoad }) => {
       <div onClick={() => closeMatchModal(eventKey)}>
         {router.query.matchKey}
       </div>
-      <Link href="/">
-        <a>Home</a>
-      </Link>
+      <Link href="/">Home</Link>
       {matches.map(match => (
         <div key={match.key}>
-          <a
+          <Link
             href={`/match/${match.key}`}
             onClick={e => openMatchModal(e, eventKey, match.key)}
           >
             {match.getDisplayName()}
-          </a>
+          </Link>
         </div>
       ))}
     </Page>

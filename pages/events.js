@@ -1,6 +1,5 @@
 import React from "react";
 import PropTypes from "prop-types";
-import Link from "next/link";
 import {
   getYearEventsFetchStatus,
   getYearEvents
@@ -8,6 +7,7 @@ import {
 import { fetchYearEvents } from "../actions";
 import useData from "../lib/useData";
 import Page from "../components/Page";
+import Link from "../components/Link";
 import Typography from "@material-ui/core/Typography";
 
 const Events = ({ year, refetchOnLoad }) => {
@@ -26,18 +26,14 @@ const Events = ({ year, refetchOnLoad }) => {
       <Typography variant="h4">{year} Events</Typography>
       <button onClick={refetchEvents}>Refetch</button>
       <div>{eventsFetchStatus}</div>
-      <Link href="/">
-        <a>Home</a>
-      </Link>
+      <Link href="/">Home</Link>
       {events.map(event => (
         <div key={event.key}>
           <Link
             href={`/event?eventKey=${event.key}`}
             as={`/event/${event.key}`}
           >
-            <a>
-              {event.year} {event.safeShortName()}
-            </a>
+            {event.year} {event.safeShortName()}
           </Link>
         </div>
       ))}
