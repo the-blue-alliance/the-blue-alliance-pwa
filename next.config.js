@@ -1,4 +1,6 @@
 module.exports = {
+  // Build one level up from ./src
+  distDir: "../.next",
   webpack: (config, { dev }) => {
     const newConfig = config;
 
