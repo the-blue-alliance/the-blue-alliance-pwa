@@ -4,9 +4,7 @@ import { default as NextHead } from "next/head";
 
 const Head = ({ title, children }) => (
   <NextHead>
-    <title>
-      {title ? `${title} - The Blue Alliance` : "The Blue Alliance"}
-    </title>
+    <title>{title && `${title} - `}The Blue Alliance</title>
     {children}
   </NextHead>
 );
