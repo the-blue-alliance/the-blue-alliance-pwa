@@ -8,11 +8,17 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 import IconButton from "@material-ui/core/IconButton";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
+import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 import RefreshIcon from "@material-ui/icons/Refresh";
 
 import TBALogoSVG from "../icons/tba_lamp.svg";
 
 const useStyles = makeStyles(theme => ({
+  toolbar: {
+    [theme.breakpoints.down("sm")]: {
+      padding: 0
+    }
+  },
   logo: {
     height: 48,
     width: 48
@@ -87,8 +93,18 @@ const Page = ({
         {additionalMetas}
       </Head>
       <AppBar position="fixed" color="primary">
-        <Toolbar>
-          <img className={classes.logo} src={TBALogoSVG} alt="TBA Logo" />
+        <Toolbar className={classes.toolbar}>
+          {title ? (
+            <IconButton
+              color="inherit"
+              onClick={() => window.history.back()}
+              aria-label="Back"
+            >
+              <ArrowBackIcon />
+            </IconButton>
+          ) : (
+            <img className={classes.logo} src={TBALogoSVG} alt="TBA Logo" />
+          )}
           <Typography
             className={classes.appBarTitle}
             variant="h6"
@@ -101,6 +117,7 @@ const Page = ({
             <div className={classes.progress}>
               <CircularProgress
                 color="secondary"
+                variant="indeterminate"
                 size={20}
                 thickness={5}
                 disableShrink
@@ -138,8 +155,8 @@ Page.propTypes = {
     PropTypes.node,
     PropTypes.arrayOf(PropTypes.node)
   ]),
-  isLoading: PropTypes.boolean,
-  refreshFunction: PropTypes.function
+  isLoading: PropTypes.bool,
+  refreshFunction: PropTypes.func
 };
 
 export default withRouter(Page);
