@@ -12,6 +12,8 @@ A universally (server + client) rendered React PWA for The Blue Alliance.
 
 `npm run build` to build for production.
 
+`npm run deploy` to deploy to production.
+
 `npm start` to run the production server at port 3000 (or a specified PORT).
 
 ## Made With

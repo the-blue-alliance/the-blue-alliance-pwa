@@ -1,0 +1,10 @@
+# Ignore everything for deployment
+*
+
+# Whitelist these
+!/app.yaml
+!/package.json
+!/next.config.js
+!/server.js
+!/.next/**
+!/public/**

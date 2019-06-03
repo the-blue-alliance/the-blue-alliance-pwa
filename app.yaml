@@ -1,0 +1,27 @@
+service: pwa-ssr
+runtime: nodejs8
+
+automatic_scaling:
+  max_idle_instances: 1
+
+default_expiration: "0s"
+
+handlers:
+  # Cache forever (thanks to fingerprinting)
+  - url: /_next/static
+    static_dir: .next/static
+    expiration: "365d"
+    http_headers:
+      Vary: Accept-Encoding
+
+  # Special case caching
+  - url: /favicon.ico
+    static_files: public/favicon.ico
+    upload: public/favicon.ico
+    expiration: "1d"
+    http_headers:
+      Vary: Accept-Encoding
+
+  # Application dynamic routes
+  - url: /.*
+    script: auto
