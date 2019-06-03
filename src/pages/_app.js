@@ -8,6 +8,7 @@ import indigo from "@material-ui/core/colors/indigo";
 import { createMuiTheme } from "@material-ui/core/styles";
 import { ThemeProvider } from "@material-ui/styles";
 import RouteChangeProgress from "../components/RouteChangeProgress";
+import Navigation from "../components/Navigation";
 
 const theme = createMuiTheme({
   palette: {
@@ -34,6 +35,7 @@ class MyApp extends App {
             <CssBaseline />
             <RouteChangeProgress />
             <Component {...pageProps} />
+            <Navigation />
           </ThemeProvider>
         </Provider>
       </Container>
