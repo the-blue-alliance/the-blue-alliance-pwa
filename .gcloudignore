@@ -4,6 +4,7 @@
 # Whitelist these
 !/app.yaml
 !/package.json
+!/package-lock.json
 !/next.config.js
 !/server.js
 !/.next/**
