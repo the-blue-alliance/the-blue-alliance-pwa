@@ -10,6 +10,7 @@
   "dependencies": {
     "@material-ui/core": "^4.0.1",
     "@material-ui/icons": "^4.0.1",
+    "clipboard-polyfill": "^2.8.0",
     "compression": "^1.7.4",
     "express": "^4.17.1",
     "immutable": "^4.0.0-rc.12",
