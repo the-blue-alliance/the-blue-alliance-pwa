@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "scripts": {
     "dev": "node server.js",
-    "build": "next build src",
+    "build": "rm -rf .next; next build src",
     "deploy": "gcloud --project tbatv-prod-hrd app deploy --version 1 --quiet",
     "start": "cross-env NODE_ENV=production node server.js",
     "lint": "eslint **/*.js"
