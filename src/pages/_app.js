@@ -7,10 +7,13 @@ import amber from "@material-ui/core/colors/amber";
 import indigo from "@material-ui/core/colors/indigo";
 import { createMuiTheme } from "@material-ui/core/styles";
 import { ThemeProvider } from "@material-ui/styles";
+import RouteChangeProgress from "../components/RouteChangeProgress";
 
 const theme = createMuiTheme({
-  primary: indigo,
-  secondary: amber
+  palette: {
+    primary: indigo,
+    secondary: amber
+  }
 });
 
 class MyApp extends App {
@@ -29,6 +32,7 @@ class MyApp extends App {
         <Provider store={reduxStore}>
           <ThemeProvider theme={theme}>
             <CssBaseline />
+            <RouteChangeProgress />
             <Component {...pageProps} />
           </ThemeProvider>
         </Provider>

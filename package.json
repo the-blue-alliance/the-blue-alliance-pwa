@@ -26,6 +26,7 @@
     "reselect": "^4.0.0"
   },
   "devDependencies": {
+    "babel-eslint": "^10.0.1",
     "cross-env": "^5.2.0",
     "eslint": "^5.16.0",
     "eslint-loader": "^2.1.2",
