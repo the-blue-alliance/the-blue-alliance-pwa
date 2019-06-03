@@ -1,6 +1,7 @@
 import fetch from "isomorphic-unfetch";
 import * as types from "../constants/ActionTypes";
 
+const baseURL = "https://www.thebluealliance.com";
 const fetchOptions = {
   headers: {
     "X-TBA-Auth-Key":
@@ -21,10 +22,7 @@ export const fetchYearEvents = year => dispatch => {
     type: types.FETCH_YEAR_EVENTS_REQUEST,
     year
   });
-  return fetch(
-    `https://www.thebluealliance.com/api/v3/events/${year}`,
-    fetchOptions
-  )
+  return fetch(`${baseURL}/api/v3/events/${year}`, fetchOptions)
     .then(handleErrors)
     .then(events =>
       dispatch({
@@ -47,10 +45,7 @@ export const fetchEvent = eventKey => dispatch => {
     type: types.FETCH_EVENT_REQUEST,
     eventKey
   });
-  return fetch(
-    `https://www.thebluealliance.com/api/v3/event/${eventKey}`,
-    fetchOptions
-  )
+  return fetch(`${baseURL}/api/v3/event/${eventKey}`, fetchOptions)
     .then(handleErrors)
     .then(event =>
       dispatch({
@@ -72,10 +67,7 @@ export const fetchEventMatches = eventKey => dispatch => {
     type: types.FETCH_EVENT_MATCHES_REQUEST,
     eventKey
   });
-  return fetch(
-    `https://www.thebluealliance.com/api/v3/event/${eventKey}/matches`,
-    fetchOptions
-  )
+  return fetch(`${baseURL}/api/v3/event/${eventKey}/matches`, fetchOptions)
     .then(handleErrors)
     .then(matches =>
       dispatch({
