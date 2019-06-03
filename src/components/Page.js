@@ -19,7 +19,8 @@ import TBALogoSVG from "../icons/tba_lamp.svg";
 const useStyles = makeStyles(theme => ({
   toolbar: {
     [theme.breakpoints.down("sm")]: {
-      padding: 0
+      paddingLeft: theme.spacing(0.5),
+      paddingRight: theme.spacing(0.5)
     }
   },
   logo: {
