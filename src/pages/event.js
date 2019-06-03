@@ -59,18 +59,15 @@ const Events = ({ router, eventKey, refetchOnLoad }) => {
           <meta property="og:end_time" content={event.end_date} />
         </>
       }
+      isLoading={
+        eventFetchStatus === "fetching" || matchesFetchStatus === "fetching"
+      }
+      refreshFunction={() => {
+        refetchEvent();
+        refetchMatches();
+      }}
     >
       <Typography variant="h4">{event.name}</Typography>
-      <button
-        onClick={() => {
-          refetchEvent();
-          refetchMatches();
-        }}
-      >
-        Refetch
-      </button>
-      <div>{eventFetchStatus}</div>
-      <div>{matchesFetchStatus}</div>
       <div onClick={() => closeMatchModal(eventKey)}>
         {router.query.matchKey}
       </div>

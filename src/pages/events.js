@@ -27,10 +27,10 @@ const Events = ({ year, refetchOnLoad }) => {
     <Page
       title={`${year} Events`}
       metaDescription={`List of events for the ${year} FIRST Robotics Competition.`}
+      isLoading={eventsFetchStatus === "fetching"}
+      refreshFunction={refetchEvents}
     >
       <Typography variant="h4">{year} Events</Typography>
-      <button onClick={refetchEvents}>Refetch</button>
-      <div>{eventsFetchStatus}</div>
       <Link href="/">Home</Link>
       {events.map(event => (
         <div key={event.key}>

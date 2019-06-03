@@ -4,8 +4,11 @@ import { withRouter } from "next/router";
 import Head from "next/head";
 import { makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
+import CircularProgress from "@material-ui/core/CircularProgress";
+import IconButton from "@material-ui/core/IconButton";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
+import RefreshIcon from "@material-ui/icons/Refresh";
 
 import TBALogoSVG from "../icons/tba_lamp.svg";
 
@@ -13,6 +16,15 @@ const useStyles = makeStyles(theme => ({
   logo: {
     height: 48,
     width: 48
+  },
+  appBarTitle: {
+    flex: 1
+  },
+  progress: {
+    width: 48,
+    height: 24,
+    padding: 2,
+    textAlign: "center"
   },
   container: {
     marginTop: 56,
@@ -44,7 +56,9 @@ const Page = ({
   title,
   metaDescription,
   metaOgImage,
-  additionalMetas
+  additionalMetas,
+  refreshFunction,
+  isLoading
 }) => {
   const canonicalUrl = `https://www.thebluealliance.com${router.asPath}`;
   const classes = useStyles();
@@ -75,9 +89,33 @@ const Page = ({
       <AppBar position="fixed" color="primary">
         <Toolbar>
           <img className={classes.logo} src={TBALogoSVG} alt="TBA Logo" />
-          <Typography variant="h6" color="inherit">
+          <Typography
+            className={classes.appBarTitle}
+            variant="h6"
+            color="inherit"
+            noWrap
+          >
             {title ? title : "The Blue Alliance"}
           </Typography>
+          {isLoading && (
+            <div className={classes.progress}>
+              <CircularProgress
+                color="secondary"
+                size={20}
+                thickness={5}
+                disableShrink
+              />
+            </div>
+          )}
+          {!isLoading && refreshFunction && (
+            <IconButton
+              color="inherit"
+              onClick={refreshFunction}
+              aria-label="Refresh"
+            >
+              <RefreshIcon />
+            </IconButton>
+          )}
         </Toolbar>
       </AppBar>
       <div className={classes.container}>
@@ -99,7 +137,9 @@ Page.propTypes = {
   additionalMetas: PropTypes.oneOfType([
     PropTypes.node,
     PropTypes.arrayOf(PropTypes.node)
-  ])
+  ]),
+  isLoading: PropTypes.boolean,
+  refreshFunction: PropTypes.function
 };
 
 export default withRouter(Page);
