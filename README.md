@@ -2,6 +2,8 @@
 
 A universally (server + client) rendered React PWA for The Blue Alliance.
 
+Currently at https://beta.thebluealliance.com
+
 ## Getting started
 
 `npm install` to install packages.
