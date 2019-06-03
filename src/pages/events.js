@@ -38,7 +38,7 @@ const Events = ({ year, refetchOnLoad }) => {
             href={`/event?eventKey=${event.key}`}
             as={`/event/${event.key}`}
           >
-            {event.year} {event.safeShortName()}
+            {`${event.year} ${event.safeShortName()}`}
           </Link>
         </div>
       ))}

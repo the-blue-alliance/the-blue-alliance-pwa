@@ -61,4 +61,4 @@ Link.defaultProps = {
   activeClassName: "active"
 };
 
-export default withRouter(Link);
+export default React.memo(withRouter(Link));
