@@ -22,6 +22,12 @@ handlers:
     http_headers:
       Vary: Accept-Encoding
 
+  - url: /sw.js
+    static_files: public/sw.js
+    upload: public/sw.js
+    http_headers:
+      Vary: Accept-Encoding
+
   # Application dynamic routes
   - url: /.*
     script: auto
