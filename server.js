@@ -39,6 +39,7 @@ const renderAndCache = async (req, res, pagePath, queryParams) => {
     // Cache and send this page
     cache.set(cacheKey, html);
     res.setHeader("x-ssr-cache", "MISS");
+    res.setHeader("cache-control", "public, max-age=61");
     res.send(html);
     logCacheInfo(false);
   } catch (err) {
