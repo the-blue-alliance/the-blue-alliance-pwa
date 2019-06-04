@@ -21,7 +21,7 @@ const renderAndCache = async (req, res, pagePath, queryParams) => {
   const cacheKey = req.url;
 
   // If a page is cached, serve it
-  if (cache.has(cacheKey)) {
+  if (!dev && cache.has(cacheKey)) {
     res.setHeader("x-ssr-cache", "HIT");
     res.send(cache.get(cacheKey));
     logCacheInfo(true);
@@ -52,14 +52,16 @@ let total = 0;
 const logCacheInfo = hit => {
   total++;
   if (hit) hits++;
-  console.log(
-    `[CACHE] ${hit ? "HIT" : "MISS"} (${hits}/${total}: ${(
-      (100 * hits) /
-      total
-    ).toFixed(1)}%) (count: ${cache.itemCount}, size: ${(
-      cache.length / 1e6
-    ).toFixed(2)}MB)`
-  );
+  if (!dev) {
+    console.log(
+      `[CACHE] ${hit ? "HIT" : "MISS"} (${hits}/${total}: ${(
+        (100 * hits) /
+        total
+      ).toFixed(1)}%) (count: ${cache.itemCount}, size: ${(
+        cache.length / 1e6
+      ).toFixed(2)}MB)`
+    );
+  }
 };
 
 app.prepare().then(() => {
