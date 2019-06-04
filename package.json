@@ -8,11 +8,12 @@
     "start": "cross-env NODE_ENV=production node server.js",
     "lint": "eslint '**/*.js'",
     "test": "jest",
-    "analyze": "BUNDLE_ANALYZE=both next build src"
+    "analyze": "ANALYZE=true next build src"
   },
   "dependencies": {
     "@material-ui/core": "^4.0.1",
     "@material-ui/icons": "^4.0.1",
+    "@next/bundle-analyzer": "^8.1.1-canary.43",
     "clipboard-polyfill": "^2.8.0",
     "compression": "^1.7.4",
     "cross-env": "^5.2.0",
@@ -32,7 +33,6 @@
     "reselect": "^4.0.0"
   },
   "devDependencies": {
-    "@zeit/next-bundle-analyzer": "^0.1.2",
     "babel-eslint": "^10.0.1",
     "babel-jest": "^24.8.0",
     "enzyme": "^3.9.0",
