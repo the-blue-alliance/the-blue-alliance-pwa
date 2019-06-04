@@ -18,6 +18,7 @@
     "express": "^4.17.1",
     "immutable": "^4.0.0-rc.12",
     "isomorphic-unfetch": "^3.0.0",
+    "lru-cache": "^5.1.1",
     "next": "8.1.0",
     "prop-types": "^15.7.2",
     "react": "16.8.6",
