@@ -12,6 +12,10 @@ Currently at https://beta.thebluealliance.com
 
 `npm run lint` to run lint checks.
 
+`npm run test` to run tests.
+
+`npm run analyze` to analyze bundle size.
+
 `npm run build` to build for production.
 
 `npm run deploy` to deploy to production.
