@@ -6,7 +6,8 @@
     "build": "rm -rf .next; next build src",
     "deploy": "gcloud --project tbatv-prod-hrd app deploy --version 1 --quiet",
     "start": "cross-env NODE_ENV=production node server.js",
-    "lint": "eslint '**/*.js'"
+    "lint": "eslint '**/*.js'",
+    "test": "jest"
   },
   "dependencies": {
     "@material-ui/core": "^4.0.1",
@@ -30,6 +31,9 @@
   },
   "devDependencies": {
     "babel-eslint": "^10.0.1",
+    "babel-jest": "^24.8.0",
+    "enzyme": "^3.9.0",
+    "enzyme-adapter-react-16": "^1.14.0",
     "eslint": "^5.16.0",
     "eslint-loader": "^2.1.2",
     "eslint-plugin-import": "^2.17.3",
@@ -40,6 +44,7 @@
     "eslint-plugin-standard": "^4.0.0",
     "file-loader": "^3.0.1",
     "husky": "^2.3.0",
+    "jest": "^24.8.0",
     "lint-staged": "^8.1.7",
     "prettier": "^1.17.1"
   },
@@ -49,13 +54,15 @@
     }
   },
   "lint-staged": {
-    "*.{js,css,json,md}": [
+    "*.{css,json,md}": [
       "prettier --write",
       "git add"
     ],
     "*.js": [
+      "prettier --write",
       "eslint --fix",
-      "git add"
+      "git add",
+      "jest --bail --findRelatedTests"
     ]
   }
 }
