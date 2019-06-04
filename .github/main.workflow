@@ -26,10 +26,17 @@ action "1-1. Build" {
   needs = ["1. Install packages"]
 }
 
+action "1-2. Run tests" {
+  uses = "actions/npm@e7aaefed7c9f2e83d493ff810f17fa5ccd7ed437"
+  args = "test"
+  needs = ["1. Install packages"]
+}
+
 action "Deploy" {
   uses = "actions/gcloud/cli@8ec8bfad3853155b42cea5eb9f8395b098111228"
   needs = [
     "1-1. Build",
+    "1-2. Run tests",
     "2. Authenticate Google Cloud",
     "3. Deploy branch filter",
   ]
