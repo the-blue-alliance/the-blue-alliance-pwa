@@ -1,6 +1,11 @@
 {
   "name": "the-blue-alliance-pwa",
   "version": "0.0.1",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/the-blue-alliance/the-blue-alliance-pwa.git"
+  },
+  "license": "MIT",
   "scripts": {
     "dev": "node server.js",
     "build": "rm -rf .next; next build src",
