@@ -59,8 +59,8 @@ const Navigation = ({ router: { route } }) => {
       <BottomNavButton
         label="More"
         icon={MoreHorizIcon}
-        href="/navmore"
-        active={route === "/navmore"}
+        href="/navigation"
+        active={route === "/navigation"}
         onClick={handleMenuOpen}
       />
       <BottomNavMoreMenu
