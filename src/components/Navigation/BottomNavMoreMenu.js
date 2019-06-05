@@ -42,7 +42,7 @@ class BottomNavMoreMenu extends React.PureComponent {
 }
 
 BottomNavMoreMenu.propTypes = {
-  anchorEl: PropTypes.element,
+  anchorEl: PropTypes.object,
   open: PropTypes.bool,
   handleClose: PropTypes.func
 };
