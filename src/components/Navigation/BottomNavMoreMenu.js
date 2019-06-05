@@ -9,42 +9,42 @@ import VideocamIcon from "@material-ui/icons/Videocam";
 
 import NextComposedLink from "../NextComposedLink";
 
-class BottomNavMoreMenu extends React.PureComponent {
-  render() {
-    const { anchorEl, open, handleClose } = this.props;
-    return (
-      <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
-        <MenuItem
-          onClick={handleClose}
-          component={NextComposedLink}
-          href="/mytba"
-          prefetch
-        >
-          <ListItemIcon>
-            <StarIcon />
-          </ListItemIcon>
-          <ListItemText primary="myTBA" />
-        </MenuItem>
-        <MenuItem
-          onClick={handleClose}
-          component={NextComposedLink}
-          href="/gameday"
-          prefetch
-        >
-          <ListItemIcon>
-            <VideocamIcon />
-          </ListItemIcon>
-          <ListItemText primary="GameDay" />
-        </MenuItem>
-      </Menu>
-    );
-  }
-}
+const BottomNavMoreMenu = ({ anchorEl, open, setAnchorEl }) => {
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+  return (
+    <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
+      <MenuItem
+        onClick={handleClose}
+        component={NextComposedLink}
+        href="/mytba"
+        prefetch
+      >
+        <ListItemIcon>
+          <StarIcon />
+        </ListItemIcon>
+        <ListItemText primary="myTBA" />
+      </MenuItem>
+      <MenuItem
+        onClick={handleClose}
+        component={NextComposedLink}
+        href="/gameday"
+        prefetch
+      >
+        <ListItemIcon>
+          <VideocamIcon />
+        </ListItemIcon>
+        <ListItemText primary="GameDay" />
+      </MenuItem>
+    </Menu>
+  );
+};
 
 BottomNavMoreMenu.propTypes = {
   anchorEl: PropTypes.object,
   open: PropTypes.bool,
-  handleClose: PropTypes.func
+  setAnchorEl: PropTypes.func
 };
 
-export default BottomNavMoreMenu;
+export default React.memo(BottomNavMoreMenu);

@@ -30,9 +30,6 @@ const Navigation = ({ router: { route } }) => {
     event.preventDefault();
     setAnchorEl(event.currentTarget);
   };
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
   return (
     <Paper className={classes.root} elevation={8} square>
       <BottomNavButton
@@ -66,7 +63,7 @@ const Navigation = ({ router: { route } }) => {
       <BottomNavMoreMenu
         anchorEl={anchorEl}
         open={!!anchorEl}
-        handleClose={handleClose}
+        setAnchorEl={setAnchorEl}
       />
     </Paper>
   );
