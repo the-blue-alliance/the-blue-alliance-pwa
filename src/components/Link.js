@@ -3,26 +3,8 @@ import React from "react";
 import PropTypes from "prop-types";
 import clsx from "clsx";
 import { withRouter } from "next/router";
-import NextLink from "next/link";
 import MuiLink from "@material-ui/core/Link";
-
-const NextComposed = (props, ref) => {
-  const { as, href, prefetch, ...other } = props;
-
-  return (
-    <NextLink href={href} prefetch={prefetch} as={as}>
-      <a ref={ref} {...other} />
-    </NextLink>
-  );
-};
-
-const NextComposedRef = React.forwardRef(NextComposed);
-
-NextComposed.propTypes = {
-  as: PropTypes.string,
-  href: PropTypes.string,
-  prefetch: PropTypes.bool
-};
+import NextComposedLink from "./NextComposedLink";
 
 // A styled version of the Next.js Link component:
 // https://nextjs.org/docs/#with-link
@@ -40,11 +22,11 @@ function Link(props) {
   });
 
   if (naked) {
-    return <NextComposedRef className={className} {...other} />;
+    return <NextComposedLink className={className} {...other} />;
   }
 
   return (
-    <MuiLink component={NextComposedRef} className={className} {...other} />
+    <MuiLink component={NextComposedLink} className={className} {...other} />
   );
 }
 
