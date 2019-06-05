@@ -5,10 +5,11 @@ import { makeStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import HomeIcon from "@material-ui/icons/Home";
 import EventIcon from "@material-ui/icons/Event";
-import PeopleIcon from "@material-ui/icons/People";
 import MoreHorizIcon from "@material-ui/icons/MoreHoriz";
+import PeopleIcon from "@material-ui/icons/People";
 
 import BottomNavButton from "./BottomNavButton";
+import BottomNavMoreButton from "./BottomNavMoreButton";
 import BottomNavMoreMenu from "./BottomNavMoreMenu";
 
 const useStyles = makeStyles(theme => ({
@@ -26,10 +27,6 @@ const Navigation = ({ router: { route } }) => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState(null);
 
-  const handleMenuOpen = event => {
-    event.preventDefault();
-    setAnchorEl(event.currentTarget);
-  };
   return (
     <Paper className={classes.root} elevation={8} square>
       <BottomNavButton
@@ -53,12 +50,12 @@ const Navigation = ({ router: { route } }) => {
         active={route === "/teams"}
         prefetch
       />
-      <BottomNavButton
+      <BottomNavMoreButton
         label="More"
         icon={MoreHorizIcon}
         href="/navigation"
         active={route === "/navigation"}
-        onClick={handleMenuOpen}
+        setAnchorEl={setAnchorEl}
       />
       <BottomNavMoreMenu
         anchorEl={anchorEl}
