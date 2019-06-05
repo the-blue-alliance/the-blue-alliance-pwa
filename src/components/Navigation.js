@@ -23,9 +23,8 @@ const useStyles = makeStyles(theme => ({
 const Navigation = ({ router }) => {
   const classes = useStyles();
   return (
-    <Paper className={classes.root} elevation={12} square>
+    <Paper className={classes.root} elevation={8} square>
       <BottomNavigation
-        className={classes.root}
         value={router.route}
         onChange={(event, newValue) => {
           // Double requestAnimationFrame to ensure smooth animation
