@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { withRouter } from "next/router";
 import { makeStyles } from "@material-ui/core/styles";
@@ -9,6 +9,7 @@ import PeopleIcon from "@material-ui/icons/People";
 import MoreHorizIcon from "@material-ui/icons/MoreHoriz";
 
 import BottomNavButton from "./BottomNavButton";
+import BottomNavMoreMenu from "./BottomNavMoreMenu";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -23,6 +24,15 @@ const useStyles = makeStyles(theme => ({
 
 const Navigation = ({ router: { route } }) => {
   const classes = useStyles();
+  const [anchorEl, setAnchorEl] = useState(null);
+
+  const handleMenuOpen = event => {
+    event.preventDefault();
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
   return (
     <Paper className={classes.root} elevation={8} square>
       <BottomNavButton
@@ -51,6 +61,12 @@ const Navigation = ({ router: { route } }) => {
         icon={MoreHorizIcon}
         href="/navmore"
         active={route === "/navmore"}
+        onClick={handleMenuOpen}
+      />
+      <BottomNavMoreMenu
+        anchorEl={anchorEl}
+        open={!!anchorEl}
+        handleClose={handleClose}
       />
     </Paper>
   );

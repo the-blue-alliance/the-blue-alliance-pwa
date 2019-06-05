@@ -18,7 +18,14 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const BottomNavButton = ({ label, icon: Icon, href, prefetch, active }) => {
+const BottomNavButton = ({
+  label,
+  icon: Icon,
+  href,
+  prefetch,
+  active,
+  ...restProps
+}) => {
   const classes = useStyles();
   return (
     <ButtonBase
@@ -30,6 +37,7 @@ const BottomNavButton = ({ label, icon: Icon, href, prefetch, active }) => {
       href={href}
       prefetch={prefetch}
       focusRipple
+      {...restProps}
     >
       <Icon />
       <div>{label}</div>
