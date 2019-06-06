@@ -42,7 +42,7 @@ const SideNav = ({ router: { route } }) => {
         }}
       >
         <div className={classes.drawerContent}>
-          <List>
+          <List component="div">
             <SideNavListItem
               href="/"
               icon={HomeIcon}
