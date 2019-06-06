@@ -5,9 +5,13 @@ import { makeStyles } from "@material-ui/core/styles";
 import Drawer from "@material-ui/core/Drawer";
 import Divider from "@material-ui/core/Divider";
 import List from "@material-ui/core/List";
+import ListItem from "@material-ui/core/ListItem";
+import ListItemIcon from "@material-ui/core/ListItemIcon";
+import ListItemText from "@material-ui/core/ListItemText";
 import HomeIcon from "@material-ui/icons/Home";
 import EventIcon from "@material-ui/icons/Event";
 import PeopleIcon from "@material-ui/icons/People";
+import SettingsIcon from "@material-ui/icons/Settings";
 import StarIcon from "@material-ui/icons/Star";
 import VideocamIcon from "@material-ui/icons/Videocam";
 
@@ -24,8 +28,14 @@ const useStyles = makeStyles(theme => ({
     width: sideNavWidth
   },
   drawerContent: {
+    display: "flex",
+    flexDirection: "column",
+    height: "100%",
     marginTop: 64,
     overflowY: "auto"
+  },
+  spacing: {
+    flexGrow: 1
   }
 }));
 
@@ -42,7 +52,7 @@ const SideNav = ({ router: { route } }) => {
         }}
       >
         <div className={classes.drawerContent}>
-          <List component="div">
+          <List component="nav">
             <SideNavListItem
               href="/"
               icon={HomeIcon}
@@ -73,7 +83,17 @@ const SideNav = ({ router: { route } }) => {
               text="GameDay"
               active={route === "/gameday"}
             />
-            <Divider />
+          </List>
+          <Divider />
+          <div className={classes.spacing} />
+          <Divider />
+          <List component="div">
+            <ListItem button>
+              <ListItemIcon>
+                <SettingsIcon />
+              </ListItemIcon>
+              <ListItemText primary="Settings" />
+            </ListItem>
           </List>
         </div>
       </Drawer>
