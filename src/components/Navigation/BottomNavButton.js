@@ -40,13 +40,13 @@ const BottomNavButton = ({
       {...restProps}
     >
       <Icon />
-      <div>{label}</div>
+      {label && <div>{label}</div>}
     </ButtonBase>
   );
 };
 
 BottomNavButton.propTypes = {
-  label: PropTypes.string.isRequired,
+  label: PropTypes.string,
   icon: PropTypes.object.isRequired,
   href: PropTypes.string.isRequired,
   prefetch: PropTypes.bool,

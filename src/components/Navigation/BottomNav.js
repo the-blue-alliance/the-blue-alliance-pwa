@@ -51,7 +51,7 @@ const BottomNav = ({ router: { route } }) => {
         prefetch
       />
       <BottomNavMoreButton
-        label="More"
+        aria-label="Navigation"
         icon={MoreHorizIcon}
         href="/navigation"
         active={route === "/navigation"}
