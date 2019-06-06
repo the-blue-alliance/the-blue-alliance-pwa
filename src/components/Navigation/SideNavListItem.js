@@ -21,7 +21,13 @@ const SideNavListItem = ({ href, icon: Icon, text, active }) => {
   const classes = useStyles();
 
   return (
-    <ListItem button component={NextComposedLink} href={href} prefetch>
+    <ListItem
+      button
+      component={NextComposedLink}
+      href={href}
+      prefetch
+      selected={active}
+    >
       <ListItemIcon className={active ? classes.activeIcon : null}>
         <Icon />
       </ListItemIcon>
