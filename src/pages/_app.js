@@ -34,8 +34,8 @@ class MyApp extends App {
           <ThemeProvider theme={theme}>
             <CssBaseline />
             <RouteChangeProgress />
-            <Component {...pageProps} />
             <Navigation />
+            <Component {...pageProps} />
           </ThemeProvider>
         </Provider>
       </Container>
