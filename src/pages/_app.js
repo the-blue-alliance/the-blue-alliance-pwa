@@ -1,21 +1,11 @@
-import App, { Container } from "next/app";
 import React from "react";
+import App, { Container } from "next/app";
 import { Provider } from "react-redux";
 import withReduxStore from "../lib/withReduxStore";
 import CssBaseline from "@material-ui/core/CssBaseline";
-import amber from "@material-ui/core/colors/amber";
-import indigo from "@material-ui/core/colors/indigo";
-import { createMuiTheme } from "@material-ui/core/styles";
-import { ThemeProvider } from "@material-ui/styles";
 import RouteChangeProgress from "../components/RouteChangeProgress";
+import ThemeProvider from "../components/ThemeProvider";
 import Navigation from "../components/Navigation";
-
-const theme = createMuiTheme({
-  palette: {
-    primary: indigo,
-    secondary: amber
-  }
-});
 
 class MyApp extends App {
   componentDidMount() {
@@ -31,7 +21,7 @@ class MyApp extends App {
     return (
       <Container>
         <Provider store={reduxStore}>
-          <ThemeProvider theme={theme}>
+          <ThemeProvider>
             <CssBaseline />
             <RouteChangeProgress />
             <Navigation />

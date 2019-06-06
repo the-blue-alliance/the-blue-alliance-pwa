@@ -5,6 +5,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import Drawer from "@material-ui/core/Drawer";
 import Divider from "@material-ui/core/Divider";
 import List from "@material-ui/core/List";
+import ListSubheader from "@material-ui/core/ListSubheader";
 import HomeIcon from "@material-ui/icons/Home";
 import EventIcon from "@material-ui/icons/Event";
 import PeopleIcon from "@material-ui/icons/People";
@@ -14,6 +15,7 @@ import VideocamIcon from "@material-ui/icons/Videocam";
 
 import { sideNavWidth } from "../../constants/Config";
 import SideNavListItem from "./SideNavListItem";
+import ThemeToggleListItem from "./ThemeToggleListItem";
 
 const useStyles = makeStyles(theme => ({
   drawer: {
@@ -79,6 +81,9 @@ const SideNav = ({ router: { route } }) => {
             text="GameDay"
             active={route === "/gameday"}
           />
+          <Divider />
+          <ListSubheader component="div">Temp for testing</ListSubheader>
+          <ThemeToggleListItem />
           <Divider />
           <div className={classes.spacing} />
           <Divider />

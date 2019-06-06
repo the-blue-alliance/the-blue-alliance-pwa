@@ -16,6 +16,13 @@ const handleErrors = response => {
   return response.json();
 };
 
+// App
+export const toggleTheme = () => dispatch => {
+  dispatch({
+    type: types.TOGGLE_THEME
+  });
+};
+
 // Event list page
 export const fetchYearEvents = year => dispatch => {
   dispatch({
