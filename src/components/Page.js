@@ -14,6 +14,7 @@ import RefreshIcon from "@material-ui/icons/Refresh";
 import ShareIcon from "@material-ui/icons/Share";
 import * as clipboard from "clipboard-polyfill";
 
+import { sideNavWidth } from "../constants/Config";
 import TBALogoSVG from "../icons/tba_lamp.svg";
 
 const useStyles = makeStyles(theme => ({
@@ -47,7 +48,7 @@ const useStyles = makeStyles(theme => ({
     marginBottom: 56,
     [theme.breakpoints.up("md")]: {
       marginBottom: 0,
-      marginLeft: 190
+      marginLeft: sideNavWidth
     }
   },
   content: {
