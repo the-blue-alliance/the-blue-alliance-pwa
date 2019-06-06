@@ -11,10 +11,16 @@ const useStyles = makeStyles(theme => ({
     flexDirection: "column",
     flexGrow: 1,
     padding: theme.spacing(1),
-    color: theme.palette.grey[700]
+    color:
+      theme.palette.type === "light"
+        ? theme.palette.grey[700]
+        : theme.palette.grey[300]
   },
   active: {
-    color: theme.palette.primary[500]
+    color:
+      theme.palette.type === "light"
+        ? theme.palette.primary.main
+        : theme.palette.secondary.main
   }
 }));
 

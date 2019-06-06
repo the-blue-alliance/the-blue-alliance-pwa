@@ -3,8 +3,18 @@ import React from "react";
 import PropTypes from "prop-types";
 import clsx from "clsx";
 import { withRouter } from "next/router";
+import { makeStyles } from "@material-ui/core/styles";
 import MuiLink from "@material-ui/core/Link";
 import NextComposedLink from "./NextComposedLink";
+
+const useStyles = makeStyles(theme => ({
+  link: {
+    color:
+      theme.palette.type === "light"
+        ? theme.palette.primary.main
+        : theme.palette.secondary.main
+  }
+}));
 
 // A styled version of the Next.js Link component:
 // https://nextjs.org/docs/#with-link
@@ -16,6 +26,7 @@ function Link(props) {
     naked,
     ...other
   } = props;
+  const classes = useStyles();
 
   const className = clsx(classNameProps, {
     [activeClassName]: router.pathname === props.href && activeClassName
@@ -26,7 +37,12 @@ function Link(props) {
   }
 
   return (
-    <MuiLink component={NextComposedLink} className={className} {...other} />
+    <MuiLink
+      component={NextComposedLink}
+      className={className}
+      classes={{ root: classes.link }}
+      {...other}
+    />
   );
 }
 
