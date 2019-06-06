@@ -5,9 +5,6 @@ import { makeStyles } from "@material-ui/core/styles";
 import Drawer from "@material-ui/core/Drawer";
 import Divider from "@material-ui/core/Divider";
 import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
-import ListItemText from "@material-ui/core/ListItemText";
 import HomeIcon from "@material-ui/icons/Home";
 import EventIcon from "@material-ui/icons/Event";
 import PeopleIcon from "@material-ui/icons/People";
@@ -27,7 +24,7 @@ const useStyles = makeStyles(theme => ({
     zIndex: theme.zIndex.appBar - 1,
     width: sideNavWidth
   },
-  drawerContent: {
+  drawerNavList: {
     display: "flex",
     flexDirection: "column",
     height: "100%",
@@ -51,51 +48,47 @@ const SideNav = ({ router: { route } }) => {
           paper: classes.drawerPaper
         }}
       >
-        <div className={classes.drawerContent}>
-          <List component="nav">
-            <SideNavListItem
-              href="/"
-              icon={HomeIcon}
-              text="Home"
-              active={route === "/"}
-            />
-            <SideNavListItem
-              href="/events"
-              icon={EventIcon}
-              text="Events"
-              active={route === "/events"}
-            />
-            <SideNavListItem
-              href="/teams"
-              icon={PeopleIcon}
-              text="Teams"
-              active={route === "/teams"}
-            />
-            <SideNavListItem
-              href="/mytba"
-              icon={StarIcon}
-              text="myTBA"
-              active={route === "/mytba"}
-            />
-            <SideNavListItem
-              href="/gameday"
-              icon={VideocamIcon}
-              text="GameDay"
-              active={route === "/gameday"}
-            />
-          </List>
+        <List component="nav" className={classes.drawerNavList}>
+          <SideNavListItem
+            href="/"
+            icon={HomeIcon}
+            text="Home"
+            active={route === "/"}
+          />
+          <SideNavListItem
+            href="/events"
+            icon={EventIcon}
+            text="Events"
+            active={route === "/events"}
+          />
+          <SideNavListItem
+            href="/teams"
+            icon={PeopleIcon}
+            text="Teams"
+            active={route === "/teams"}
+          />
+          <SideNavListItem
+            href="/mytba"
+            icon={StarIcon}
+            text="myTBA"
+            active={route === "/mytba"}
+          />
+          <SideNavListItem
+            href="/gameday"
+            icon={VideocamIcon}
+            text="GameDay"
+            active={route === "/gameday"}
+          />
           <Divider />
           <div className={classes.spacing} />
           <Divider />
-          <List component="div">
-            <ListItem button>
-              <ListItemIcon>
-                <SettingsIcon />
-              </ListItemIcon>
-              <ListItemText primary="Settings" />
-            </ListItem>
-          </List>
-        </div>
+          <SideNavListItem
+            href="/settings"
+            icon={SettingsIcon}
+            text="Settings"
+            active={route === "/settings"}
+          />
+        </List>
       </Drawer>
     </>
   );

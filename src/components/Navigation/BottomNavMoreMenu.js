@@ -4,6 +4,7 @@ import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
+import SettingsIcon from "@material-ui/icons/Settings";
 import StarIcon from "@material-ui/icons/Star";
 import VideocamIcon from "@material-ui/icons/Videocam";
 
@@ -36,6 +37,17 @@ const BottomNavMoreMenu = ({ anchorEl, open, setAnchorEl }) => {
           <VideocamIcon />
         </ListItemIcon>
         <ListItemText primary="GameDay" />
+      </MenuItem>
+      <MenuItem
+        onClick={handleClose}
+        component={NextComposedLink}
+        href="/settings"
+        prefetch
+      >
+        <ListItemIcon>
+          <SettingsIcon />
+        </ListItemIcon>
+        <ListItemText primary="Settings" />
       </MenuItem>
     </Menu>
   );
