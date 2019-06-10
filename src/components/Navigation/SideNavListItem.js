@@ -19,7 +19,7 @@ const useStyles = makeStyles(theme => ({
       theme.palette.type === "light"
         ? theme.palette.common.black
         : theme.palette.common.white,
-    fontWeight: 500
+    fontWeight: theme.typography.fontWeightMedium
   }
 }));
 

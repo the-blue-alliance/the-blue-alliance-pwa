@@ -16,8 +16,8 @@
     "analyze": "ANALYZE=true next build src"
   },
   "dependencies": {
-    "@material-ui/core": "^4.0.2",
-    "@material-ui/icons": "^4.0.1",
+    "@material-ui/core": "^4.1.0",
+    "@material-ui/icons": "^4.1.0",
     "@next/bundle-analyzer": "^8.1.1-canary.43",
     "clipboard-polyfill": "^2.8.1",
     "compression": "^1.7.4",
