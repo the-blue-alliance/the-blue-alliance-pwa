@@ -18,7 +18,7 @@
   "dependencies": {
     "@material-ui/core": "^4.1.0",
     "@material-ui/icons": "^4.1.0",
-    "@next/bundle-analyzer": "^8.1.1-canary.43",
+    "@next/bundle-analyzer": "^8.1.1-canary.50",
     "clipboard-polyfill": "^2.8.1",
     "compression": "^1.7.4",
     "cross-env": "^5.2.0",
@@ -31,7 +31,7 @@
     "prop-types": "^15.7.2",
     "react": "16.8.6",
     "react-dom": "16.8.6",
-    "react-redux": "^7.1.0-rc.1",
+    "react-redux": "^7.1.0",
     "redux": "^4.0.1",
     "redux-devtools-extension": "^2.13.8",
     "redux-immutable": "^4.0.0",
@@ -54,8 +54,8 @@
     "file-loader": "^4.0.0",
     "husky": "^2.4.0",
     "jest": "^24.8.0",
-    "lint-staged": "^8.1.7",
-    "prettier": "^1.17.1"
+    "lint-staged": "^8.2.0",
+    "prettier": "^1.18.2"
   },
   "husky": {
     "hooks": {
