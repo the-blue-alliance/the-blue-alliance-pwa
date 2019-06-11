@@ -4,13 +4,6 @@ const withBundleAnalyzer = require("@next/bundle-analyzer")({
   enabled: process.env.ANALYZE === "true"
 });
 
-const buildTime = new Date().toLocaleString("en-US", {
-  timeZone: "America/New_York"
-});
-const gitHash =
-  process.env.GITHUB_SHA ||
-  child_process.execSync("git rev-parse HEAD").toString();
-
 const nextConfig = {
   // Build one level up from ./src
   distDir: "../.next",
@@ -24,6 +17,12 @@ const nextConfig = {
   // Webpack
   webpack: (config, { dev, webpack }) => {
     // Add build info
+    const buildTime = new Date().toLocaleString("en-US", {
+      timeZone: "America/New_York"
+    });
+    const gitHash =
+      process.env.GITHUB_SHA ||
+      child_process.execSync("git rev-parse HEAD").toString();
     config.plugins.push(
       new webpack.DefinePlugin({
         __BUILD_TIME__: JSON.stringify(buildTime),
