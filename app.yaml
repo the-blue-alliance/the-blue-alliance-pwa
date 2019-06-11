@@ -15,6 +15,12 @@ handlers:
       Vary: Accept-Encoding
 
   # Special case caching
+  - url: /service-worker.js
+    static_files: .next/service-worker.js
+    upload: .next/service-worker.js
+    http_headers:
+      Vary: Accept-Encoding
+
   - url: /favicon.ico
     static_files: public/favicon.ico
     upload: public/favicon.ico
@@ -22,9 +28,18 @@ handlers:
     http_headers:
       Vary: Accept-Encoding
 
-  - url: /sw.js
-    static_files: public/sw.js
-    upload: public/sw.js
+  - url: /manifest.json
+    static_files: public/manifest.json
+    upload: public/manifest.json
+    expiration: "1d"
+    http_headers:
+      Vary: Accept-Encoding
+
+  # Catch all other public files (long cache)
+  - url: /(.*\..+)$
+    static_files: public/\1
+    upload: public/.*$
+    expiration: "7d"
     http_headers:
       Vary: Accept-Encoding
 

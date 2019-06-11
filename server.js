@@ -1,3 +1,4 @@
+const { join } = require("path");
 const express = require("express");
 const next = require("next");
 const compression = require("compression");
@@ -68,6 +69,12 @@ app.prepare().then(() => {
   const server = express();
   server.use(compression());
   server.use(express.static("public"));
+
+  // handle GET request to service worker /service-worker.js
+  server.get("/service-worker.js", (req, res) => {
+    const filePath = join(__dirname, ".next", "/service-worker.js");
+    app.serveStatic(req, res, filePath);
+  });
 
   // Map clean URLs and cache results
   server.get("/event/:eventKey", (req, res) => {

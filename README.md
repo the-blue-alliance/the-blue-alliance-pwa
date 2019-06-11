@@ -2,7 +2,6 @@
 
 [![Actions Status](https://wdp9fww0r9.execute-api.us-west-2.amazonaws.com/production/badge/the-blue-alliance/the-blue-alliance-pwa)](https://wdp9fww0r9.execute-api.us-west-2.amazonaws.com/production/results/the-blue-alliance/the-blue-alliance-pwa)
 
-
 A universally (server + client) rendered React PWA for The Blue Alliance.
 
 Currently at https://beta.thebluealliance.com

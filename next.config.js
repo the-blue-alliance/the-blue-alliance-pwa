@@ -1,10 +1,16 @@
+const withOffline = require("next-offline");
 const withBundleAnalyzer = require("@next/bundle-analyzer")({
   enabled: process.env.ANALYZE === "true"
 });
 
-module.exports = withBundleAnalyzer({
+const nextConfig = {
   // Build one level up from ./src
   distDir: "../.next",
+  // Workbox
+  workboxOpts: {
+    globDirectory: "./public",
+    globPatterns: ["**/*.{ico,json}"]
+  },
   // Webpack
   webpack: (config, { dev }) => {
     const newConfig = config;
@@ -44,4 +50,6 @@ module.exports = withBundleAnalyzer({
 
     return newConfig;
   }
-});
+};
+
+module.exports = withOffline(withBundleAnalyzer(nextConfig));

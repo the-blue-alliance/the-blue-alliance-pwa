@@ -10,6 +10,7 @@ class MyDocument extends Document {
       <html lang="en">
         <Head>
           <meta charSet="utf-8" />
+          <link rel="manifest" href="/manifest.json" />
           {/* Use minimum-scale=1 to enable GPU rasterization */}
           <meta
             name="viewport"
