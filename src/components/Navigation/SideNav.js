@@ -17,6 +17,7 @@ import VideocamIcon from "@material-ui/icons/Videocam";
 import { sideNavWidth } from "../../constants/Config";
 import SideNavListItem from "./SideNavListItem";
 import ThemeToggleListItem from "./ThemeToggleListItem";
+import Link from "../Link";
 
 const useStyles = makeStyles(theme => ({
   drawer: {
@@ -104,13 +105,13 @@ const SideNav = ({ router: { route } }) => {
           <div className={classes.buildInfo}>
             <Typography variant="caption" noWrap>
               Build:{" "}
-              <a
+              <Link
                 href={`https://github.com/the-blue-alliance/the-blue-alliance-pwa/commit/${__GIT_HASH__}`}
                 target="_blank"
                 rel="noopener noreferrer"
               >
                 {__GIT_HASH__}
-              </a>
+              </Link>
             </Typography>
             <Typography variant="caption" noWrap>
               {__BUILD_TIME__}
