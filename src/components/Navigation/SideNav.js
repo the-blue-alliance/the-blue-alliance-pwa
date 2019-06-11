@@ -6,6 +6,7 @@ import Drawer from "@material-ui/core/Drawer";
 import Divider from "@material-ui/core/Divider";
 import List from "@material-ui/core/List";
 import ListSubheader from "@material-ui/core/ListSubheader";
+import Typography from "@material-ui/core/Typography";
 import HomeIcon from "@material-ui/icons/Home";
 import EventIcon from "@material-ui/icons/Event";
 import PeopleIcon from "@material-ui/icons/People";
@@ -31,10 +32,16 @@ const useStyles = makeStyles(theme => ({
     flexDirection: "column",
     height: "100%",
     marginTop: 64,
-    overflowY: "auto"
+    overflowY: "auto",
+    paddingBottom: 0
   },
   spacing: {
     flexGrow: 1
+  },
+  buildInfo: {
+    display: "flex",
+    flexDirection: "column",
+    padding: theme.spacing(1)
   }
 }));
 
@@ -93,6 +100,22 @@ const SideNav = ({ router: { route } }) => {
             text="Settings"
             active={route === "/settings"}
           />
+          <Divider />
+          <div className={classes.buildInfo}>
+            <Typography variant="caption" noWrap>
+              Build:{" "}
+              <a
+                href={`https://github.com/the-blue-alliance/the-blue-alliance-pwa/commit/${__GIT_HASH__}`}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {__GIT_HASH__}
+              </a>
+            </Typography>
+            <Typography variant="caption" noWrap>
+              {__BUILD_TIME__}
+            </Typography>
+          </div>
         </List>
       </Drawer>
     </>

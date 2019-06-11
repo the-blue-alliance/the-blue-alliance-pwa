@@ -1,7 +1,15 @@
+const child_process = require("child_process");
 const withOffline = require("next-offline");
 const withBundleAnalyzer = require("@next/bundle-analyzer")({
   enabled: process.env.ANALYZE === "true"
 });
+
+const buildTime = new Date().toLocaleString("en-US", {
+  timeZone: "America/New_York"
+});
+const gitHash =
+  process.env.GITHUB_SHA ||
+  child_process.execSync("git rev-parse HEAD").toString();
 
 const nextConfig = {
   // Build one level up from ./src
@@ -14,11 +22,17 @@ const nextConfig = {
     globPatterns: ["**/*.{ico,json}"]
   },
   // Webpack
-  webpack: (config, { dev }) => {
-    const newConfig = config;
+  webpack: (config, { dev, webpack }) => {
+    // Add build info
+    config.plugins.push(
+      new webpack.DefinePlugin({
+        __BUILD_TIME__: JSON.stringify(buildTime),
+        __GIT_HASH__: JSON.stringify(gitHash)
+      })
+    );
 
     // Fixes npm packages that depend on `fs` module
-    newConfig.node = {
+    config.node = {
       fs: "empty"
     };
 
@@ -40,7 +54,7 @@ const nextConfig = {
 
     // Setup eslint on dev
     if (dev) {
-      newConfig.module.rules.push({
+      config.module.rules.push({
         test: /\.js$/,
         exclude: /node_modules/,
         loader: "eslint-loader",
@@ -50,7 +64,7 @@ const nextConfig = {
       });
     }
 
-    return newConfig;
+    return config;
   }
 };
 
