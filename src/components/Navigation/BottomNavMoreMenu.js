@@ -20,7 +20,6 @@ const BottomNavMoreMenu = ({ anchorEl, open, setAnchorEl }) => {
         onClick={handleClose}
         component={NextComposedLink}
         href="/mytba"
-        prefetch
       >
         <ListItemIcon>
           <StarIcon />
@@ -31,7 +30,6 @@ const BottomNavMoreMenu = ({ anchorEl, open, setAnchorEl }) => {
         onClick={handleClose}
         component={NextComposedLink}
         href="/gameday"
-        prefetch
       >
         <ListItemIcon>
           <VideocamIcon />
@@ -42,7 +40,6 @@ const BottomNavMoreMenu = ({ anchorEl, open, setAnchorEl }) => {
         onClick={handleClose}
         component={NextComposedLink}
         href="/settings"
-        prefetch
       >
         <ListItemIcon>
           <SettingsIcon />

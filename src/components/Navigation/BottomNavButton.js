@@ -24,14 +24,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const BottomNavButton = ({
-  label,
-  icon: Icon,
-  href,
-  prefetch,
-  active,
-  ...restProps
-}) => {
+const BottomNavButton = ({ label, icon: Icon, href, active, ...restProps }) => {
   const classes = useStyles();
   return (
     <ButtonBase
@@ -41,7 +34,6 @@ const BottomNavButton = ({
       })}
       component={NextComposedLink}
       href={href}
-      prefetch={prefetch}
       focusRipple
       {...restProps}
     >
@@ -55,7 +47,6 @@ BottomNavButton.propTypes = {
   label: PropTypes.string,
   icon: PropTypes.object.isRequired,
   href: PropTypes.string.isRequired,
-  prefetch: PropTypes.bool,
   active: PropTypes.bool
 };
 

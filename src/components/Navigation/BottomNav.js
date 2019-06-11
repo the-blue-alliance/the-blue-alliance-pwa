@@ -34,21 +34,18 @@ const BottomNav = ({ router: { route } }) => {
         icon={HomeIcon}
         href="/"
         active={route === "/"}
-        prefetch
       />
       <BottomNavButton
         label="Events"
         icon={EventIcon}
         href="/events"
         active={route === "/events"}
-        prefetch
       />
       <BottomNavButton
         label="Teams"
         icon={PeopleIcon}
         href="/teams"
         active={route === "/teams"}
-        prefetch
       />
       <BottomNavMoreButton
         aria-label="Navigation"
