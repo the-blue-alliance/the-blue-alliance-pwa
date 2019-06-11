@@ -22,7 +22,7 @@ Currently at https://beta.thebluealliance.com
 
 `npm run deploy` to deploy to production.
 
-`npm start` to run the production server at port 3000 (or a specified PORT).
+`npm start` to run the production server at port 3001 (or a specified PORT).
 
 ## Made With
 

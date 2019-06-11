@@ -4,8 +4,8 @@ const next = require("next");
 const compression = require("compression");
 const LRUCache = require("lru-cache");
 
-const port = parseInt(process.env.PORT, 10) || 3000;
 const dev = process.env.NODE_ENV !== "production";
+const port = parseInt(process.env.PORT, 10) || dev ? 3000 : 3001;
 const app = next({ dir: "./src", dev });
 const handle = app.getRequestHandler();
 
