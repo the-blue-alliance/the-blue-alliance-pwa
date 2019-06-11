@@ -24,7 +24,7 @@ handlers:
   - url: /favicon.ico
     static_files: public/favicon.ico
     upload: public/favicon.ico
-    expiration: "1d"
+    expiration: "7d"
     http_headers:
       Vary: Accept-Encoding
 
