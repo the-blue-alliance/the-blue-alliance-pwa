@@ -8,6 +8,8 @@ const nextConfig = {
   distDir: "../.next",
   // Workbox
   workboxOpts: {
+    clientsClaim: true,
+    skipWaiting: true,
     globDirectory: "./public",
     globPatterns: ["**/*.{ico,json}"]
   },
