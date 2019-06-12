@@ -2,7 +2,7 @@ require("dotenv").config();
 const child_process = require("child_process");
 const withOffline = require("next-offline");
 const withBundleAnalyzer = require("@next/bundle-analyzer")({
-  enabled: process.env.ANALYZE === "true"
+  enabled: process.env.ANALYZE === "true",
 });
 
 const nextConfig = {
@@ -13,13 +13,13 @@ const nextConfig = {
     clientsClaim: true,
     skipWaiting: true,
     globDirectory: "./public",
-    globPatterns: ["**/*.{ico,json}"]
+    globPatterns: ["**/*.{ico,json}"],
   },
   // Webpack
   webpack: (config, { dev, isServer, webpack }) => {
     // Add build info
     const buildTime = new Date().toLocaleString("en-US", {
-      timeZone: "America/New_York"
+      timeZone: "America/New_York",
     });
     const gitHash =
       process.env.GITHUB_SHA ||
@@ -28,13 +28,13 @@ const nextConfig = {
       new webpack.DefinePlugin({
         __BUILD_TIME__: JSON.stringify(buildTime),
         __GIT_HASH__: JSON.stringify(gitHash),
-        __TBA_API_AUTH_KEY__: JSON.stringify(process.env.TBA_API_AUTH_KEY)
+        __TBA_API_AUTH_KEY__: JSON.stringify(process.env.TBA_API_AUTH_KEY),
       })
     );
 
     // Fixes npm packages that depend on `fs` module
     config.node = {
-      fs: "empty"
+      fs: "empty",
     };
 
     // Configure vendor bundles
@@ -61,7 +61,7 @@ const nextConfig = {
               // npm package names are URL-safe, but some servers don't like @ symbols
               return `npm.${packageName.replace("@", "")}`;
             },
-            priority: 2
+            priority: 2,
           },
           vendors: {
             // picks up everything else being used from node_modules that is less than minSize
@@ -69,7 +69,7 @@ const nextConfig = {
             test: /[\\/]node_modules[\\/]/,
             name: "vendors",
             priority: 1,
-            enforce: true // create chunk regardless of the size of the chunk
+            enforce: true, // create chunk regardless of the size of the chunk
           },
           commons: {
             // picks up everything else being shared
@@ -77,9 +77,9 @@ const nextConfig = {
             name: "commons",
             minChunks: 2,
             priority: 0,
-            enforce: true // create chunk regardless of the size of the chunk
-          }
-        }
+            enforce: true, // create chunk regardless of the size of the chunk
+          },
+        },
       };
     }
 
@@ -90,7 +90,7 @@ const nextConfig = {
       // Specify enforce: 'pre' to apply the loader
       // before url-loader/svg-url-loader
       // and not duplicate it in rules with them
-      enforce: "pre"
+      enforce: "pre",
     });
 
     // Inline small images
@@ -103,8 +103,8 @@ const nextConfig = {
         context: "",
         outputPath: "static",
         publicPath: "/_next/static",
-        name: "[path][name].[hash].[ext]"
-      }
+        name: "[path][name].[hash].[ext]",
+      },
     });
     config.module.rules.push({
       test: /\.svg$/,
@@ -115,8 +115,8 @@ const nextConfig = {
         context: "",
         outputPath: "static",
         publicPath: "/_next/static",
-        name: "[path][name].[hash].[ext]"
-      }
+        name: "[path][name].[hash].[ext]",
+      },
     });
 
     // Setup eslint on dev
@@ -126,13 +126,13 @@ const nextConfig = {
         exclude: /node_modules/,
         loader: "eslint-loader",
         options: {
-          emitWarning: true
-        }
+          emitWarning: true,
+        },
       });
     }
 
     return config;
-  }
+  },
 };
 
 module.exports = withOffline(withBundleAnalyzer(nextConfig));

@@ -20,7 +20,7 @@ const ThemeToggleListItem = () => {
           onChange={() => dispatch(toggleTheme())}
           checked={darkTheme}
           inputProps={{
-            "aria-labelledby": "switch-list-label-darktheme"
+            "aria-labelledby": "switch-list-label-darktheme",
           }}
         />
       </ListItemSecondaryAction>

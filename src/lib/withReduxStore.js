@@ -11,7 +11,7 @@ const __NEXT_REDUX_STORE__ = "__NEXT_REDUX_STORE__";
 
 const MODEL_TYPES = {
   events: Event,
-  matches: Match
+  matches: Match,
 };
 
 const convertCollections = (
@@ -99,7 +99,7 @@ export default App => {
 
       return {
         ...appProps,
-        initialReduxState: reduxStore.getState()
+        initialReduxState: reduxStore.getState(),
       };
     }
 
@@ -114,7 +114,7 @@ export default App => {
   };
 
   awr.propTypes = {
-    initialReduxState: PropTypes.object
+    initialReduxState: PropTypes.object,
   };
 
   return awr;

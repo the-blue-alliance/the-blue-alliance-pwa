@@ -22,11 +22,11 @@ import Link from "../Link";
 const useStyles = makeStyles(theme => ({
   drawer: {
     width: sideNavWidth,
-    flexShrink: 0
+    flexShrink: 0,
   },
   drawerPaper: {
     zIndex: theme.zIndex.appBar - 1,
-    width: sideNavWidth
+    width: sideNavWidth,
   },
   drawerNavList: {
     display: "flex",
@@ -34,16 +34,16 @@ const useStyles = makeStyles(theme => ({
     height: "100%",
     marginTop: 64,
     overflowY: "auto",
-    paddingBottom: 0
+    paddingBottom: 0,
   },
   spacing: {
-    flexGrow: 1
+    flexGrow: 1,
   },
   buildInfo: {
     display: "flex",
     flexDirection: "column",
-    padding: theme.spacing(1)
-  }
+    padding: theme.spacing(1),
+  },
 }));
 
 const SideNav = ({ router: { route } }) => {
@@ -55,7 +55,7 @@ const SideNav = ({ router: { route } }) => {
         className={classes.drawer}
         variant="permanent"
         classes={{
-          paper: classes.drawerPaper
+          paper: classes.drawerPaper,
         }}
       >
         <List component="nav" className={classes.drawerNavList}>
@@ -124,7 +124,7 @@ const SideNav = ({ router: { route } }) => {
 };
 
 SideNav.propTypes = {
-  router: PropTypes.object
+  router: PropTypes.object,
 };
 
 export default withRouter(SideNav);

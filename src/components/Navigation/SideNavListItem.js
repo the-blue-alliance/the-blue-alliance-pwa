@@ -12,15 +12,15 @@ const useStyles = makeStyles(theme => ({
     color:
       theme.palette.type === "light"
         ? theme.palette.primary.main
-        : theme.palette.secondary.main
+        : theme.palette.secondary.main,
   },
   activeText: {
     color:
       theme.palette.type === "light"
         ? theme.palette.common.black
         : theme.palette.common.white,
-    fontWeight: theme.typography.fontWeightMedium
-  }
+    fontWeight: theme.typography.fontWeightMedium,
+  },
 }));
 
 const SideNavListItem = ({ href, icon: Icon, text, active }) => {
@@ -43,7 +43,7 @@ SideNavListItem.propTypes = {
   href: PropTypes.string.isRequired,
   icon: PropTypes.object.isRequired,
   text: PropTypes.string.isRequired,
-  active: PropTypes.bool
+  active: PropTypes.bool,
 };
 
 export default React.memo(SideNavListItem);

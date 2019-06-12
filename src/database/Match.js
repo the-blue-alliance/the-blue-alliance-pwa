@@ -6,7 +6,7 @@ const COMP_LEVELS = {
   ef: "Octos",
   qf: "Quarters",
   sf: "Semis",
-  f: "Finals"
+  f: "Finals",
 };
 // const PLAY_ORDER = {
 //   qm: 1,
@@ -35,7 +35,7 @@ export default class Match extends Record({
   predicted_time: undefined,
   winning_alliance: undefined,
   score_breakdown: undefined,
-  videos: undefined
+  videos: undefined,
 }) {
   getDisplayName(short = false) {
     if (this.comp_level === "qm" || this.comp_level === "f") {

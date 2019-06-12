@@ -21,44 +21,44 @@ const useStyles = makeStyles(theme => ({
   toolbar: {
     [theme.breakpoints.down("sm")]: {
       paddingLeft: theme.spacing(0.5),
-      paddingRight: theme.spacing(0.5)
-    }
+      paddingRight: theme.spacing(0.5),
+    },
   },
   logo: {
     height: 48,
-    width: 48
+    width: 48,
   },
   appBarTitle: {
-    flex: 1
+    flex: 1,
   },
   progress: {
     width: 48,
     height: 24,
     padding: 2,
-    textAlign: "center"
+    textAlign: "center",
   },
   container: {
     marginTop: 56,
     [`${theme.breakpoints.up("xs")} and (orientation: landscape)`]: {
-      marginTop: 48
+      marginTop: 48,
     },
     [theme.breakpoints.up("sm")]: {
-      marginTop: 64
+      marginTop: 64,
     },
     marginBottom: 56,
     [theme.breakpoints.up("md")]: {
       marginBottom: 0,
-      marginLeft: sideNavWidth
-    }
+      marginLeft: sideNavWidth,
+    },
   },
   content: {
     maxWidth: 1200,
     margin: "0 auto",
     padding: `${theme.spacing(3)}px ${theme.spacing(1)}px 0`,
     [theme.breakpoints.up("md")]: {
-      padding: `${theme.spacing(3)}px ${theme.spacing(3)}px 0`
-    }
-  }
+      padding: `${theme.spacing(3)}px ${theme.spacing(3)}px 0`,
+    },
+  },
 }));
 
 const Page = ({
@@ -69,7 +69,7 @@ const Page = ({
   metaOgImage,
   additionalMetas,
   refreshFunction,
-  isLoading
+  isLoading,
 }) => {
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarOpenedOnce, setSnackbarOpenedOnce] = useState(false);
@@ -79,7 +79,7 @@ const Page = ({
     if (navigator.share) {
       navigator.share({
         title: document.title,
-        url: document.URL
+        url: document.URL,
       });
     } else {
       clipboard.writeText(document.URL);
@@ -179,17 +179,17 @@ Page.propTypes = {
   router: PropTypes.object,
   children: PropTypes.oneOfType([
     PropTypes.node,
-    PropTypes.arrayOf(PropTypes.node)
+    PropTypes.arrayOf(PropTypes.node),
   ]),
   title: PropTypes.string,
   metaDescription: PropTypes.string.isRequired,
   metaOgImage: PropTypes.string,
   additionalMetas: PropTypes.oneOfType([
     PropTypes.node,
-    PropTypes.arrayOf(PropTypes.node)
+    PropTypes.arrayOf(PropTypes.node),
   ]),
   isLoading: PropTypes.bool,
-  refreshFunction: PropTypes.func
+  refreshFunction: PropTypes.func,
 };
 
 export default withRouter(Page);

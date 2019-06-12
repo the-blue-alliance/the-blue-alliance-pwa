@@ -45,7 +45,7 @@ export default class Event extends Record({
   gmaps_url: undefined,
   website: undefined,
   webcasts: undefined,
-  playoff_type: undefined
+  playoff_type: undefined,
 }) {
   // Name
   safeShortName() {

@@ -22,7 +22,7 @@ const useData = (
     fetchStatus,
     () => {
       dispatch(dataFetcher);
-    }
+    },
   ];
 };
 export default useData;

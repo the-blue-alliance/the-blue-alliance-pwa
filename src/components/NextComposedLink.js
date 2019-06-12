@@ -17,7 +17,7 @@ const NextComposedLink = React.forwardRef(NextComposed);
 NextComposed.propTypes = {
   as: PropTypes.string,
   href: PropTypes.string,
-  prefetch: PropTypes.bool
+  prefetch: PropTypes.bool,
 };
 
 export default NextComposedLink;

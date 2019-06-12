@@ -53,7 +53,7 @@ const BottomNavMoreMenu = ({ anchorEl, open, setAnchorEl }) => {
 BottomNavMoreMenu.propTypes = {
   anchorEl: PropTypes.object,
   open: PropTypes.bool,
-  setAnchorEl: PropTypes.func
+  setAnchorEl: PropTypes.func,
 };
 
 export default React.memo(BottomNavMoreMenu);

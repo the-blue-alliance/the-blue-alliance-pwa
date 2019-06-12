@@ -14,14 +14,14 @@ const useStyles = makeStyles(theme => ({
     color:
       theme.palette.type === "light"
         ? theme.palette.grey[700]
-        : theme.palette.grey[300]
+        : theme.palette.grey[300],
   },
   active: {
     color:
       theme.palette.type === "light"
         ? theme.palette.primary.main
-        : theme.palette.secondary.main
-  }
+        : theme.palette.secondary.main,
+  },
 }));
 
 const BottomNavButton = ({ label, icon: Icon, href, active, ...restProps }) => {
@@ -30,7 +30,7 @@ const BottomNavButton = ({ label, icon: Icon, href, active, ...restProps }) => {
     <ButtonBase
       className={clsx({
         [classes.root]: true,
-        [classes.active]: active
+        [classes.active]: active,
       })}
       component={NextComposedLink}
       href={href}
@@ -47,7 +47,7 @@ BottomNavButton.propTypes = {
   label: PropTypes.string,
   icon: PropTypes.object.isRequired,
   href: PropTypes.string.isRequired,
-  active: PropTypes.bool
+  active: PropTypes.bool,
 };
 
 export default React.memo(BottomNavButton);

@@ -12,8 +12,8 @@ const useStyles = makeStyles(theme => ({
     color:
       theme.palette.type === "light"
         ? theme.palette.primary.main
-        : theme.palette.secondary.main
-  }
+        : theme.palette.secondary.main,
+  },
 }));
 
 // A styled version of the Next.js Link component:
@@ -29,7 +29,7 @@ function Link(props) {
   const classes = useStyles();
 
   const className = clsx(classNameProps, {
-    [activeClassName]: router.pathname === props.href && activeClassName
+    [activeClassName]: router.pathname === props.href && activeClassName,
   });
 
   if (naked) {
@@ -55,12 +55,12 @@ Link.propTypes = {
   onClick: PropTypes.func,
   prefetch: PropTypes.bool,
   router: PropTypes.shape({
-    pathname: PropTypes.string.isRequired
-  }).isRequired
+    pathname: PropTypes.string.isRequired,
+  }).isRequired,
 };
 
 Link.defaultProps = {
-  activeClassName: "active"
+  activeClassName: "active",
 };
 
 export default React.memo(withRouter(Link));

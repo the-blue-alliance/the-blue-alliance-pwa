@@ -4,8 +4,8 @@ import * as types from "../constants/ActionTypes";
 const baseURL = "https://www.thebluealliance.com";
 const fetchOptions = {
   headers: {
-    "X-TBA-Auth-Key": __TBA_API_AUTH_KEY__
-  }
+    "X-TBA-Auth-Key": __TBA_API_AUTH_KEY__,
+  },
 };
 
 const handleErrors = response => {
@@ -18,7 +18,7 @@ const handleErrors = response => {
 // App
 export const toggleTheme = () => dispatch => {
   dispatch({
-    type: types.TOGGLE_THEME
+    type: types.TOGGLE_THEME,
   });
 };
 
@@ -26,7 +26,7 @@ export const toggleTheme = () => dispatch => {
 export const fetchYearEvents = year => dispatch => {
   dispatch({
     type: types.FETCH_YEAR_EVENTS_REQUEST,
-    year
+    year,
   });
   return fetch(`${baseURL}/api/v3/events/${year}`, fetchOptions)
     .then(handleErrors)
@@ -34,13 +34,13 @@ export const fetchYearEvents = year => dispatch => {
       dispatch({
         type: types.FETCH_YEAR_EVENTS_SUCCESS,
         year,
-        data: events
+        data: events,
       })
     )
     .catch(() => {
       dispatch({
         type: types.FETCH_YEAR_EVENTS_ERROR,
-        year
+        year,
       });
     });
 };
@@ -49,7 +49,7 @@ export const fetchYearEvents = year => dispatch => {
 export const fetchEvent = eventKey => dispatch => {
   dispatch({
     type: types.FETCH_EVENT_REQUEST,
-    eventKey
+    eventKey,
   });
   return fetch(`${baseURL}/api/v3/event/${eventKey}`, fetchOptions)
     .then(handleErrors)
@@ -57,13 +57,13 @@ export const fetchEvent = eventKey => dispatch => {
       dispatch({
         type: types.FETCH_EVENT_SUCCESS,
         eventKey,
-        data: event
+        data: event,
       })
     )
     .catch(() => {
       dispatch({
         type: types.FETCH_EVENT_ERROR,
-        eventKey
+        eventKey,
       });
     });
 };
@@ -71,7 +71,7 @@ export const fetchEvent = eventKey => dispatch => {
 export const fetchEventMatches = eventKey => dispatch => {
   dispatch({
     type: types.FETCH_EVENT_MATCHES_REQUEST,
-    eventKey
+    eventKey,
   });
   return fetch(`${baseURL}/api/v3/event/${eventKey}/matches`, fetchOptions)
     .then(handleErrors)
@@ -79,13 +79,13 @@ export const fetchEventMatches = eventKey => dispatch => {
       dispatch({
         type: types.FETCH_EVENT_MATCHES_SUCCESS,
         eventKey,
-        data: matches
+        data: matches,
       })
     )
     .catch(() => {
       dispatch({
         type: types.FETCH_EVENT_MATCHES_ERROR,
-        eventKey
+        eventKey,
       });
     });
 };

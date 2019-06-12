@@ -11,8 +11,8 @@ const createTheme = darkTheme => {
     palette: {
       primary: indigo,
       secondary: amber,
-      type: darkTheme ? "dark" : "light"
-    }
+      type: darkTheme ? "dark" : "light",
+    },
   });
 };
 const lightTheme = createTheme(false);
@@ -30,8 +30,8 @@ const TBAThemeProvider = ({ children }) => {
 TBAThemeProvider.propTypes = {
   children: PropTypes.oneOfType([
     PropTypes.node,
-    PropTypes.arrayOf(PropTypes.node)
-  ])
+    PropTypes.arrayOf(PropTypes.node),
+  ]),
 };
 
 export default TBAThemeProvider;

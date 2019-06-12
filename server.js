@@ -15,7 +15,7 @@ const cache = new LRUCache({
     return n.toString().length + key.toString().length;
   },
   max: 50 * 1e6, // ~50MB cache soft limit
-  maxAge: 60 * 1e3 // 1 min
+  maxAge: 60 * 1e3, // 1 min
 });
 
 const renderAndCache = async (req, res, pagePath, queryParams) => {
@@ -79,7 +79,7 @@ app.prepare().then(() => {
   // Map clean URLs and cache results
   server.get("/event/:eventKey", (req, res) => {
     renderAndCache(req, res, "/event", {
-      eventKey: req.params.eventKey
+      eventKey: req.params.eventKey,
     });
   });
   server.get("/events/:year", (req, res) => {

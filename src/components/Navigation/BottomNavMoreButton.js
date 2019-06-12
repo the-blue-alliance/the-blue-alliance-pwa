@@ -13,7 +13,7 @@ const BottomNavMoreButton = ({ setAnchorEl, ...restProps }) => {
 };
 
 BottomNavMoreButton.propTypes = {
-  setAnchorEl: PropTypes.func
+  setAnchorEl: PropTypes.func,
 };
 
 export default React.memo(BottomNavMoreButton);

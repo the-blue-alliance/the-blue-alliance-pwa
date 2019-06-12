@@ -4,7 +4,7 @@ import Router, { withRouter } from "next/router";
 import { getEventFetchStatus, getEvent } from "../selectors/EventSelectors";
 import {
   getEventMatchesFetchStatus,
-  getEventMatches
+  getEventMatches,
 } from "../selectors/MatchSelectors";
 import { fetchEvent, fetchEventMatches } from "../actions";
 import useData from "../lib/useData";
@@ -24,7 +24,7 @@ const openMatchModal = (e, eventKey, matchKey) => {
 
 const closeMatchModal = eventKey => {
   Router.push(`/event?eventKey=${eventKey}`, `/event/${eventKey}`, {
-    shallow: true
+    shallow: true,
   });
 };
 
@@ -107,15 +107,15 @@ Events.getInitialProps = async ({ reduxStore, query }) => {
     eventKey,
     refetchOnLoad: {
       event: !eventFetchInitial,
-      eventMatches: !eventMatchesFetchInitial
-    }
+      eventMatches: !eventMatchesFetchInitial,
+    },
   };
 };
 
 Events.propTypes = {
   router: PropTypes.object,
   eventKey: PropTypes.string,
-  refetchOnLoad: PropTypes.object
+  refetchOnLoad: PropTypes.object,
 };
 
 export default withRouter(Events);

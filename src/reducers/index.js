@@ -6,5 +6,5 @@ import models from "./models";
 export default () =>
   combineReducers({
     app,
-    models
+    models,
   });

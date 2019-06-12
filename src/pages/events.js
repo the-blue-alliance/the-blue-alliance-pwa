@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import {
   getYearEventsFetchStatus,
-  getYearEvents
+  getYearEvents,
 } from "../selectors/EventSelectors";
 import { fetchYearEvents } from "../actions";
 import useData from "../lib/useData";
@@ -65,14 +65,14 @@ Events.getInitialProps = async ({ reduxStore, query }) => {
   return {
     year,
     refetchOnLoad: {
-      events: !eventsFetchInitial
-    }
+      events: !eventsFetchInitial,
+    },
   };
 };
 
 Events.propTypes = {
   year: PropTypes.number,
-  refetchOnLoad: PropTypes.object
+  refetchOnLoad: PropTypes.object,
 };
 
 export default Events;

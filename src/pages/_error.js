@@ -24,7 +24,7 @@ class Error extends React.Component {
 }
 
 Error.propTypes = {
-  statusCode: PropTypes.number.isRequired
+  statusCode: PropTypes.number.isRequired,
 };
 
 export default Error;

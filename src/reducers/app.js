@@ -2,7 +2,7 @@ import * as types from "../constants/ActionTypes";
 import { Map } from "immutable";
 
 export const defaultState = Map({
-  darkTheme: false
+  darkTheme: false,
 });
 
 const app = (state = defaultState, action) => {

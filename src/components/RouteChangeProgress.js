@@ -10,20 +10,20 @@ const CustomProgress = withStyles(theme => ({
     height: 3,
     left: 0,
     top: 0,
-    right: 0
+    right: 0,
   },
   colorPrimary: {
-    backgroundColor: theme.palette.primary[800]
+    backgroundColor: theme.palette.primary[800],
   },
   barColorPrimary: {
-    backgroundColor: theme.palette.secondary[500]
-  }
+    backgroundColor: theme.palette.secondary[500],
+  },
 }))(LinearProgress);
 
 class RouteChangeProgress extends React.Component {
   state = {
     showProgress: false,
-    value: 0
+    value: 0,
   };
   running = false;
   starting = false;

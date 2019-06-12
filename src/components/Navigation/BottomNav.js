@@ -19,8 +19,8 @@ const useStyles = makeStyles(theme => ({
     left: 0,
     right: 0,
     zIndex: theme.zIndex.appBar,
-    display: "flex"
-  }
+    display: "flex",
+  },
 }));
 
 const BottomNav = ({ router: { route } }) => {
@@ -64,7 +64,7 @@ const BottomNav = ({ router: { route } }) => {
 };
 
 BottomNav.propTypes = {
-  router: PropTypes.object
+  router: PropTypes.object,
 };
 
 export default withRouter(BottomNav);
