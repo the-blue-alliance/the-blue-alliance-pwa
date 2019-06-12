@@ -91,12 +91,24 @@ const nextConfig = {
       enforce: "pre"
     });
 
-    // Inline small SVG images
+    // Inline small images
+    config.module.rules.push({
+      test: /\.(jpe?g|png|gif)$/,
+      loader: "url-loader",
+      options: {
+        // Images larger than 5 KB won’t be inlined
+        limit: 5 * 1024,
+        context: "",
+        outputPath: "static",
+        publicPath: "/_next/static",
+        name: "[path][name].[hash].[ext]"
+      }
+    });
     config.module.rules.push({
       test: /\.svg$/,
       loader: "svg-url-loader",
       options: {
-        limit: 10 * 1024, // Images larger than 10 KB won’t be inlined
+        limit: 5 * 1024, // Images larger than 5 KB won’t be inlined
         noquotes: true,
         context: "",
         outputPath: "static",
