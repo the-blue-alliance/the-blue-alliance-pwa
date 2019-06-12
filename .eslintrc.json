@@ -9,7 +9,8 @@
     "Atomics": "readonly",
     "SharedArrayBuffer": "readonly",
     "__BUILD_TIME__": true,
-    "__GIT_HASH__": true
+    "__GIT_HASH__": true,
+    "__TBA_API_AUTH_KEY__": true
   },
   "parser": "babel-eslint",
   "parserOptions": {

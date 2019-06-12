@@ -27,7 +27,8 @@ const nextConfig = {
     config.plugins.push(
       new webpack.DefinePlugin({
         __BUILD_TIME__: JSON.stringify(buildTime),
-        __GIT_HASH__: JSON.stringify(gitHash)
+        __GIT_HASH__: JSON.stringify(gitHash),
+        __TBA_API_AUTH_KEY__: JSON.stringify(process.env.TBA_API_AUTH_KEY)
       })
     );
 
