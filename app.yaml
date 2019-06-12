@@ -35,6 +35,13 @@ handlers:
     http_headers:
       Vary: Accept-Encoding
 
+  - url: /robots.txt
+    static_files: public/robots.txt
+    upload: public/robots.txt
+    expiration: "1d"
+    http_headers:
+      Vary: Accept-Encoding
+
   # Catch all other public files (long cache)
   - url: /(.*\..+)$
     static_files: public/\1
