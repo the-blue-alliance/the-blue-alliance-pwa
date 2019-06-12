@@ -81,20 +81,28 @@ const nextConfig = {
       };
     }
 
-    // Hash static assets
+    // Optimize images
     config.module.rules.push({
-      test: /\.(txt|jpg|png|svg)$/,
-      use: [
-        {
-          loader: "file-loader",
-          options: {
-            context: "",
-            outputPath: "static",
-            publicPath: "/_next/static",
-            name: "[path][name].[hash].[ext]"
-          }
-        }
-      ]
+      test: /\.(jpg|png|gif|svg)$/,
+      loader: "image-webpack-loader",
+      // Specify enforce: 'pre' to apply the loader
+      // before url-loader/svg-url-loader
+      // and not duplicate it in rules with them
+      enforce: "pre"
+    });
+
+    // Inline small SVG images
+    config.module.rules.push({
+      test: /\.svg$/,
+      loader: "svg-url-loader",
+      options: {
+        limit: 10 * 1024, // Images larger than 10 KB won’t be inlined
+        noquotes: true,
+        context: "",
+        outputPath: "static",
+        publicPath: "/_next/static",
+        name: "[path][name].[hash].[ext]"
+      }
     });
 
     // Setup eslint on dev
