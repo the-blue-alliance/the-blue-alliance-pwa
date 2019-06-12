@@ -4,8 +4,7 @@ import * as types from "../constants/ActionTypes";
 const baseURL = "https://www.thebluealliance.com";
 const fetchOptions = {
   headers: {
-    "X-TBA-Auth-Key":
-      "POvVo9CNx9v7GKzQdHTgpru5S1G3sDjrsiA3FtbFCeedQsBJPN1VN06IYsNbKgCf"
+    "X-TBA-Auth-Key": process.env.TBA_API_AUTH_KEY
   }
 };
 

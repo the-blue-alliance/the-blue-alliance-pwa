@@ -8,6 +8,8 @@ Currently at https://beta.thebluealliance.com
 
 ## Getting started
 
+Fill out `.env.sample` and save it as `.env`.
+
 `npm install` to install packages.
 
 `npm run dev` to run the app in development mode at [http://localhost:3000](http://localhost:3000).

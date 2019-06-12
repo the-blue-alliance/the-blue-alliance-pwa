@@ -1,3 +1,4 @@
+require("dotenv").config();
 const child_process = require("child_process");
 const withOffline = require("next-offline");
 const withBundleAnalyzer = require("@next/bundle-analyzer")({
