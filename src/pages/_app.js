@@ -1,11 +1,15 @@
 import React from "react";
 import App, { Container } from "next/app";
+import Router from "next/router";
 import { Provider } from "react-redux";
 import withReduxStore from "../lib/withReduxStore";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import RouteChangeProgress from "../components/RouteChangeProgress";
 import ThemeProvider from "../components/ThemeProvider";
 import Navigation from "../components/Navigation";
+import * as gtag from "../lib/gtag";
+
+Router.events.on("routeChangeComplete", url => gtag.pageview(url));
 
 class MyApp extends App {
   componentDidMount() {

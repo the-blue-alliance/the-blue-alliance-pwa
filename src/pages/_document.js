@@ -4,11 +4,23 @@ import { ServerStyleSheets } from "@material-ui/styles";
 import flush from "styled-jsx/server";
 import indigo from "@material-ui/core/colors/indigo";
 
+import { GA_TRACKING_ID } from "../lib/gtag";
+
 class MyDocument extends Document {
   render() {
     return (
       <html lang="en">
         <Head>
+          {/* Global Site Tag (gtag.js) - Google Analytics */}
+          <script
+            async
+            src={`https://www.googletagmanager.com/gtag/js?id=${GA_TRACKING_ID}`}
+          />
+          <script
+            dangerouslySetInnerHTML={{
+              __html: `window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', '${GA_TRACKING_ID}');`,
+            }}
+          />
           <meta charSet="utf-8" />
           <link rel="manifest" href="/manifest.json" />
           {/* Use minimum-scale=1 to enable GPU rasterization */}
