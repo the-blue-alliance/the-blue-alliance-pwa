@@ -8,6 +8,7 @@ import * as gtag from "../lib/gtag";
 import { isClient } from "../lib/utils";
 import errorReporter from "../lib/errorReporter";
 import CssBaseline from "@material-ui/core/CssBaseline";
+import Error from "../components/Error";
 import RouteChangeProgress from "../components/RouteChangeProgress";
 import ThemeProvider from "../components/ThemeProvider";
 import Navigation from "../components/Navigation";
@@ -46,24 +47,22 @@ class MyApp extends App {
   }
 
   render() {
-    if (this.state.hasError) {
-      return (
-        <div>
-          Whoops! Something went wrong on our end. Please close the app and
-          restart it.
-          <a href="/">Or try clicking here!</a>
-        </div>
-      );
-    }
     const { Component, pageProps, reduxStore } = this.props;
+    const { hasError } = this.state;
     return (
       <Container>
         <Provider store={reduxStore}>
           <ThemeProvider>
             <CssBaseline />
-            <RouteChangeProgress />
-            <Navigation />
-            <Component {...pageProps} />
+            {hasError ? (
+              <Error />
+            ) : (
+              <>
+                <RouteChangeProgress />
+                <Navigation />
+                <Component {...pageProps} />
+              </>
+            )}
           </ThemeProvider>
         </Provider>
       </Container>
