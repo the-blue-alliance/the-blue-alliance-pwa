@@ -38,7 +38,8 @@
     "redux-devtools-extension": "^2.13.8",
     "redux-immutable": "^4.0.0",
     "redux-thunk": "^2.3.0",
-    "reselect": "^4.0.0"
+    "reselect": "^4.0.0",
+    "stackdriver-errors-js": "^0.7.0"
   },
   "devDependencies": {
     "babel-eslint": "^10.0.1",

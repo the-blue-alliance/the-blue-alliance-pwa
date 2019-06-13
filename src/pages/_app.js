@@ -15,11 +15,13 @@ import Navigation from "../components/Navigation";
 if (isClient) {
   require("firebase/performance");
 }
-// Initialize Firebase
-firebase.initializeApp(__FIREBASE_CONFIG__);
-// Initialize Performance Monitoring on client only
-if (isClient) {
-  firebase.performance();
+// Initialize Firebase if not already initialized
+if (firebase.apps.length === 0) {
+  firebase.initializeApp(__FIREBASE_CONFIG__);
+  // Initialize Performance Monitoring on client only
+  if (isClient) {
+    firebase.performance();
+  }
 }
 
 Router.events.on("routeChangeComplete", url => gtag.pageview(url));
