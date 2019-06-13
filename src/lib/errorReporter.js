@@ -1,6 +1,7 @@
 import StackdriverErrorReporter from "stackdriver-errors-js";
 import { isClient } from "../lib/utils";
 
+// eslint-disable-next-line no-console
 let errorReporter = { report: console.error };
 if (process.env.NODE_ENV === "production" && isClient) {
   errorReporter = new StackdriverErrorReporter();

@@ -54,6 +54,7 @@ const logCacheInfo = hit => {
   total++;
   if (hit) hits++;
   if (!dev) {
+    // eslint-disable-next-line no-console
     console.log(
       `[CACHE] ${hit ? "HIT" : "MISS"} (${hits}/${total}: ${(
         (100 * hits) /
@@ -100,6 +101,7 @@ app.prepare().then(() => {
 
   server.listen(port, err => {
     if (err) throw err;
+    // eslint-disable-next-line no-console
     if (dev) console.log(`> Ready on http://localhost:${port}`);
   });
 });
