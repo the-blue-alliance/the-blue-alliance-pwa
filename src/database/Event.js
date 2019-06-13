@@ -38,6 +38,7 @@ export default class Event extends Record({
   start_date: undefined,
   end_date: undefined,
   timezone: undefined,
+  address: undefined,
   city: undefined,
   state_prov: undefined,
   country: undefined,
