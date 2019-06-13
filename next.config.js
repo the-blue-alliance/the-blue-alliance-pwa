@@ -40,7 +40,7 @@ const nextConfig = {
     // Configure vendor bundles
     // See: https://www.chrisclaxton.me.uk/chris-claxtons-blog/webpack-chunksplitting-deepdive
     // and https://hackernoon.com/the-100-correct-way-to-split-your-chunks-with-webpack-f8a9df5b7758
-    if (!isServer) {
+    if (!isServer && !dev) {
       config.optimization.splitChunks = {
         hidePathInfo: true,
         chunks: "all",
