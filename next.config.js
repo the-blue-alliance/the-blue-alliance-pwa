@@ -29,6 +29,11 @@ const nextConfig = {
         __BUILD_TIME__: JSON.stringify(buildTime),
         __GIT_HASH__: JSON.stringify(gitHash),
         __TBA_API_AUTH_KEY__: JSON.stringify(process.env.TBA_API_AUTH_KEY),
+        __FIREBASE_CONFIG__: JSON.stringify({
+          apiKey: process.env.FIREBASE_API_KEY,
+          projectId: process.env.FIREBASE_PROJECT_ID,
+          appId: process.env.FIREBASE_APP_ID,
+        }),
       })
     );
 

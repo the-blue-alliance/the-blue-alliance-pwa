@@ -16,12 +16,7 @@ if (isClient) {
   require("firebase/performance");
 }
 // Initialize Firebase
-const firebaseConfig = {
-  apiKey: "AIzaSyDBlFwtAgb2i7hMCQ5vBv44UEKVsA543hs",
-  projectId: "tbatv-prod-hrd",
-  appId: "1:836511118694:web:fabf6246768ec14f",
-};
-firebase.initializeApp(firebaseConfig);
+firebase.initializeApp(__FIREBASE_CONFIG__);
 // Initialize Performance Monitoring on client only
 if (isClient) {
   firebase.performance();
