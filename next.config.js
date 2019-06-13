@@ -34,6 +34,12 @@ const nextConfig = {
           projectId: process.env.FIREBASE_PROJECT_ID,
           appId: process.env.FIREBASE_APP_ID,
         }),
+        __STACKDRIVER_CONFIG__: JSON.stringify({
+          projectId: process.env.FIREBASE_PROJECT_ID,
+          key: process.env.STACKDRIVER_API_KEY,
+          service: "pwa-client",
+          version: gitHash,
+        }),
       })
     );
 

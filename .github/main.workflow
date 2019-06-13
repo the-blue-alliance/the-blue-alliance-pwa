@@ -24,7 +24,13 @@ action "1-1. Build" {
   uses = "actions/npm@e7aaefed7c9f2e83d493ff810f17fa5ccd7ed437"
   args = "run build"
   needs = ["1. Install packages"]
-  secrets = ["FIREBASE_API_KEY", "FIREBASE_APP_ID", "FIREBASE_PROJECT_ID", "TBA_API_AUTH_KEY"]
+  secrets = [
+    "FIREBASE_API_KEY",
+    "FIREBASE_APP_ID",
+    "FIREBASE_PROJECT_ID",
+    "STACKDRIVER_API_KEY",
+    "TBA_API_AUTH_KEY",
+  ]
 }
 
 action "1-2. Run tests" {

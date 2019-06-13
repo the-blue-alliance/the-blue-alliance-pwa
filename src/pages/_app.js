@@ -6,6 +6,7 @@ import { Provider } from "react-redux";
 import withReduxStore from "../lib/withReduxStore";
 import * as gtag from "../lib/gtag";
 import { isClient } from "../lib/utils";
+import errorReporter from "../lib/errorReporter";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import RouteChangeProgress from "../components/RouteChangeProgress";
 import ThemeProvider from "../components/ThemeProvider";
@@ -27,6 +28,10 @@ if (firebase.apps.length === 0) {
 Router.events.on("routeChangeComplete", url => gtag.pageview(url));
 
 class MyApp extends App {
+  state = {
+    hasError: false,
+  };
+
   componentDidMount() {
     // Remove the server-side injected CSS.
     const jssStyles = document.querySelector("#jss-server-side");
@@ -35,7 +40,21 @@ class MyApp extends App {
     }
   }
 
+  componentDidCatch(error) {
+    errorReporter.report(error);
+    this.setState({ hasError: true });
+  }
+
   render() {
+    if (this.state.hasError) {
+      return (
+        <div>
+          Whoops! Something went wrong on our end. Please close the app and
+          restart it.
+          <a href="/">Or try clicking here!</a>
+        </div>
+      );
+    }
     const { Component, pageProps, reduxStore } = this.props;
     return (
       <Container>
