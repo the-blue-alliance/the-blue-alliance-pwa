@@ -40,6 +40,13 @@ class MyDocument extends Document {
             href="https://fonts.gstatic.com"
             crossOrigin="anonymous"
           />
+          <link
+            rel="preconnect"
+            href="https://firebaseinstallations.googleapis.com"
+            crossOrigin="anonymous"
+          />
+          <link rel="preconnect" href="https://storage.googleapis.com" />
+          <link rel="preconnect" href="https://www.google-analytics.com" />
           {/* Measure first input delay: https://github.com/GoogleChromeLabs/first-input-delay */}
           <script
             dangerouslySetInnerHTML={{
