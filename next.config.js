@@ -4,6 +4,7 @@ const withOffline = require("next-offline");
 const withBundleAnalyzer = require("@next/bundle-analyzer")({
   enabled: process.env.ANALYZE === "true",
 });
+const withSourceMaps = require("@zeit/next-source-maps")();
 
 const nextConfig = {
   // Build one level up from ./src
@@ -146,4 +147,4 @@ const nextConfig = {
   },
 };
 
-module.exports = withOffline(withBundleAnalyzer(nextConfig));
+module.exports = withSourceMaps(withOffline(withBundleAnalyzer(nextConfig)));
