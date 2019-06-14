@@ -8,6 +8,22 @@ const fetchOptions = {
   },
 };
 
+// Trace fetch on server
+let tracer;
+if (!process.browser) {
+  tracer = require("@google-cloud/trace-agent").get();
+}
+const tracedFetch = (url, options) => {
+  if (tracer) {
+    const span = tracer.createChildSpan({ name: `fetch: ${url}` });
+    return fetch(url, options).then(result => {
+      span.endSpan();
+      return result;
+    });
+  }
+  return fetch(url, options);
+};
+
 const handleErrors = response => {
   if (!response.ok) {
     throw new Error(response.statusText);
@@ -28,7 +44,7 @@ export const fetchYearEvents = year => dispatch => {
     type: types.FETCH_YEAR_EVENTS_REQUEST,
     year,
   });
-  return fetch(`${baseURL}/api/v3/events/${year}`, fetchOptions)
+  return tracedFetch(`${baseURL}/api/v3/events/${year}`, fetchOptions)
     .then(handleErrors)
     .then(events =>
       dispatch({
@@ -51,7 +67,7 @@ export const fetchEvent = eventKey => dispatch => {
     type: types.FETCH_EVENT_REQUEST,
     eventKey,
   });
-  return fetch(`${baseURL}/api/v3/event/${eventKey}`, fetchOptions)
+  return tracedFetch(`${baseURL}/api/v3/event/${eventKey}`, fetchOptions)
     .then(handleErrors)
     .then(event =>
       dispatch({
@@ -73,7 +89,10 @@ export const fetchEventMatches = eventKey => dispatch => {
     type: types.FETCH_EVENT_MATCHES_REQUEST,
     eventKey,
   });
-  return fetch(`${baseURL}/api/v3/event/${eventKey}/matches`, fetchOptions)
+  return tracedFetch(
+    `${baseURL}/api/v3/event/${eventKey}/matches`,
+    fetchOptions
+  )
     .then(handleErrors)
     .then(matches =>
       dispatch({

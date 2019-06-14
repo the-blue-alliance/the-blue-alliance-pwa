@@ -1,3 +1,4 @@
+const tracer = require("@google-cloud/trace-agent").start();
 const { join } = require("path");
 const express = require("express");
 const next = require("next");
@@ -31,7 +32,9 @@ const renderAndCache = async (req, res, pagePath, queryParams) => {
 
   try {
     // If not, render the page into HTML
+    const span = tracer.createChildSpan({ name: "renderToHTML" });
     const html = await app.renderToHTML(req, res, pagePath, queryParams);
+    span.endSpan();
     // Something is wrong with the request, skip cache
     if (res.statusCode !== 200) {
       res.send(html);

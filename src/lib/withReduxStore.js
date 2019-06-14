@@ -6,6 +6,12 @@ import initializeStore from "./store";
 import Event from "../database/Event";
 import Match from "../database/Match";
 
+// Trace getInitialProps on server
+let tracer;
+if (!process.browser) {
+  tracer = require("@google-cloud/trace-agent").get();
+}
+
 const __NEXT_REDUX_STORE__ = "__NEXT_REDUX_STORE__";
 
 const MODEL_TYPES = {
@@ -93,7 +99,13 @@ export default App => {
 
       let appProps = {};
       if (typeof App.getInitialProps === "function") {
-        appProps = await App.getInitialProps(appContext);
+        if (tracer) {
+          const span = tracer.createChildSpan({ name: "getInitialProps" });
+          appProps = await App.getInitialProps(appContext);
+          span.endSpan();
+        } else {
+          appProps = await App.getInitialProps(appContext);
+        }
       }
 
       return {
