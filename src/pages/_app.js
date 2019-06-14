@@ -5,7 +5,7 @@ import Router from "next/router";
 import { Provider } from "react-redux";
 import withReduxStore from "../lib/withReduxStore";
 import * as gtag from "../lib/gtag";
-import { isClient } from "../lib/utils";
+import { isProd, isClient } from "../lib/utils";
 import errorReporter from "../lib/errorReporter";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Error from "../components/Error";
@@ -21,12 +21,14 @@ if (isClient) {
 if (firebase.apps.length === 0) {
   firebase.initializeApp(__FIREBASE_CONFIG__);
   // Initialize Performance Monitoring on client only
-  if (isClient) {
+  if (isProd && isClient) {
     firebase.performance();
   }
 }
 
-Router.events.on("routeChangeComplete", url => gtag.pageview(url));
+if (isProd) {
+  Router.events.on("routeChangeComplete", url => gtag.pageview(url));
+}
 
 class MyApp extends App {
   state = {
