@@ -12,7 +12,7 @@ const ThemeToggleListItem = () => {
   const dispatch = useDispatch();
 
   return (
-    <ListItem>
+    <ListItem ContainerComponent="div">
       <ListItemText id="switch-list-label-darktheme" primary="Dark Theme" />
       <ListItemSecondaryAction>
         <Switch
