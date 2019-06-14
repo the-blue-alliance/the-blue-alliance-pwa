@@ -11,6 +11,7 @@ class MyDocument extends Document {
     return (
       <html lang="en">
         <Head>
+          <meta charSet="utf-8" />
           {/* Global Site Tag (gtag.js) - Google Analytics */}
           <script
             async
