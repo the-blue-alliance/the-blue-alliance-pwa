@@ -6,7 +6,6 @@ import initializeStore from "./store";
 import Event from "../database/Event";
 import Match from "../database/Match";
 
-const isServer = typeof window === "undefined";
 const __NEXT_REDUX_STORE__ = "__NEXT_REDUX_STORE__";
 
 const MODEL_TYPES = {
@@ -42,7 +41,7 @@ const convertCollections = (
 
 function getOrCreateStore(initialState) {
   // Always make a new store if server, otherwise state is shared between requests
-  if (isServer) {
+  if (!process.browser) {
     return initializeStore(initialState);
   }
 
