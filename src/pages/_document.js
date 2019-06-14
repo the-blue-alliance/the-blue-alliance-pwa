@@ -21,7 +21,6 @@ class MyDocument extends Document {
               __html: `window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', '${GA_TRACKING_ID}');`,
             }}
           />
-          <meta charSet="utf-8" />
           <link rel="manifest" href="/manifest.json" />
           {/* Use minimum-scale=1 to enable GPU rasterization */}
           <meta
