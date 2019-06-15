@@ -15,6 +15,7 @@ import ShareIcon from "@material-ui/icons/Share";
 import * as clipboard from "clipboard-polyfill";
 
 import { sideNavWidth } from "../constants/Config";
+import PageHead from "./PageHead";
 import TBALogoSVG from "../icons/tba_lamp.svg";
 
 const useStyles = makeStyles(theme => ({
@@ -91,6 +92,7 @@ const Page = ({
   const canonicalUrl = `https://www.thebluealliance.com${router.asPath}`;
   return (
     <>
+      <PageHead />
       <Head>
         <title>{title && `${title} - `}The Blue Alliance</title>
         <link rel="shortcut icon" href="/favicon.ico" />
