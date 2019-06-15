@@ -9,6 +9,7 @@ import useData from "../lib/useData";
 import notFoundError from "../lib/notFoundError";
 import Page from "../components/Page";
 import Link from "../components/Link";
+import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
 
 const Events = ({ year, refetchOnLoad }) => {
@@ -18,6 +19,19 @@ const Events = ({ year, refetchOnLoad }) => {
     fetchYearEvents(year),
     refetchOnLoad.events
   );
+
+  // Event filters
+  const [filter, setFilter] = React.useState("");
+  const filteredEvents = React.useMemo(
+    () =>
+      events.filter(event =>
+        event.name.toLowerCase().includes(filter.toLowerCase())
+      ),
+    [events, filter]
+  );
+  const handleChange = e => {
+    setFilter(e.target.value);
+  };
 
   if (!events) {
     return notFoundError();
@@ -30,9 +44,19 @@ const Events = ({ year, refetchOnLoad }) => {
       isLoading={eventsFetchStatus === "fetching"}
       refreshFunction={refetchEvents}
     >
-      <Typography variant="h4">{year} Events</Typography>
-      <Link href="/">Home</Link>
-      {events.map(event => (
+      <Typography variant="h4">
+        {year} <i>FIRST</i> Robotics Competition Events
+      </Typography>
+      <Typography variant="subtitle1">
+        {filteredEvents.count()} results
+      </Typography>
+      <TextField
+        label="Name"
+        value={filter}
+        onChange={handleChange}
+        margin="normal"
+      />
+      {filteredEvents.map(event => (
         <div key={event.key}>
           <Link
             href={`/event?eventKey=${event.key}`}
