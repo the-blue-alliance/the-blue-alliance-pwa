@@ -15,7 +15,7 @@ const useData = (
     if (refetchOnLoad) {
       dispatch(dataFetcher);
     }
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   return [
     data,
