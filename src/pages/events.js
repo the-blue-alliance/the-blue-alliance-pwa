@@ -1,12 +1,12 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { useRouter } from "next/router";
 import {
   getYearEventsFetchStatus,
   getYearEvents,
 } from "../selectors/EventSelectors";
 import { fetchYearEvents } from "../actions";
 import useData from "../lib/useData";
+import useQueryParam from "../lib/useQueryParam";
 import notFoundError from "../lib/notFoundError";
 import Page from "../components/Page";
 import Link from "../components/Link";
@@ -20,7 +20,6 @@ const useStyles = makeStyles({
 });
 
 const Events = ({ year, refetchOnLoad }) => {
-  const router = useRouter();
   const classes = useStyles();
   const [events, eventsFetchStatus, refetchEvents] = useData(
     state => getYearEventsFetchStatus(state, year),
@@ -30,7 +29,7 @@ const Events = ({ year, refetchOnLoad }) => {
   );
 
   // Apply filters from URL query
-  const searchStr = router.query.search;
+  const searchStr = useQueryParam("search")[0];
   const filteredEvents = React.useMemo(
     () =>
       events.filter(

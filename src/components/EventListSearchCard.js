@@ -1,5 +1,4 @@
 import React from "react";
-import { useRouter } from "next/router";
 import { makeStyles } from "@material-ui/core/styles";
 import Badge from "@material-ui/core/Badge";
 import Collapse from "@material-ui/core/Collapse";
@@ -9,6 +8,7 @@ import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
 import FilterListIcon from "@material-ui/icons/FilterList";
 import EventFilterChip from "../components/EventFilterChip";
+import useQueryParam from "../lib/useQueryParam";
 import useSearchFocus from "../lib/useSearchFocus";
 
 const useStyles = makeStyles(theme => ({
@@ -33,27 +33,13 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const EventListSearchCard = () => {
-  const router = useRouter();
   const classes = useStyles();
   const searchRef = useSearchFocus();
-  const [searchStr, setSearchStr] = React.useState(router.query.search || "");
+  const [searchStr, setSearchStr] = useQueryParam("search");
   const [filterOpen, setFilterOpen] = React.useState(false);
 
   const handleChange = e => {
-    const value = e.target.value;
-    setSearchStr(value);
-
-    // Update route query with filters
-    const query = router.query;
-    query.search = value;
-    router.replace(
-      {
-        pathname: router.pathname,
-        query,
-      },
-      router.asPath,
-      { shallow: true }
-    );
+    setSearchStr(e.target.value);
   };
 
   return (
@@ -63,7 +49,7 @@ const EventListSearchCard = () => {
           className={classes.input}
           inputRef={searchRef}
           label="Search by name"
-          value={searchStr}
+          value={searchStr || ""}
           onChange={handleChange}
           margin="none"
         />
