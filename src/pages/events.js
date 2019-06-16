@@ -6,41 +6,17 @@ import {
 } from "../selectors/EventSelectors";
 import { fetchYearEvents } from "../actions";
 import useData from "../lib/useData";
-import useSearchFocus from "../lib/useSearchFocus";
 import notFoundError from "../lib/notFoundError";
 import Page from "../components/Page";
 import Link from "../components/Link";
 import { makeStyles } from "@material-ui/core/styles";
-import Badge from "@material-ui/core/Badge";
-import Collapse from "@material-ui/core/Collapse";
 import Grid from "@material-ui/core/Grid";
-import IconButton from "@material-ui/core/IconButton";
-import Paper from "@material-ui/core/Paper";
-import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
-import FilterListIcon from "@material-ui/icons/FilterList";
-import EventFilterChip from "../components/EventFilterChip";
+import EventListSearchCard from "../components/EventListSearchCard";
 
-const useStyles = makeStyles(theme => ({
-  inputCard: {
-    padding: theme.spacing(1),
-    position: "sticky",
-    top: 56,
-    [`${theme.breakpoints.up("xs")} and (orientation: landscape)`]: {
-      top: 48,
-    },
-    [theme.breakpoints.up("sm")]: {
-      top: 64,
-    },
-  },
-  inputRow: {
-    display: "flex",
-  },
-  input: {
-    flex: 1,
-    paddingRight: theme.spacing(1),
-  },
-}));
+const useStyles = makeStyles({
+  sideNav: {},
+});
 
 const Events = ({ year, refetchOnLoad }) => {
   const classes = useStyles();
@@ -52,18 +28,16 @@ const Events = ({ year, refetchOnLoad }) => {
   );
 
   // Event filters
-  const searchRef = useSearchFocus();
-  const [filterOpen, setFilterOpen] = React.useState(false);
-  const [filter, setFilter] = React.useState("");
+  const [searchStr, setSearchStr] = React.useState("");
   const filteredEvents = React.useMemo(
     () =>
       events.filter(event =>
-        event.name.toLowerCase().includes(filter.toLowerCase())
+        event.name.toLowerCase().includes(searchStr.toLowerCase())
       ),
-    [events, filter]
+    [events, searchStr]
   );
   const handleChange = e => {
-    setFilter(e.target.value);
+    setSearchStr(e.target.value);
   };
 
   if (!events) {
@@ -85,36 +59,10 @@ const Events = ({ year, refetchOnLoad }) => {
           <div className={classes.sideNav}>TODO: YEAR PICKER & SECTIONS</div>
         </Grid>
         <Grid item xs={12} md={9} lg={10}>
-          <Paper className={classes.inputCard} square>
-            <div className={classes.inputRow}>
-              <TextField
-                className={classes.input}
-                inputRef={searchRef}
-                label="Search by name"
-                value={filter}
-                onChange={handleChange}
-                margin="none"
-              />
-              <IconButton onClick={() => setFilterOpen(!filterOpen)}>
-                <Badge badgeContent={4} color="secondary">
-                  <FilterListIcon />
-                </Badge>
-              </IconButton>
-            </div>
-            <Collapse in={filterOpen}>
-              <Typography variant="subtitle1">Filters</Typography>
-              <EventFilterChip
-                label="Regional"
-                color="#fff"
-                onClick={() => console.log("!")}
-              />
-              <EventFilterChip
-                label="FIM"
-                color="#3f51b5"
-                onClick={() => console.log("!")}
-              />
-            </Collapse>
-          </Paper>
+          <EventListSearchCard
+            searchStr={searchStr}
+            handleChange={handleChange}
+          />
           <Typography variant="subtitle1">
             {filteredEvents.count()} results
           </Typography>
