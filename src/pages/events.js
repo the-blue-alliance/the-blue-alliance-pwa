@@ -1,5 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
+import { useRouter } from "next/router";
 import {
   getYearEventsFetchStatus,
   getYearEvents,
@@ -19,6 +20,7 @@ const useStyles = makeStyles({
 });
 
 const Events = ({ year, refetchOnLoad }) => {
+  const router = useRouter();
   const classes = useStyles();
   const [events, eventsFetchStatus, refetchEvents] = useData(
     state => getYearEventsFetchStatus(state, year),
@@ -27,18 +29,17 @@ const Events = ({ year, refetchOnLoad }) => {
     refetchOnLoad.events
   );
 
-  // Event filters
-  const [searchStr, setSearchStr] = React.useState("");
+  // Apply filters from URL query
+  const searchStr = router.query.search;
   const filteredEvents = React.useMemo(
     () =>
-      events.filter(event =>
-        event.name.toLowerCase().includes(searchStr.toLowerCase())
+      events.filter(
+        event =>
+          !searchStr ||
+          event.name.toLowerCase().includes(searchStr.toLowerCase())
       ),
     [events, searchStr]
   );
-  const handleChange = e => {
-    setSearchStr(e.target.value);
-  };
 
   if (!events) {
     return notFoundError();
@@ -59,10 +60,7 @@ const Events = ({ year, refetchOnLoad }) => {
           <div className={classes.sideNav}>TODO: YEAR PICKER & SECTIONS</div>
         </Grid>
         <Grid item xs={12} md={9} lg={10}>
-          <EventListSearchCard
-            searchStr={searchStr}
-            handleChange={handleChange}
-          />
+          <EventListSearchCard />
           <Typography variant="subtitle1">
             {filteredEvents.count()} results
           </Typography>

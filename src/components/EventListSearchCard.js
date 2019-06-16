@@ -1,5 +1,5 @@
 import React from "react";
-import PropTypes from "prop-types";
+import { useRouter } from "next/router";
 import { makeStyles } from "@material-ui/core/styles";
 import Badge from "@material-ui/core/Badge";
 import Collapse from "@material-ui/core/Collapse";
@@ -32,10 +32,30 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const EventListSearchCard = ({ searchStr, handleChange }) => {
+const EventListSearchCard = () => {
+  const router = useRouter();
   const classes = useStyles();
   const searchRef = useSearchFocus();
+  const [searchStr, setSearchStr] = React.useState(router.query.search || "");
   const [filterOpen, setFilterOpen] = React.useState(false);
+
+  const handleChange = e => {
+    const value = e.target.value;
+    setSearchStr(value);
+
+    // Update route query with filters
+    const query = router.query;
+    query.search = value;
+    router.replace(
+      {
+        pathname: router.pathname,
+        query,
+      },
+      router.asPath,
+      { shallow: true }
+    );
+  };
+
   return (
     <Paper className={classes.inputCard} square>
       <div className={classes.inputRow}>
@@ -68,11 +88,6 @@ const EventListSearchCard = ({ searchStr, handleChange }) => {
       </Collapse>
     </Paper>
   );
-};
-
-EventListSearchCard.propTypes = {
-  searchStr: PropTypes.string,
-  handleChange: PropTypes.func,
 };
 
 export default React.memo(EventListSearchCard);
