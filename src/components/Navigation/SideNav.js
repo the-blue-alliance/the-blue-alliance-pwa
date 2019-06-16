@@ -1,6 +1,5 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { withRouter } from "next/router";
 import { makeStyles } from "@material-ui/core/styles";
 import Drawer from "@material-ui/core/Drawer";
 import Divider from "@material-ui/core/Divider";
@@ -46,7 +45,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const SideNav = ({ router: { route } }) => {
+const SideNav = ({ route }) => {
   const classes = useStyles();
 
   return (
@@ -124,7 +123,7 @@ const SideNav = ({ router: { route } }) => {
 };
 
 SideNav.propTypes = {
-  router: PropTypes.object,
+  route: PropTypes.string,
 };
 
-export default withRouter(SideNav);
+export default React.memo(SideNav);

@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
-import { withRouter } from "next/router";
 import { makeStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import HomeIcon from "@material-ui/icons/Home";
@@ -23,7 +22,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const BottomNav = ({ router: { route } }) => {
+const BottomNav = ({ route }) => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState(null);
 
@@ -64,7 +63,7 @@ const BottomNav = ({ router: { route } }) => {
 };
 
 BottomNav.propTypes = {
-  router: PropTypes.object,
+  route: PropTypes.string,
 };
 
-export default withRouter(BottomNav);
+export default React.memo(BottomNav);

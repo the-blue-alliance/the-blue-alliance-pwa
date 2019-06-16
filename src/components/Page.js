@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
-import { withRouter } from "next/router";
 import Head from "next/head";
 import { makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
@@ -63,7 +62,6 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const Page = ({
-  router,
   children,
   title,
   metaDescription,
@@ -89,17 +87,12 @@ const Page = ({
     }
   };
 
-  const canonicalUrl = `https://www.thebluealliance.com${router.asPath}`;
   return (
     <>
       <PageHead />
       <Head>
         <title>{title && `${title} - `}The Blue Alliance</title>
-        <link rel="shortcut icon" href="/favicon.ico" />
         <meta name="description" content={metaDescription} />
-        <link rel="canonical" href={canonicalUrl} />
-        <meta property="og:url" content={canonicalUrl} />
-        <meta property="og:site_name" content="The Blue Alliance" />
         <meta
           property="og:title"
           content={title ? title : "The Blue Alliance"}
@@ -178,7 +171,6 @@ const Page = ({
 };
 
 Page.propTypes = {
-  router: PropTypes.object,
   children: PropTypes.oneOfType([
     PropTypes.node,
     PropTypes.arrayOf(PropTypes.node),
@@ -194,4 +186,4 @@ Page.propTypes = {
   refreshFunction: PropTypes.func,
 };
 
-export default withRouter(Page);
+export default Page;

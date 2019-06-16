@@ -1,22 +1,23 @@
 import React from "react";
+import { useRouter } from "next/router";
 import Hidden from "@material-ui/core/Hidden";
 
 import SideNav from "./SideNav";
 import BottomNav from "./BottomNav";
 
 const Navigation = () => {
+  const router = useRouter();
+  const route = router.route;
   return (
     <>
       <Hidden implementation="css" smDown>
-        <SideNav />
+        <SideNav route={route} />
       </Hidden>
       <Hidden implementation="css" mdUp>
-        <BottomNav />
+        <BottomNav route={route} />
       </Hidden>
     </>
   );
 };
 
-Navigation.propTypes = {};
-
-export default Navigation;
+export default React.memo(Navigation);

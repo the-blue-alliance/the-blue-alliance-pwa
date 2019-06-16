@@ -2,7 +2,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import clsx from "clsx";
-import { withRouter } from "next/router";
+import { useRouter } from "next/router";
 import { makeStyles } from "@material-ui/core/styles";
 import MuiLink from "@material-ui/core/Link";
 import NextComposedLink from "./NextComposedLink";
@@ -19,13 +19,8 @@ const useStyles = makeStyles(theme => ({
 // A styled version of the Next.js Link component:
 // https://nextjs.org/docs/#with-link
 function Link(props) {
-  const {
-    activeClassName,
-    router,
-    className: classNameProps,
-    naked,
-    ...other
-  } = props;
+  const { activeClassName, className: classNameProps, naked, ...other } = props;
+  const router = useRouter();
   const classes = useStyles();
 
   const className = clsx(classNameProps, {
@@ -54,13 +49,10 @@ Link.propTypes = {
   naked: PropTypes.bool,
   onClick: PropTypes.func,
   prefetch: PropTypes.bool,
-  router: PropTypes.shape({
-    pathname: PropTypes.string.isRequired,
-  }).isRequired,
 };
 
 Link.defaultProps = {
   activeClassName: "active",
 };
 
-export default React.memo(withRouter(Link));
+export default React.memo(Link);

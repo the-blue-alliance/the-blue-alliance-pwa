@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import Router, { withRouter } from "next/router";
+import Router, { useRouter } from "next/router";
 import { getEventFetchStatus, getEvent } from "../selectors/EventSelectors";
 import {
   getEventMatchesFetchStatus,
@@ -28,7 +28,8 @@ const closeMatchModal = eventKey => {
   });
 };
 
-const Events = ({ router, eventKey, refetchOnLoad }) => {
+const Event = ({ eventKey, refetchOnLoad }) => {
+  const router = useRouter();
   const [event, eventFetchStatus, refetchEvent] = useData(
     state => getEventFetchStatus(state, eventKey),
     state => getEvent(state, eventKey),
@@ -86,7 +87,7 @@ const Events = ({ router, eventKey, refetchOnLoad }) => {
   );
 };
 
-Events.getInitialProps = async ({ reduxStore, query }) => {
+Event.getInitialProps = async ({ reduxStore, query }) => {
   const eventKey = query.eventKey;
   const state = reduxStore.getState();
 
@@ -112,10 +113,9 @@ Events.getInitialProps = async ({ reduxStore, query }) => {
   };
 };
 
-Events.propTypes = {
-  router: PropTypes.object,
+Event.propTypes = {
   eventKey: PropTypes.string,
   refetchOnLoad: PropTypes.object,
 };
 
-export default withRouter(Events);
+export default Event;
