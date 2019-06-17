@@ -11,13 +11,17 @@ const ThemeToggleListItem = () => {
   const darkTheme = useSelector(state => state.getIn(["app", "darkTheme"]));
   const dispatch = useDispatch();
 
+  const handleToggle = React.useCallback(() => dispatch(toggleTheme()), [
+    dispatch,
+  ]);
+
   return (
     <ListItem ContainerComponent="div">
       <ListItemText id="switch-list-label-darktheme" primary="Dark Theme" />
       <ListItemSecondaryAction>
         <Switch
           edge="end"
-          onChange={() => dispatch(toggleTheme())}
+          onChange={handleToggle}
           checked={darkTheme}
           inputProps={{
             "aria-labelledby": "switch-list-label-darktheme",

@@ -11,9 +11,10 @@ import VideocamIcon from "@material-ui/icons/Videocam";
 import NextComposedLink from "../NextComposedLink";
 
 const BottomNavMoreMenu = ({ anchorEl, open, setAnchorEl }) => {
-  const handleClose = () => {
+  const handleClose = React.useCallback(() => {
     setAnchorEl(null);
-  };
+  }, [setAnchorEl]);
+
   return (
     <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
       <MenuItem

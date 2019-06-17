@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 import Head from "next/head";
 import { makeStyles } from "@material-ui/core/styles";
@@ -70,11 +70,12 @@ const Page = ({
   refreshFunction,
   isLoading,
 }) => {
-  const [snackbarOpen, setSnackbarOpen] = useState(false);
-  const [snackbarOpenedOnce, setSnackbarOpenedOnce] = useState(false);
+  const [snackbarOpen, setSnackbarOpen] = React.useState(false);
+  const [snackbarOpenedOnce, setSnackbarOpenedOnce] = React.useState(false);
   const classes = useStyles();
 
-  const handleShare = () => {
+  const handleBack = React.useCallback(() => window.history.back(), []);
+  const handleShare = React.useCallback(() => {
     if (navigator.share) {
       navigator.share({
         title: document.title,
@@ -85,7 +86,11 @@ const Page = ({
       setSnackbarOpen(true);
       setSnackbarOpenedOnce(true);
     }
-  };
+  }, []);
+  const handleSnackbarClose = React.useCallback(
+    () => setSnackbarOpen(false),
+    []
+  );
 
   return (
     <>
@@ -111,11 +116,7 @@ const Page = ({
       <AppBar position="fixed" color="primary">
         <Toolbar className={classes.toolbar}>
           {title ? (
-            <IconButton
-              color="inherit"
-              onClick={() => window.history.back()}
-              aria-label="Back"
-            >
+            <IconButton color="inherit" onClick={handleBack} aria-label="Back">
               <ArrowBackIcon />
             </IconButton>
           ) : (
@@ -161,7 +162,7 @@ const Page = ({
         <Snackbar
           anchorOrigin={{ vertical: "top", horizontal: "right" }}
           open={snackbarOpen}
-          onClose={() => setSnackbarOpen(false)}
+          onClose={handleSnackbarClose}
           autoHideDuration={2000}
           message="Link copied!"
         />

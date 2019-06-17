@@ -4,10 +4,13 @@ import PropTypes from "prop-types";
 import BottomNavButton from "./BottomNavButton";
 
 const BottomNavMoreButton = ({ setAnchorEl, ...restProps }) => {
-  const handleMenuOpen = event => {
-    event.preventDefault();
-    setAnchorEl(event.currentTarget);
-  };
+  const handleMenuOpen = React.useCallback(
+    event => {
+      event.preventDefault();
+      setAnchorEl(event.currentTarget);
+    },
+    [setAnchorEl]
+  );
 
   return <BottomNavButton onClick={handleMenuOpen} {...restProps} />;
 };

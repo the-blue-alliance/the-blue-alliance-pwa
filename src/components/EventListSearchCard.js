@@ -38,9 +38,16 @@ const EventListSearchCard = () => {
   const [searchStr, setSearchStr] = useQueryParam("search");
   const [filterOpen, setFilterOpen] = React.useState(false);
 
-  const handleChange = e => {
-    setSearchStr(e.target.value);
-  };
+  const handleSearchStrChange = React.useCallback(
+    e => {
+      setSearchStr(e.target.value);
+    },
+    [setSearchStr]
+  );
+  const toggleFilterOpen = React.useCallback(() => setFilterOpen(!filterOpen), [
+    setFilterOpen,
+    filterOpen,
+  ]);
 
   return (
     <Paper className={classes.inputCard} square>
@@ -50,10 +57,10 @@ const EventListSearchCard = () => {
           inputRef={searchRef}
           label="Search by name"
           value={searchStr || ""}
-          onChange={handleChange}
+          onChange={handleSearchStrChange}
           margin="none"
         />
-        <IconButton onClick={() => setFilterOpen(!filterOpen)}>
+        <IconButton onClick={toggleFilterOpen}>
           <Badge badgeContent={4} color="secondary">
             <FilterListIcon />
           </Badge>

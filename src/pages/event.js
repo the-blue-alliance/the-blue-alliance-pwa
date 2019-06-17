@@ -12,21 +12,7 @@ import notFoundError from "../lib/notFoundError";
 import Page from "../components/Page";
 import Link from "../components/Link";
 import Typography from "@material-ui/core/Typography";
-
-const openMatchModal = (e, eventKey, matchKey) => {
-  e.preventDefault();
-  Router.push(
-    `/event?eventKey=${eventKey}&matchKey=${matchKey}`,
-    `/match/${matchKey}`,
-    { shallow: true }
-  );
-};
-
-const closeMatchModal = eventKey => {
-  Router.push(`/event?eventKey=${eventKey}`, `/event/${eventKey}`, {
-    shallow: true,
-  });
-};
+import MatchRow from "../components/MatchRow";
 
 const Event = ({ eventKey, refetchOnLoad }) => {
   const router = useRouter();
@@ -41,6 +27,17 @@ const Event = ({ eventKey, refetchOnLoad }) => {
     state => getEventMatches(state, eventKey),
     fetchEventMatches(eventKey),
     refetchOnLoad.eventMatches
+  );
+  const handleRefresh = React.useCallback(() => {
+    refetchEvent();
+    refetchMatches();
+  }, [refetchEvent, refetchMatches]);
+  const closeMatchModal = React.useCallback(
+    () =>
+      Router.push(`/event?eventKey=${eventKey}`, `/event/${eventKey}`, {
+        shallow: true,
+      }),
+    [eventKey]
   );
 
   if (!event) {
@@ -63,25 +60,13 @@ const Event = ({ eventKey, refetchOnLoad }) => {
       isLoading={
         eventFetchStatus === "fetching" || matchesFetchStatus === "fetching"
       }
-      refreshFunction={() => {
-        refetchEvent();
-        refetchMatches();
-      }}
+      refreshFunction={handleRefresh}
     >
       <Typography variant="h4">{event.name}</Typography>
-      <div onClick={() => closeMatchModal(eventKey)}>
-        {router.query.matchKey}
-      </div>
+      <div onClick={closeMatchModal}>{router.query.matchKey}</div>
       <Link href="/">Home</Link>
       {matches.map(match => (
-        <div key={match.key}>
-          <Link
-            href={`/match/${match.key}`}
-            onClick={e => openMatchModal(e, eventKey, match.key)}
-          >
-            {match.getDisplayName()}
-          </Link>
-        </div>
+        <MatchRow key={match.key} eventKey={eventKey} match={match} />
       ))}
     </Page>
   );
