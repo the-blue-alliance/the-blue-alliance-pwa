@@ -7,8 +7,9 @@ import Paper from "@material-ui/core/Paper";
 import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
 import FilterListIcon from "@material-ui/icons/FilterList";
-import EventFilterChip from "../components/EventFilterChip";
+import EventFilterChipContainer from "../containers/EventFilterChipContainer";
 import useQueryParam from "../lib/useQueryParam";
+import useQueryParamSet from "../lib/useQueryParamSet";
 import useSearchFocus from "../lib/useSearchFocus";
 
 const useStyles = makeStyles(theme => ({
@@ -37,6 +38,7 @@ const EventListSearchCard = () => {
   const searchRef = useSearchFocus();
   const [searchStr, setSearchStr] = useQueryParam("search");
   const [filterOpen, setFilterOpen] = React.useState(false);
+  const filters = useQueryParamSet("filters")[0];
 
   const handleSearchStrChange = React.useCallback(
     e => {
@@ -61,23 +63,19 @@ const EventListSearchCard = () => {
           margin="none"
         />
         <IconButton onClick={toggleFilterOpen}>
-          <Badge badgeContent={4} color="secondary">
+          <Badge badgeContent={filters.size} color="secondary">
             <FilterListIcon />
           </Badge>
         </IconButton>
       </div>
       <Collapse in={filterOpen}>
         <Typography variant="subtitle1">Filters</Typography>
-        <EventFilterChip
+        <EventFilterChipContainer
+          filterKey="regional"
           label="Regional"
           color="#fff"
-          onClick={() => console.log("!")}
         />
-        <EventFilterChip
-          label="FIM"
-          color="#3f51b5"
-          onClick={() => console.log("!")}
-        />
+        <EventFilterChipContainer filterKey="fim" label="FIM" color="#3f51b5" />
       </Collapse>
     </Paper>
   );

@@ -7,7 +7,7 @@ const useQueryParam = param => {
   const setParam = React.useCallback(
     value => {
       const query = router.query;
-      query[param] = value;
+      query[param] = JSON.stringify(value);
       router.replace(
         {
           pathname: router.pathname,
@@ -20,7 +20,7 @@ const useQueryParam = param => {
     [router, param]
   );
 
-  return [router.query[param], setParam];
+  return [router.query[param] && JSON.parse(router.query[param]), setParam];
 };
 
 export default useQueryParam;

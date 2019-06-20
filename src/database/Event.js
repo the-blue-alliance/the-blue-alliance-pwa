@@ -169,7 +169,7 @@ export default class Event extends Record({
   //   return OFFICIAL_TYPES.has(this.event_type)
   // }
 
-  // isRegional() {
-  //   return this.event_type === REGIONAL
-  // }
+  isRegional() {
+    return this.event_type === REGIONAL;
+  }
 }

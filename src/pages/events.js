@@ -7,6 +7,7 @@ import {
 import { fetchYearEvents } from "../actions";
 import useData from "../lib/useData";
 import useQueryParam from "../lib/useQueryParam";
+import useQueryParamSet from "../lib/useQueryParamSet";
 import notFoundError from "../lib/notFoundError";
 import Page from "../components/Page";
 import Link from "../components/Link";
@@ -30,14 +31,35 @@ const Events = ({ year, refetchOnLoad }) => {
 
   // Apply filters from URL query
   const searchStr = useQueryParam("search")[0];
+  const filters = useQueryParamSet("filters")[0];
   const filteredEvents = React.useMemo(
     () =>
-      events.filter(
-        event =>
-          !searchStr ||
-          event.name.toLowerCase().includes(searchStr.toLowerCase())
-      ),
-    [events, searchStr]
+      events
+        .filter(
+          // Filter by name
+          event =>
+            !searchStr ||
+            event.name.toLowerCase().includes(searchStr.toLowerCase())
+        )
+        .filter(
+          // Filter by distric
+          event => {
+            if (filters.size === 0) {
+              return true;
+            }
+            if (event.isRegional() && filters.has("regional")) {
+              return true;
+            }
+            if (
+              event.district &&
+              filters.has(event.district.get("abbreviation"))
+            ) {
+              return true;
+            }
+            return false;
+          }
+        ),
+    [events, searchStr, filters]
   );
 
   if (!events) {
