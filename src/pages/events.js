@@ -36,13 +36,7 @@ const Events = ({ year, refetchOnLoad }) => {
     () =>
       events
         .filter(
-          // Filter by name
-          event =>
-            !searchStr ||
-            event.name.toLowerCase().includes(searchStr.toLowerCase())
-        )
-        .filter(
-          // Filter by distric
+          // Filter by district
           event => {
             if (filters.size === 0) {
               return true;
@@ -58,6 +52,12 @@ const Events = ({ year, refetchOnLoad }) => {
             }
             return false;
           }
+        )
+        .filter(
+          // Filter by name
+          event =>
+            !searchStr ||
+            event.name.toLowerCase().includes(searchStr.toLowerCase())
         ),
     [events, searchStr, filters]
   );
