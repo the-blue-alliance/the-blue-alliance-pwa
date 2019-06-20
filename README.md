@@ -26,7 +26,14 @@ Fill out `.env.sample` and save it as `.env`.
 
 `npm start` to run the production server at port 3001 (or a specified PORT).
 
-## Made With
+## Developer notes
+
+We use [Husky](https://github.com/typicode/husky) to manage Git hooks.
+In particular, Prettier and ESlint are used to format and lint code during pre-commit.
+We recommend installing text editor plugins for [Prettier](https://prettier.io/docs/en/editors.html) and [ESlint](https://eslint.org/docs/user-guide/integrations) to automatically format code and warn about any
+errors during development.
+
+## Made with
 
 - [React](https://github.com/facebook/react)
 - [Next.js](https://github.com/zeit/next.js)
