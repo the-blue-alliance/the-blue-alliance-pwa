@@ -22,7 +22,7 @@ const useSearchFocus = () => {
     return () => {
       window.removeEventListener("keydown", keydownHandler);
     };
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  }, []);
 
   return searchRef;
 };
