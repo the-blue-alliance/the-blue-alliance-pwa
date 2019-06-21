@@ -1,6 +1,7 @@
 # The Blue Alliance Progressive Web App (PWA)
 
 [![Actions Status](https://wdp9fww0r9.execute-api.us-west-2.amazonaws.com/production/badge/the-blue-alliance/the-blue-alliance-pwa)](https://wdp9fww0r9.execute-api.us-west-2.amazonaws.com/production/results/the-blue-alliance/the-blue-alliance-pwa)
+[![Coverage Status](https://img.shields.io/codecov/c/github/the-blue-alliance/the-blue-alliance-pwa/master.svg)](https://codecov.io/gh/the-blue-alliance/the-blue-alliance-pwa/branch/master)
 
 A universally (server + client) rendered React PWA for The Blue Alliance.
 
