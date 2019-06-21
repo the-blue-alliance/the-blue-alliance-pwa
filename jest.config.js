@@ -1,4 +1,5 @@
 module.exports = {
+  collectCoverageFrom: ["./src/**/*.js"],
   setupFiles: ["./config/jest/setup.js"],
   testPathIgnorePatterns: ["./.next/", "./node_modules/"],
   transform: {
