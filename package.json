@@ -12,7 +12,7 @@
     "deploy": "gcloud --project tbatv-prod-hrd app deploy --version 1 --quiet",
     "start": "cross-env NODE_ENV=production node server.js",
     "lint": "eslint '**/*.js'",
-    "test": "jest --verbose",
+    "test": "jest --coverage --verbose",
     "analyze": "ANALYZE=true next build src"
   },
   "dependencies": {

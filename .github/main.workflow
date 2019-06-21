@@ -2,6 +2,7 @@ workflow "Build and deploy" {
   on = "push"
   resolves = [
     "Deploy",
+    "Send coverage reports to Codecov",
   ]
 }
 
@@ -48,4 +49,12 @@ action "Deploy" {
     "3. Deploy branch filter",
   ]
   args = "app deploy --project tbatv-prod-hrd --version 1 --quiet"
+}
+
+action "Send coverage reports to Codecov" {
+  uses = "docker://node"
+  runs = "npx"
+  args = "codecov"
+  secrets = ["CODECOV_TOKEN"]
+  needs = ["1-2. Run tests"]
 }
