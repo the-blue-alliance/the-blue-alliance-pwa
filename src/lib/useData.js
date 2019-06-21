@@ -12,10 +12,11 @@ const useData = (
   const dispatch = useDispatch();
 
   useEffect(() => {
+    // This should only fire once on load
     if (refetchOnLoad) {
       dispatch(dataFetcher);
     }
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [dataFetcher, dispatch, refetchOnLoad]); // These deps should never change
 
   return [
     data,

@@ -25,7 +25,7 @@ const Events = ({ year, refetchOnLoad }) => {
   const [events, eventsFetchStatus, refetchEvents] = useData(
     state => getYearEventsFetchStatus(state, year),
     state => getYearEvents(state, year),
-    fetchYearEvents(year),
+    React.useMemo(() => fetchYearEvents(year), [year]),
     refetchOnLoad.events
   );
 

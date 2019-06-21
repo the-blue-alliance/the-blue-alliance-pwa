@@ -19,13 +19,13 @@ const Event = ({ eventKey, refetchOnLoad }) => {
   const [event, eventFetchStatus, refetchEvent] = useData(
     state => getEventFetchStatus(state, eventKey),
     state => getEvent(state, eventKey),
-    fetchEvent(eventKey),
+    React.useMemo(() => fetchEvent(eventKey), [eventKey]),
     refetchOnLoad.event
   );
   const [matches, matchesFetchStatus, refetchMatches] = useData(
     state => getEventMatchesFetchStatus(state, eventKey),
     state => getEventMatches(state, eventKey),
-    fetchEventMatches(eventKey),
+    React.useMemo(() => fetchEventMatches(eventKey), [eventKey]),
     refetchOnLoad.eventMatches
   );
   const handleRefresh = React.useCallback(() => {
