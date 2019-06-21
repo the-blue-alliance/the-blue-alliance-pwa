@@ -13,9 +13,9 @@ import RefreshIcon from "@material-ui/icons/Refresh";
 import ShareIcon from "@material-ui/icons/Share";
 import * as clipboard from "clipboard-polyfill";
 
-import { sideNavWidth } from "../constants/Config";
-import PageHead from "./PageHead";
-import TBALogoSVG from "../icons/tba_lamp.svg";
+import { sideNavWidth } from "../../constants/Config";
+import PageHead from "../PageHead";
+import TBALogoSVG from "../../icons/tba_lamp.svg";
 
 const useStyles = makeStyles(theme => ({
   toolbar: {

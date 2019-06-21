@@ -7,10 +7,10 @@ import Paper from "@material-ui/core/Paper";
 import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
 import FilterListIcon from "@material-ui/icons/FilterList";
-import EventFilterChipContainer from "../containers/EventFilterChipContainer";
-import useQueryParam from "../lib/useQueryParam";
-import useQueryParamSet from "../lib/useQueryParamSet";
-import useSearchFocus from "../lib/useSearchFocus";
+import EventFilterChipContainer from "../../containers/EventFilterChipContainer";
+import useQueryParam from "../../lib/useQueryParam";
+import useQueryParamSet from "../../lib/useQueryParamSet";
+import useSearchFocus from "../../lib/useSearchFocus";
 
 const useStyles = makeStyles(theme => ({
   inputCard: {

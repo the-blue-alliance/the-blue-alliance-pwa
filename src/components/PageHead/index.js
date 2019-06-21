@@ -2,7 +2,7 @@ import React from "react";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import indigo from "@material-ui/core/colors/indigo";
-import { GA_TRACKING_ID } from "../lib/gtag";
+import { GA_TRACKING_ID } from "../../lib/gtag";
 
 const PageHead = () => {
   const router = useRouter();

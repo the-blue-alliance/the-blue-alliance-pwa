@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import Router from "next/router";
-import Link from "../components/Link";
+import Link from "../Link";
 
 const MatchRow = ({ eventKey, match }) => {
   const matchKey = match.key;

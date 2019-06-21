@@ -1,5 +1,12 @@
 module.exports = {
   collectCoverageFrom: ["./src/**/*.js"],
+  globals: {
+    __BUILD_TIME__: true,
+    __GIT_HASH__: true,
+    __TBA_API_AUTH_KEY__: true,
+    __FIREBASE_CONFIG__: true,
+    __STACKDRIVER_CONFIG__: true,
+  },
   setupFiles: ["./config/jest/setup.js"],
   testPathIgnorePatterns: ["./.next/", "./node_modules/"],
   transform: {
