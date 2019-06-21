@@ -17,12 +17,8 @@ const useStyles = makeStyles(theme => ({
 // A styled version of the Next.js Link component:
 // https://nextjs.org/docs/#with-link
 function Link(props) {
-  const { naked, ...other } = props;
+  const { ...other } = props;
   const classes = useStyles();
-
-  if (naked) {
-    return <NextComposedLink {...other} />;
-  }
 
   return (
     <MuiLink
@@ -36,7 +32,6 @@ function Link(props) {
 Link.propTypes = {
   as: PropTypes.string,
   href: PropTypes.string,
-  naked: PropTypes.bool,
   onClick: PropTypes.func,
   prefetch: PropTypes.bool,
 };
