@@ -3,11 +3,11 @@ import React from "react";
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
 import { useTheme } from "@material-ui/styles";
-import initializeStore from "../../lib/store";
+import getOrCreateStore from "../../lib/store";
 import ThemeProvider from "./index.js";
 import { toggleTheme } from "../../actions";
 
-const store = initializeStore();
+const store = getOrCreateStore();
 
 // Create test component that uses the theme
 const ref = React.createRef();

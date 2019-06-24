@@ -4,10 +4,10 @@ import PropTypes from "prop-types";
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
 import { fromJS } from "immutable";
-import initializeStore from "./store";
+import getOrCreateStore from "./store";
 import useData from "./useData";
 
-const store = initializeStore(
+const store = getOrCreateStore(
   fromJS({
     models: {
       data: "testData",
