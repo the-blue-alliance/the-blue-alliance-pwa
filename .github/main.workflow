@@ -37,6 +37,9 @@ action "1-1. Build" {
 action "1-2. Run tests" {
   uses = "actions/npm@e7aaefed7c9f2e83d493ff810f17fa5ccd7ed437"
   args = "test"
+  env = {
+    CI = "true"
+  }
   needs = ["1. Install packages"]
 }
 

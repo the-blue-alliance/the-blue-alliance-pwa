@@ -17,7 +17,9 @@ Fill out `.env.sample` and save it as `.env`.
 
 `npm run lint` to run lint checks.
 
-`npm run test` to run tests.
+`npm run test` to run all tests.
+
+`npm run test:watch` to run tests in watch mode to run tests related to changed files every time a file is saved.
 
 `npm run analyze` to analyze bundle size.
 
