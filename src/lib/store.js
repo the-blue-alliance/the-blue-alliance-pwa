@@ -49,13 +49,8 @@ const convertCollections = (
 };
 
 function getOrCreateStore(initialState = Map()) {
-  // Always make a new store if server, otherwise state is shared between requests
-  if (!process.browser) {
-    return initializeStore(initialState);
-  }
-
   if (initialState !== Map()) {
-    // Convert to typed models on client
+    // Convert to typed models
     Object.keys(MODEL_TYPES).forEach(key => {
       const modelPath = ["models", key, "byKey"];
       const models = initialState.getIn(modelPath);
@@ -81,6 +76,11 @@ function getOrCreateStore(initialState = Map()) {
         });
       }
     });
+  }
+
+  // Always make a new store if server, otherwise state is shared between requests
+  if (!process.browser) {
+    return initializeStore(initialState);
   }
 
   // Create store if unavailable on the client and set it on the window object
