@@ -12,37 +12,87 @@ const defaultState = fromJS({
   models: {},
 });
 
-beforeEach(() => {
-  // Isolate tests
-  delete window["__NEXT_REDUX_STORE__"];
+const initialState = fromJS({
+  models: {
+    events: {
+      byKey: {
+        "2019casj": {},
+        "2019casf": {},
+      },
+      collections: { byYear: { "2019": ["2019casf", "2019casj"] } },
+    },
+    matches: {
+      byKey: {
+        "2019casj_qm1": {},
+        "2019casj_qm2": {},
+      },
+      collections: {
+        byEvent: { "2019casj": ["2019casj_qm1", "2019casj_qm2"] },
+        byTeamYear: {
+          frc254: {
+            "2019": ["2019casj_qm1", "2019casj_qm2"],
+          },
+        },
+      },
+    },
+  },
 });
 
-describe("on the server", () => {
-  describe("without a given initial state", () => {
-    it("has the expected default state", () => {
-      const store = getOrCreateStore();
-      expect(store.getState()).toEqual(defaultState);
-    });
-  });
+// The expected typed conversion of initialState
+const typedInitialState = fromJS({
+  models: {
+    events: {
+      byKey: {
+        "2019casj": new Event({}),
+        "2019casf": new Event({}),
+      },
+      collections: { byYear: { "2019": new Set(["2019casf", "2019casj"]) } },
+    },
+    matches: {
+      byKey: {
+        "2019casj_qm1": new Match({}),
+        "2019casj_qm2": new Match({}),
+      },
+      collections: {
+        byEvent: { "2019casj": new Set(["2019casj_qm1", "2019casj_qm2"]) },
+        byTeamYear: {
+          frc254: {
+            "2019": new Set(["2019casj_qm1", "2019casj_qm2"]),
+          },
+        },
+      },
+    },
+  },
 });
 
-describe("on the client", () => {
-  process.browser = true;
-
-  describe("without a given initial state", () => {
-    it("has the expected default state", () => {
-      const store = getOrCreateStore();
-      expect(store.getState()).toEqual(defaultState);
+const runTests = isServer => {
+  describe(`on the ${isServer ? "server" : "client"}`, () => {
+    beforeEach(() => {
+      // Isolate tests
+      delete window["__NEXT_REDUX_STORE__"];
+      process.browser = !isServer;
     });
 
-    it("returns the same store object", () => {
-      const store = getOrCreateStore();
-      expect(store).toBe(getOrCreateStore());
-    });
-  });
+    describe("without a given initial state", () => {
+      it("has the expected default state", () => {
+        const store = getOrCreateStore();
+        expect(store.getState()).toEqual(defaultState);
+      });
 
-  describe("with an incomplete initial state", () => {
-    it("works", () => {
+      if (isServer) {
+        it("returns a different store object", () => {
+          const store = getOrCreateStore();
+          expect(store).not.toBe(getOrCreateStore());
+        });
+      } else {
+        it("returns the same store object", () => {
+          const store = getOrCreateStore();
+          expect(store).toBe(getOrCreateStore());
+        });
+      }
+    });
+
+    it("works with an incomplete initial state", () => {
       const state = getOrCreateStore(
         fromJS({
           app: {},
@@ -50,69 +100,29 @@ describe("on the client", () => {
       ).getState();
       expect(state).toBeInstanceOf(Map);
     });
+
+    const runTypeTests = isTyped => {
+      describe(`with ${
+        isTyped ? "typed" : "untyped"
+      } initial state models`, () => {
+        let is;
+        if (isTyped) {
+          is = typedInitialState;
+        } else {
+          is = initialState;
+        }
+        const state = getOrCreateStore(is).getState();
+        it("converts models to correct types", () => {
+          expect(state.get("models")).toEqual(typedInitialState.get("models"));
+        });
+      });
+    };
+    runTypeTests(false);
+    runTypeTests(true);
   });
+};
 
-  describe("with untyped initial state models", () => {
-    const state = getOrCreateStore(
-      fromJS({
-        models: {
-          events: {
-            byKey: {
-              "2019casj": {},
-              "2019casf": {},
-            },
-            collections: { byYear: { "2019": ["2019casf", "2019casj"] } },
-          },
-          matches: {
-            byKey: {
-              "2019casj_qm1": {},
-              "2019casj_qm2": {},
-            },
-            collections: {
-              byEvent: { "2019casj": ["2019casj_qm1", "2019casj_qm2"] },
-              byTeamYear: {
-                frc254: {
-                  "2019": ["2019casj_qm1", "2019casj_qm2"],
-                },
-              },
-            },
-          },
-        },
-      })
-    ).getState();
-
-    it("propery converts Event records", () => {
-      expect(
-        state.getIn(["models", "events", "byKey", "2019casj"])
-      ).toBeInstanceOf(Event);
-    });
-
-    it("propery converts Match records", () => {
-      expect(
-        state.getIn(["models", "matches", "byKey", "2019casj_qm1"])
-      ).toBeInstanceOf(Match);
-    });
-
-    it("propery converts collection Lists to Sets", () => {
-      // 1 level deep
-      expect(
-        state.getIn(["models", "events", "collections", "byYear", "2019"])
-      ).toBeInstanceOf(Set);
-      expect(
-        state.getIn(["models", "matches", "collections", "byEvent", "2019casj"])
-      ).toBeInstanceOf(Set);
-
-      // 2 level deep
-      expect(
-        state.getIn([
-          "models",
-          "matches",
-          "collections",
-          "byTeamYear",
-          "frc254",
-          "2019",
-        ])
-      ).toBeInstanceOf(Set);
-    });
-  });
-});
+// Run server tests
+runTests(true);
+// Run client tests
+runTests(false);

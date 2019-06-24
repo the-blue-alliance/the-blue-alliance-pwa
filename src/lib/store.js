@@ -1,7 +1,7 @@
 import { createStore, applyMiddleware } from "redux";
 import thunk from "redux-thunk";
 import { composeWithDevTools } from "redux-devtools-extension";
-import { List, Map } from "immutable";
+import { List, Map, Set } from "immutable";
 import createReducer from "../reducers";
 
 import Event from "../database/Event";
@@ -31,7 +31,7 @@ const convertCollections = (
   // Turn preloaded collections from Lists to Sets
   // Do recursively
   collectionEntries.forEach((collection, entryKey) => {
-    if (collection instanceof List) {
+    if (collection instanceof List || collection instanceof Set) {
       state = state.setIn(
         collectionsPath.concat([collectionKey, entryKey]),
         collection.toSet()
