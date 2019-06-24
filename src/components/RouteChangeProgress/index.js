@@ -30,9 +30,9 @@ class RouteChangeProgress extends React.Component {
 
   constructor(props) {
     super(props);
-    Router.onRouteChangeStart = () => this.start();
-    Router.onRouteChangeComplete = () => this.stop();
-    Router.onRouteChangeError = () => this.error();
+    Router.events.on("routeChangeStart", this.start);
+    Router.events.on("routeChangeComplete", this.stop);
+    Router.events.on("routeChangeError", this.error);
   }
 
   start = () => {
@@ -90,8 +90,14 @@ class RouteChangeProgress extends React.Component {
   error = () => {
     this.running = false;
     this.starting = false;
-    this.setState({ showProgress: false });
+    this.setState({ showProgress: false, value: 0 });
   };
+
+  componentWillUnmount() {
+    Router.events.off("routeChangeStart", this.start);
+    Router.events.off("routeChangeComplete", this.stop);
+    Router.events.off("routeChangeError", this.error);
+  }
 
   render() {
     const { showProgress, value } = this.state;
