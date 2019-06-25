@@ -1,63 +1,57 @@
-workflow "Build and deploy" {
+workflow "Build, test, and deploy" {
   on = "push"
   resolves = [
-    "Deploy",
     "Send coverage reports to Codecov",
+    "Deploy",
   ]
 }
 
-action "1. Install packages" {
-  uses = "actions/npm@e7aaefed7c9f2e83d493ff810f17fa5ccd7ed437"
+action "Install packages" {
+  uses = "actions/npm@59b64a598378f31e49cb76f27d6f3312b582f680"
   args = "install"
 }
 
-action "2. Authenticate Google Cloud" {
-  uses = "actions/gcloud/auth@8ec8bfad3853155b42cea5eb9f8395b098111228"
-  secrets = ["GCLOUD_AUTH"]
-}
-
-action "3. Deploy branch filter" {
-  uses = "actions/bin/filter@b2bea0749eed6beb495a8fa194c071847af60ea1"
-  args = "branch master"
-}
-
-action "1-1. Build" {
-  uses = "actions/npm@e7aaefed7c9f2e83d493ff810f17fa5ccd7ed437"
+action "Build" {
+  uses = "actions/npm@59b64a598378f31e49cb76f27d6f3312b582f680"
   args = "run build"
-  needs = ["1. Install packages"]
-  secrets = [
-    "FIREBASE_API_KEY",
-    "FIREBASE_APP_ID",
-    "FIREBASE_PROJECT_ID",
-    "STACKDRIVER_API_KEY",
-    "TBA_API_AUTH_KEY",
-  ]
+  secrets = ["FIREBASE_API_KEY", "FIREBASE_APP_ID", "FIREBASE_PROJECT_ID", "STACKDRIVER_API_KEY", "TBA_API_AUTH_KEY"]
+  needs = ["Install packages"]
 }
 
-action "1-2. Run tests" {
-  uses = "actions/npm@e7aaefed7c9f2e83d493ff810f17fa5ccd7ed437"
+action "Test" {
+  uses = "actions/npm@59b64a598378f31e49cb76f27d6f3312b582f680"
   args = "test"
   env = {
     CI = "true"
   }
-  needs = ["1. Install packages"]
+  needs = ["Install packages"]
 }
 
-action "Deploy" {
-  uses = "actions/gcloud/cli@8ec8bfad3853155b42cea5eb9f8395b098111228"
+action "Deploy branch filter" {
+  uses = "actions/bin/filter@3c0b4f0e63ea54ea5df2914b4fabf383368cd0da"
   needs = [
-    "1-1. Build",
-    "1-2. Run tests",
-    "2. Authenticate Google Cloud",
-    "3. Deploy branch filter",
+    "Build",
+    "Test",
   ]
-  args = "app deploy --project tbatv-prod-hrd --version 1 --quiet"
+  args = "branch master"
 }
 
 action "Send coverage reports to Codecov" {
   uses = "docker://node"
+  needs = ["Test"]
   runs = "npx"
   args = "codecov"
   secrets = ["CODECOV_TOKEN"]
-  needs = ["1-2. Run tests"]
+}
+
+action "Authenticate Google Cloud" {
+  uses = "actions/gcloud/auth@ba93088eb19c4a04638102a838312bb32de0b052"
+  needs = ["Deploy branch filter"]
+  secrets = ["GCLOUD_AUTH"]
+}
+
+action "Deploy" {
+  uses = "actions/gcloud/cli@ba93088eb19c4a04638102a838312bb32de0b052"
+  needs = ["Authenticate Google Cloud"]
+  args = "app deploy --project tbatv-prod-hrd --version 1 --quiet"
 }
