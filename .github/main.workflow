@@ -38,7 +38,7 @@ action "2.2 Check formatting" {
   needs = ["1.1 Install packages"]
 }
 
-action "2.3 Check Lint" {
+action "2.3 Check lint" {
   uses = "actions/npm@59b64a598378f31e49cb76f27d6f3312b582f680"
   args = "run lint"
   needs = ["1.1 Install packages"]
@@ -57,7 +57,7 @@ action "3.1 Deploy branch filter" {
   needs = [
     "2.1.1 Send coverage reports to Codecov",
     "2.2 Check formatting",
-    "2.3 Check Lint",
+    "2.3 Check lint",
     "2.4 Build",
   ]
 }
