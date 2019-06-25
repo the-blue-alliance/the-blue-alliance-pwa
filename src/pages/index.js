@@ -1,7 +1,7 @@
 import React from "react";
 import Page from "../components/Page";
 import Link from "../components/Link";
-import Typography from "@material-ui/core/Typography";
+import Typography from "@material-ui/core/Typography"
 
 const Home = () => {
   return (
