@@ -15,6 +15,8 @@ Fill out `.env.sample` and save it as `.env`.
 
 `npm run dev` to run the app in development mode at [http://localhost:3000](http://localhost:3000).
 
+`npm run prettier` to run formatting checks.
+
 `npm run lint` to run lint checks.
 
 `npm run test` to run all tests.

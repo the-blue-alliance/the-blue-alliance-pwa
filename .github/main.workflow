@@ -32,13 +32,19 @@ action "2.1.1 Send coverage reports to Codecov" {
   needs = ["2.1 Test"]
 }
 
-action "2.2 Lint" {
+action "2.2 Check formatting" {
+  uses = "actions/npm@59b64a598378f31e49cb76f27d6f3312b582f680"
+  args = "run prettier"
+  needs = ["1.1 Install packages"]
+}
+
+action "2.3 Check lint" {
   uses = "actions/npm@59b64a598378f31e49cb76f27d6f3312b582f680"
   args = "run lint"
   needs = ["1.1 Install packages"]
 }
 
-action "2.3 Build" {
+action "2.4 Build" {
   uses = "actions/npm@59b64a598378f31e49cb76f27d6f3312b582f680"
   args = "run build"
   secrets = ["FIREBASE_API_KEY", "FIREBASE_APP_ID", "FIREBASE_PROJECT_ID", "STACKDRIVER_API_KEY", "TBA_API_AUTH_KEY"]
@@ -50,8 +56,9 @@ action "3.1 Deploy branch filter" {
   args = "branch master"
   needs = [
     "2.1.1 Send coverage reports to Codecov",
-    "2.2 Lint",
-    "2.3 Build",
+    "2.2 Check formatting",
+    "2.3 Check lint",
+    "2.4 Build",
   ]
 }
 
