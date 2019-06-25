@@ -2,7 +2,6 @@ import React from "react";
 import Page from "../components/Page";
 import Link from "../components/Link";
 import Typography from "@material-ui/core/Typography";
-import Button from "@material-ui/core/Button";
 
 const Home = () => {
   return (
