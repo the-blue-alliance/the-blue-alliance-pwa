@@ -52,12 +52,11 @@ action "Deploy branch filter" {
 
 action "Authenticate Google Cloud" {
   uses = "actions/gcloud/auth@ba93088eb19c4a04638102a838312bb32de0b052"
-  needs = ["Deploy branch filter"]
   secrets = ["GCLOUD_AUTH"]
 }
 
 action "Deploy" {
   uses = "actions/gcloud/cli@ba93088eb19c4a04638102a838312bb32de0b052"
-  needs = ["Authenticate Google Cloud"]
+  needs = ["Deploy branch filter", "Authenticate Google Cloud"]
   args = "app deploy --project tbatv-prod-hrd --version 1 --quiet"
 }
