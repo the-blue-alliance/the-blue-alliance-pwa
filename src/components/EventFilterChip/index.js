@@ -24,13 +24,11 @@ const EventFilterChip = ({ label, color, selected, ...restProps }) => {
       className={classes.chip}
       size="small"
       style={
-        selected && color
+        selected
           ? {
               backgroundColor: color,
               color: theme.palette.getContrastText(color),
-              border: `1px solid ${
-                selected ? theme.palette.getContrastText(color) : "#fff"
-              }`,
+              border: `1px solid ${theme.palette.getContrastText(color)}`,
             }
           : {}
       }
