@@ -15,7 +15,7 @@
     "lint": "eslint '**/*.js'",
     "test": "jest --coverage --verbose",
     "test:watch": "jest --coverage --verbose --watch",
-    "analyze": "ANALYZE=true next build src"
+    "analyze": "cross-env ANALYZE=true next build src"
   },
   "dependencies": {
     "@google-cloud/trace-agent": "^4.0.0",
