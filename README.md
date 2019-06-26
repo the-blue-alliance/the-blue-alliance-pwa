@@ -9,6 +9,8 @@ Currently at https://beta.thebluealliance.com
 
 ## Getting started
 
+[Node.js](https://nodejs.org/en/download/) 8 or higher is required.
+
 Fill out `.env.sample` and save it as `.env`.
 
 `npm install` to install packages.
