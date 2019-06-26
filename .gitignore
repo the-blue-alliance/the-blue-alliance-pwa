@@ -5,11 +5,8 @@
 
 # testing
 /coverage
-/.bundles
 
 # production
-/build
-/dist
 /.next
 
 # misc
