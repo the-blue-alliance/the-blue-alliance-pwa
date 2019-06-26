@@ -1,7 +1,7 @@
 workflow "Build, test, and deploy" {
   on = "push"
   resolves = [
-    "4.1 Deploy",
+    "5.1 Deploy",
   ]
 }
 
@@ -62,19 +62,14 @@ action "3.1 Is master branch" {
   ]
 }
 
-action "3.2 Is not [nodeploy]" {
+action "4.1 Is not [nodeploy]" {
   uses = "./.github/actions/filter-commit-message"
   args = "-n \\[nodeploy\\]"
-  needs = [
-    "2.1.1 Send coverage reports to Codecov",
-    "2.2 Check formatting",
-    "2.3 Check lint",
-    "2.4 Build",
-  ]
+  needs = ["3.1 Is master branch"]
 }
 
-action "4.1 Deploy" {
+action "5.1 Deploy" {
   uses = "actions/gcloud/cli@ba93088eb19c4a04638102a838312bb32de0b052"
   args = "app deploy --project tbatv-prod-hrd --version 1 --quiet"
-  needs = ["1.2 Authenticate Google Cloud", "3.1 Is master branch", "3.2 Is not [nodeploy]"]
+  needs = ["1.2 Authenticate Google Cloud", "4.1 Is not [nodeploy]"]
 }
