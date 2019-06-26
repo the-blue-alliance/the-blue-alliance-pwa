@@ -5,5 +5,7 @@ LABEL "com.github.actions.description"="Stop a workflow if the message of the cu
 LABEL "com.github.actions.icon"="filter"
 LABEL "com.github.actions.color"="gray-dark"
 
+RUN apt-get update && apt-get install -y --no-install-recommends git
+
 ADD entrypoint.sh /entrypoint.sh
 ENTRYPOINT ["/entrypoint.sh"]
