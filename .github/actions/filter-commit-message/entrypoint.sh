@@ -17,7 +17,7 @@ message=$(git log -1 --pretty=%B $GITHUB_SHA)
 
 # continue/exit logic
 if echo "$message" | grep -q "$pattern"; then
-  echo "INFO: $message matches $pattern"
+  echo "INFO: '$message' matches $pattern"
 
   if $negate; then
     echo "Exiting..."
@@ -27,7 +27,7 @@ if echo "$message" | grep -q "$pattern"; then
     exit 0 # success
   fi
 else
-  echo "INFO: $message does not match $pattern"
+  echo "INFO: '$message' does not match $pattern"
 
   if $negate; then
     echo "Continuing..."
