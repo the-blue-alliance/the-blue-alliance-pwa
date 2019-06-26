@@ -51,15 +51,21 @@ action "2.4 Build" {
   needs = ["1.1 Install packages"]
 }
 
-action "4.1 Is not [nodeploy]" {
-  uses = "./.github/actions/filter-commit-message"
-  args = "-n \\[nodeploy\\]"
+action "3.1 Is master branch" {
+  uses = "actions/bin/filter@3c0b4f0e63ea54ea5df2914b4fabf383368cd0da"
+  args = "branch master"
   needs = [
     "2.1.1 Send coverage reports to Codecov",
     "2.2 Check formatting",
     "2.3 Check lint",
     "2.4 Build",
   ]
+}
+
+action "4.1 Is not [nodeploy]" {
+  uses = "./.github/actions/filter-commit-message"
+  args = "-n \\[nodeploy\\]"
+  needs = ["3.1 Is master branch"]
 }
 
 action "5.1 Deploy" {
