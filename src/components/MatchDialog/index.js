@@ -10,14 +10,18 @@ import useData from "../../lib/useData";
 import { getMatchFetchStatus, getMatch } from "../../selectors/MatchSelectors";
 
 // Temporary component for testing
-const TeamLink = ({ teamKey, eventKey }) => {
+const TeamLink = ({ eventKey, teamKey }) => {
   const year = eventKey.substring(0, 4);
   const as = `/team/${teamKey}/${year}#${eventKey}`;
-  const onClick = React.useCallback(() => {
-    Router.replace(`/event?eventKey=${eventKey}&teamKey=${teamKey}`, as, {
-      shallow: true,
-    });
-  }, [eventKey, teamKey, as]);
+  const onClick = React.useCallback(
+    e => {
+      e.preventDefault();
+      Router.replace(`/event?eventKey=${eventKey}&teamKey=${teamKey}`, as, {
+        shallow: true,
+      });
+    },
+    [eventKey, teamKey, as]
+  );
   return (
     <Link href={as} onClick={onClick}>
       {teamKey}
@@ -25,8 +29,8 @@ const TeamLink = ({ teamKey, eventKey }) => {
   );
 };
 TeamLink.propTypes = {
-  teamKey: PropTypes.string.isRequired,
   eventKey: PropTypes.string.isRequired,
+  teamKey: PropTypes.string.isRequired,
 };
 
 const Transition = React.forwardRef(function Transition(props, ref) {
@@ -76,12 +80,12 @@ const MatchDialog = ({ eventKey }) => {
           <Typography>{match.getDisplayName()}</Typography>
           <div>
             {match.getIn(["alliances", "red", "team_keys"]).map(teamKey => (
-              <TeamLink key={teamKey} teamKey={teamKey} eventKey={eventKey} />
+              <TeamLink key={teamKey} eventKey={eventKey} teamKey={teamKey} />
             ))}
           </div>
           <div>
             {match.getIn(["alliances", "blue", "team_keys"]).map(teamKey => (
-              <TeamLink key={teamKey} teamKey={teamKey} eventKey={eventKey} />
+              <TeamLink key={teamKey} eventKey={eventKey} teamKey={teamKey} />
             ))}
           </div>
         </>

@@ -12,6 +12,7 @@ import Typography from "@material-ui/core/Typography";
 import Page from "../components/Page";
 import MatchRow from "../components/MatchRow";
 import MatchDialog from "../components/MatchDialog";
+import TeamAtEventDialog from "../components/TeamAtEventDialog";
 
 const Event = ({ eventKey, refetchOnLoad }) => {
   const [event, eventFetchStatus, refetchEvent] = useData(
@@ -67,6 +68,7 @@ const Event = ({ eventKey, refetchOnLoad }) => {
         <MatchRow key={match.key} eventKey={eventKey} match={match} />
       ))}
       <MatchDialog eventKey={eventKey} />
+      <TeamAtEventDialog eventKey={eventKey} />
     </Page>
   );
 };
