@@ -73,3 +73,13 @@ action "5.1 Deploy" {
   args = "app deploy --project tbatv-prod-hrd --version 1 --quiet"
   needs = ["1.2 Authenticate Google Cloud", "4.1 Is not [nodeploy]"]
 }
+
+workflow "Delete merged branch" {
+  on = "pull_request"
+  resolves = ["Delete branch"]
+}
+
+action "Delete branch" {
+  uses = "jessfraz/branch-cleanup-action@abc6d34acf90fadba20d681e2d7c2ea6de2e0b76"
+  secrets = ["GITHUB_TOKEN"]
+}
