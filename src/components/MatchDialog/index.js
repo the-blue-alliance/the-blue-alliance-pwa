@@ -5,6 +5,9 @@ import Dialog from "@material-ui/core/Dialog";
 import Slide from "@material-ui/core/Slide";
 import Typography from "@material-ui/core/Typography";
 
+import useData from "../../lib/useData";
+import { getMatchFetchStatus, getMatch } from "../../selectors/MatchSelectors";
+
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
@@ -32,13 +35,26 @@ const MatchDialog = ({ eventKey }) => {
     }
   }, [queryMatchKey]);
 
+  const [match, matchFetchStatus] = useData(
+    state => getMatchFetchStatus(state, matchKey),
+    state => getMatch(state, matchKey)
+  );
+
+  if (!match) {
+    return null;
+  }
+
   return (
     <Dialog
       open={!!queryMatchKey}
       TransitionComponent={Transition}
       onClose={onClose}
     >
-      <Typography>Match: {matchKey}</Typography>
+      {matchFetchStatus === "success" ? (
+        <Typography>{match.getDisplayName()}</Typography>
+      ) : (
+        <Typography>Something went wrong</Typography>
+      )}
     </Dialog>
   );
 };

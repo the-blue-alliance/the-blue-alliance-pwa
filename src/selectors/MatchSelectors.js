@@ -17,3 +17,9 @@ export const getEventMatches = createSelector(
     }
   }
 );
+
+export const getMatchFetchStatus = (state, matchKey) =>
+  state.getIn(["models", "matchesStatus", "byKey", matchKey]);
+
+export const getMatch = (state, matchKey) =>
+  state.getIn(["models", "matches", "byKey", matchKey]);
