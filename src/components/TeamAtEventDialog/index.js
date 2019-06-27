@@ -39,7 +39,7 @@ const TeamAtEventDialog = ({ eventKey, teamKey }) => {
       <Typography>
         <Link
           href={`/team?teamKey=${teamKey}&year=${year}`}
-          as={`/team/${teamKey}/${year}#${eventKey}`}
+          as={`/team/${teamKey}/${year}`}
         >
           {teamKey}
         </Link>

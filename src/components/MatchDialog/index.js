@@ -10,7 +10,7 @@ import { getMatchFetchStatus, getMatch } from "../../selectors/MatchSelectors";
 // Temporary component for testing
 const TeamLink = ({ eventKey, teamKey }) => {
   const year = eventKey.substring(0, 4);
-  const as = `/team/${teamKey}/${year}#${eventKey}`;
+  const as = `/team/${teamKey}/${year}`;
   const onClick = React.useCallback(
     e => {
       e.preventDefault();
