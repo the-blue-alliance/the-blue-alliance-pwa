@@ -1,9 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
-import Router, { useRouter } from "next/router";
-import Dialog from "@material-ui/core/Dialog";
+import Router from "next/router";
 import Link from "@material-ui/core/Link";
-import Slide from "@material-ui/core/Slide";
 import Typography from "@material-ui/core/Typography";
 
 import useData from "../../lib/useData";
@@ -33,33 +31,7 @@ TeamLink.propTypes = {
   teamKey: PropTypes.string.isRequired,
 };
 
-const Transition = React.forwardRef(function Transition(props, ref) {
-  return <Slide direction="up" ref={ref} {...props} />;
-});
-Transition.displayName = "MatchDialogTransition";
-
-const MatchDialog = ({ eventKey }) => {
-  const router = useRouter();
-  const queryMatchKey = router.query.matchKey;
-
-  // The matchKey to render
-  const [matchKey, setMatchKey] = React.useState(undefined);
-
-  // Close dialog by routing back to event
-  const onClose = React.useCallback(() => {
-    Router.replace(`/event?eventKey=${eventKey}`, `/event/${eventKey}`, {
-      shallow: true,
-    });
-  }, [eventKey]);
-
-  // Update matchKey whenever queryMatchKey changes but only if it defined
-  // Otherwise, the dialog will render blank when closing
-  React.useEffect(() => {
-    if (queryMatchKey) {
-      setMatchKey(queryMatchKey);
-    }
-  }, [queryMatchKey]);
-
+const MatchDialog = ({ eventKey, matchKey }) => {
   const [match, matchFetchStatus] = useData(
     state => getMatchFetchStatus(state, matchKey),
     state => getMatch(state, matchKey)
@@ -69,35 +41,30 @@ const MatchDialog = ({ eventKey }) => {
     return null;
   }
 
+  if (matchFetchStatus !== "success") {
+    return <Typography>Something went wrong</Typography>;
+  }
+
   return (
-    <Dialog
-      open={!!queryMatchKey}
-      TransitionComponent={Transition}
-      onClose={onClose}
-    >
-      {matchFetchStatus === "success" ? (
-        <>
-          <Typography>{match.getDisplayName()}</Typography>
-          <div>
-            {match.getIn(["alliances", "red", "team_keys"]).map(teamKey => (
-              <TeamLink key={teamKey} eventKey={eventKey} teamKey={teamKey} />
-            ))}
-          </div>
-          <div>
-            {match.getIn(["alliances", "blue", "team_keys"]).map(teamKey => (
-              <TeamLink key={teamKey} eventKey={eventKey} teamKey={teamKey} />
-            ))}
-          </div>
-        </>
-      ) : (
-        <Typography>Something went wrong</Typography>
-      )}
-    </Dialog>
+    <>
+      <Typography>{match.getDisplayName()}</Typography>
+      <div>
+        {match.getIn(["alliances", "red", "team_keys"]).map(teamKey => (
+          <TeamLink key={teamKey} eventKey={eventKey} teamKey={teamKey} />
+        ))}
+      </div>
+      <div>
+        {match.getIn(["alliances", "blue", "team_keys"]).map(teamKey => (
+          <TeamLink key={teamKey} eventKey={eventKey} teamKey={teamKey} />
+        ))}
+      </div>
+    </>
   );
 };
 
 MatchDialog.propTypes = {
   eventKey: PropTypes.string.isRequired,
+  matchKey: PropTypes.string,
 };
 
 export default React.memo(MatchDialog);

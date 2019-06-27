@@ -1,9 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
-import Router, { useRouter } from "next/router";
-import Dialog from "@material-ui/core/Dialog";
+import Router from "next/router";
 import Link from "@material-ui/core/Link";
-import Slide from "@material-ui/core/Slide";
 import Typography from "@material-ui/core/Typography";
 
 // Temporary component for testing
@@ -29,55 +27,28 @@ MatchLink.propTypes = {
   matchKey: PropTypes.string.isRequired,
 };
 
-const Transition = React.forwardRef(function Transition(props, ref) {
-  return <Slide direction="up" ref={ref} {...props} />;
-});
-Transition.displayName = "TeamAtEventDialogTransition";
-
-const TeamAtEventDialog = ({ eventKey }) => {
-  const router = useRouter();
-  const queryTeamKey = router.query.teamKey;
-
-  // The teamKey to render
-  const [teamKey, setMatchKey] = React.useState(undefined);
-
-  // Close dialog by routing back to event
-  const onClose = React.useCallback(() => {
-    Router.replace(`/event?eventKey=${eventKey}`, `/event/${eventKey}`, {
-      shallow: true,
-    });
-  }, [eventKey]);
-
-  // Update teamKey whenever queryTeamKey changes but only if it defined
-  // Otherwise, the dialog will render blank when closing
-  React.useEffect(() => {
-    if (queryTeamKey) {
-      setMatchKey(queryTeamKey);
-    }
-  }, [queryTeamKey]);
+const TeamAtEventDialog = ({ eventKey, teamKey }) => {
+  if (!teamKey) {
+    return null;
+  }
 
   return (
-    <Dialog
-      open={!!queryTeamKey}
-      TransitionComponent={Transition}
-      onClose={onClose}
-    >
-      <>
-        <Typography>
-          {teamKey} @ {eventKey}
-        </Typography>
-        <MatchLink
-          key={teamKey}
-          eventKey={eventKey}
-          matchKey={`${eventKey}_qm1`}
-        />
-      </>
-    </Dialog>
+    <>
+      <Typography>
+        {teamKey} @ {eventKey}
+      </Typography>
+      <MatchLink
+        key={teamKey}
+        eventKey={eventKey}
+        matchKey={`${eventKey}_qm1`}
+      />
+    </>
   );
 };
 
 TeamAtEventDialog.propTypes = {
   eventKey: PropTypes.string.isRequired,
+  teamKey: PropTypes.string,
 };
 
 export default React.memo(TeamAtEventDialog);
