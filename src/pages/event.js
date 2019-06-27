@@ -1,6 +1,5 @@
 import React from "react";
 import PropTypes from "prop-types";
-import Router, { useRouter } from "next/router";
 import { getEventFetchStatus, getEvent } from "../selectors/EventSelectors";
 import {
   getEventMatchesFetchStatus,
@@ -9,13 +8,13 @@ import {
 import { fetchEvent, fetchEventMatches } from "../actions";
 import useData from "../lib/useData";
 import notFoundError from "../lib/notFoundError";
+import Typography from "@material-ui/core/Typography";
 import Page from "../components/Page";
 import Link from "../components/Link";
-import Typography from "@material-ui/core/Typography";
 import MatchRow from "../components/MatchRow";
+import MatchDialog from "../components/MatchDialog";
 
 const Event = ({ eventKey, refetchOnLoad }) => {
-  const router = useRouter();
   const [event, eventFetchStatus, refetchEvent] = useData(
     state => getEventFetchStatus(state, eventKey),
     state => getEvent(state, eventKey),
@@ -32,13 +31,6 @@ const Event = ({ eventKey, refetchOnLoad }) => {
     refetchEvent();
     refetchMatches();
   }, [refetchEvent, refetchMatches]);
-  const closeMatchModal = React.useCallback(
-    () =>
-      Router.push(`/event?eventKey=${eventKey}`, `/event/${eventKey}`, {
-        shallow: true,
-      }),
-    [eventKey]
-  );
 
   if (!event) {
     return notFoundError();
@@ -63,11 +55,11 @@ const Event = ({ eventKey, refetchOnLoad }) => {
       refreshFunction={handleRefresh}
     >
       <Typography variant="h4">{event.name}</Typography>
-      <div onClick={closeMatchModal}>{router.query.matchKey}</div>
       <Link href="/">Home</Link>
       {matches.map(match => (
         <MatchRow key={match.key} eventKey={eventKey} match={match} />
       ))}
+      <MatchDialog eventKey={eventKey} />
     </Page>
   );
 };
