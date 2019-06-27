@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import Router, { useRouter } from "next/router";
+import { useRouter } from "next/router";
 import Dialog from "@material-ui/core/Dialog";
 import Slide from "@material-ui/core/Slide";
 
@@ -24,10 +24,8 @@ const EventPageDialog = ({ eventKey }) => {
 
   // Close dialog by routing back to event
   const onClose = React.useCallback(() => {
-    Router.replace(`/event?eventKey=${eventKey}`, `/event/${eventKey}`, {
-      shallow: true,
-    });
-  }, [eventKey]);
+    window.history.go(-1);
+  }, []);
 
   // Update keys whenever query keys change, but only if the dialog is open
   // Otherwise, the dialog will render blank when closing

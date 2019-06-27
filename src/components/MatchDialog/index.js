@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import Router from "next/router";
-import Link from "@material-ui/core/Link";
+import MuiLink from "@material-ui/core/Link";
 import Typography from "@material-ui/core/Typography";
 
 import useData from "../../lib/useData";
@@ -21,9 +21,9 @@ const TeamLink = ({ eventKey, teamKey }) => {
     [eventKey, teamKey, as]
   );
   return (
-    <Link href={as} onClick={onClick}>
+    <MuiLink href={as} onClick={onClick}>
       {teamKey}
-    </Link>
+    </MuiLink>
   );
 };
 TeamLink.propTypes = {

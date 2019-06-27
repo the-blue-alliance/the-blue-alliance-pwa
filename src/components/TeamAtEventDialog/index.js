@@ -1,8 +1,9 @@
 import React from "react";
 import PropTypes from "prop-types";
 import Router from "next/router";
-import Link from "@material-ui/core/Link";
+import MuiLink from "@material-ui/core/Link";
 import Typography from "@material-ui/core/Typography";
+import Link from "../Link";
 
 // Temporary component for testing
 const MatchLink = ({ eventKey, matchKey }) => {
@@ -17,9 +18,9 @@ const MatchLink = ({ eventKey, matchKey }) => {
     [eventKey, matchKey, as]
   );
   return (
-    <Link href={as} onClick={onClick}>
+    <MuiLink href={as} onClick={onClick}>
       {matchKey}
-    </Link>
+    </MuiLink>
   );
 };
 MatchLink.propTypes = {
@@ -32,10 +33,17 @@ const TeamAtEventDialog = ({ eventKey, teamKey }) => {
     return null;
   }
 
+  const year = eventKey.substring(0, 4);
   return (
     <>
       <Typography>
-        {teamKey} @ {eventKey}
+        <Link
+          href={`/team?teamKey=${teamKey}&year=${year}`}
+          as={`/team/${teamKey}/${year}#${eventKey}`}
+        >
+          {teamKey}
+        </Link>
+        @ {eventKey}
       </Typography>
       <MatchLink
         key={teamKey}
