@@ -27,7 +27,7 @@ const MatchRow = ({ eventKey, match }) => {
 
 MatchRow.propTypes = {
   eventKey: PropTypes.string.isRequired,
-  match: PropTypes.object,
+  match: PropTypes.object.isRequired,
 };
 
 export default React.memo(MatchRow);

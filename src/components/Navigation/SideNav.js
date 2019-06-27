@@ -4,7 +4,6 @@ import { makeStyles } from "@material-ui/core/styles";
 import Drawer from "@material-ui/core/Drawer";
 import Divider from "@material-ui/core/Divider";
 import List from "@material-ui/core/List";
-import ListSubheader from "@material-ui/core/ListSubheader";
 import Typography from "@material-ui/core/Typography";
 import HomeIcon from "@material-ui/icons/Home";
 import EventIcon from "@material-ui/icons/Event";
@@ -15,7 +14,7 @@ import VideocamIcon from "@material-ui/icons/Videocam";
 
 import { sideNavWidth } from "../../constants/Config";
 import SideNavListItem from "./SideNavListItem";
-import ThemeToggleListItem from "./ThemeToggleListItem";
+import TestingItems from "./TestingItems";
 import Link from "../Link";
 
 const useStyles = makeStyles(theme => ({
@@ -89,8 +88,7 @@ const SideNav = ({ route }) => {
             active={route === "/gameday"}
           />
           <Divider />
-          <ListSubheader component="div">Temp for testing</ListSubheader>
-          <ThemeToggleListItem />
+          <TestingItems />
           <Divider />
           <div className={classes.spacing} />
           <Divider />
