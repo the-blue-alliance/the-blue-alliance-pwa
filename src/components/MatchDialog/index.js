@@ -19,7 +19,7 @@ const MatchDialog = ({ eventKey }) => {
 
   // Close dialog by routing back to event
   const onClose = React.useCallback(() => {
-    Router.push(`/event?eventKey=${eventKey}`, `/event/${eventKey}`, {
+    Router.replace(`/event?eventKey=${eventKey}`, `/event/${eventKey}`, {
       shallow: true,
     });
   }, [eventKey]);

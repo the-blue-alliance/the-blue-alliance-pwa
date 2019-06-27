@@ -8,7 +8,7 @@ const MatchRow = ({ eventKey, match }) => {
   const openMatchModal = React.useCallback(
     e => {
       e.preventDefault();
-      Router.push(
+      Router.replace(
         `/event?eventKey=${eventKey}&matchKey=${matchKey}`,
         `/match/${matchKey}`,
         { shallow: true }
