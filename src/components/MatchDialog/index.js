@@ -37,7 +37,6 @@ const MatchDialog = ({ eventKey }) => {
       open={!!queryMatchKey}
       TransitionComponent={Transition}
       onClose={onClose}
-      keepMounted
     >
       <Typography>Match: {matchKey}</Typography>
     </Dialog>
