@@ -9,7 +9,8 @@ Currently at https://beta.thebluealliance.com
 
 ## Getting started
 
-[Node.js](https://nodejs.org/en/download/) 8 or higher is required.
+[Node.js](https://nodejs.org/en/download/) 10 is required.
+[NVM](https://github.com/nvm-sh/nvm) can be used to manage Node.js versions.
 
 Fill out `.env.sample` and save it as `.env`.
 

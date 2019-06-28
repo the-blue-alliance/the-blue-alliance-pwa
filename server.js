@@ -94,9 +94,23 @@ app.prepare().then(() => {
   server.get("/events", (req, res) => {
     renderAndCache(req, res, "/events");
   });
-  server.get("/match/:matchKey", (req, res) => {
-    renderAndCache(req, res, "/match", { matchKey: req.params.matchKey });
+
+  server.get("/team/:teamKey/:year", (req, res) => {
+    renderAndCache(req, res, "/team", {
+      teamKey: req.params.teamKey,
+      year: req.params.year,
+    });
   });
+  server.get("/team/:teamKey", (req, res) => {
+    renderAndCache(req, res, "/team", { teamKey: req.params.teamKey });
+  });
+
+  server.get("/match/:matchKey", (req, res) => {
+    return renderAndCache(req, res, "/match", {
+      matchKey: req.params.matchKey,
+    });
+  });
+
   server.get("/", (req, res) => {
     renderAndCache(req, res, "/");
   });
