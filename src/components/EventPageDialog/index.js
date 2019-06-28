@@ -4,6 +4,7 @@ import { useRouter } from "next/router";
 import Dialog from "@material-ui/core/Dialog";
 import Slide from "@material-ui/core/Slide";
 
+import useHistoryState from "../../lib/useHistoryState";
 import MatchDialog from "../MatchDialog";
 import TeamAtEventDialog from "../TeamAtEventDialog";
 
@@ -19,31 +20,20 @@ const EventPageDialog = ({ eventKey }) => {
   const open = !!queryMatchKey || !!queryTeamKey;
 
   // Keep track of dialog modal depth
-  const [modalDepth, setModalDepth] = React.useState(
-    // Use history depth if it exists
-    (typeof history !== "undefined" &&
-      history.state &&
-      history.state.modalDepth) ||
-      0
+  const [modalDepth, setModalDepth, isNewHistory] = useHistoryState(
+    "modalDepth",
+    0
   );
   React.useEffect(() => {
-    // Set history state whenever modalDepth updates
-    history.replaceState({ modalDepth });
-  }, [modalDepth]);
-  React.useEffect(() => {
-    // Update depth whenever query keys change
-    if (history.state.modalDepth === undefined) {
-      // History is being pushed
+    // Update depth whenever query keys change due to history being pushed
+    if (isNewHistory) {
       setModalDepth(modalDepth + 1);
-    } else if (modalDepth !== history.state.modalDepth) {
-      // Navigating to an existing point in history
-      setModalDepth(history.state.modalDepth);
     }
-  }, [modalDepth, queryMatchKey, queryTeamKey]);
+  }, [isNewHistory, modalDepth, setModalDepth, queryMatchKey, queryTeamKey]);
 
   // Close dialog by backing out of modal
   const onClose = React.useCallback(() => {
-    window.history.go(-modalDepth);
+    history.go(-modalDepth);
   }, [modalDepth]);
 
   // The matchKey or teamKey to render
