@@ -46,6 +46,18 @@ export default class Match extends Record({
       }${this.match_number}`;
     }
   }
+
+  getShortName() {
+    if (this.comp_level === "qm") {
+      return `Q${this.match_number}`;
+    } else if (this.comp_level === "f") {
+      return `F${this.match_number}`;
+    } else {
+      return `${this.comp_level.toUpperCase()}${this.set_number}-${
+        this.match_number
+      }`;
+    }
+  }
   //
   // getNaturalOrder() {
   //   return PLAY_ORDER[this.comp_level]*100000 + this.set_number*100 + this.match_number

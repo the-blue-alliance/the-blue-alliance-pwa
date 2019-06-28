@@ -108,3 +108,26 @@ export const fetchEventMatches = eventKey => dispatch => {
       });
     });
 };
+
+// Match page
+export const fetchMatch = matchKey => dispatch => {
+  dispatch({
+    type: types.FETCH_MATCH_REQUEST,
+    matchKey,
+  });
+  return tracedFetch(`${baseURL}/api/v3/match/${matchKey}`, fetchOptions)
+    .then(handleErrors)
+    .then(match =>
+      dispatch({
+        type: types.FETCH_MATCH_SUCCESS,
+        matchKey,
+        data: match,
+      })
+    )
+    .catch(() => {
+      dispatch({
+        type: types.FETCH_MATCH_ERROR,
+        matchKey,
+      });
+    });
+};

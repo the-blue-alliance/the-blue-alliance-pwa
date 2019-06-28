@@ -94,9 +94,9 @@ app.prepare().then(() => {
   server.get("/events", (req, res) => {
     renderAndCache(req, res, "/events");
   });
-  // server.get('/match/:matchKey', (req, res) => {
-  //   return renderAndCache(req, res, '/match', { matchKey: req.params.matchKey })
-  // })
+  server.get("/match/:matchKey", (req, res) => {
+    renderAndCache(req, res, "/match", { matchKey: req.params.matchKey });
+  });
   server.get("/", (req, res) => {
     renderAndCache(req, res, "/");
   });
