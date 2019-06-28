@@ -4,8 +4,8 @@ import { useSelector, useDispatch } from "react-redux";
 const useData = (
   fetchStatusSelector,
   dataSelector,
-  dataFetcher,
-  refetchOnLoad
+  dataFetcher = null,
+  refetchOnLoad = false
 ) => {
   const fetchStatus = useSelector(fetchStatusSelector);
   const data = useSelector(dataSelector);

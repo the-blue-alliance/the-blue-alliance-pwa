@@ -10,9 +10,8 @@ import useData from "../lib/useData";
 import notFoundError from "../lib/notFoundError";
 import Typography from "@material-ui/core/Typography";
 import Page from "../components/Page";
-import Link from "../components/Link";
 import MatchRow from "../components/MatchRow";
-import MatchDialog from "../components/MatchDialog";
+import EventPageDialog from "../components/EventPageDialog";
 
 const Event = ({ eventKey, refetchOnLoad }) => {
   const [event, eventFetchStatus, refetchEvent] = useData(
@@ -21,7 +20,7 @@ const Event = ({ eventKey, refetchOnLoad }) => {
     React.useMemo(() => fetchEvent(eventKey), [eventKey]),
     refetchOnLoad.event
   );
-  const [matches, matchesFetchStatus, refetchMatches] = useData(
+  const [unsortedMatches, matchesFetchStatus, refetchMatches] = useData(
     state => getEventMatchesFetchStatus(state, eventKey),
     state => getEventMatches(state, eventKey),
     React.useMemo(() => fetchEventMatches(eventKey), [eventKey]),
@@ -31,6 +30,15 @@ const Event = ({ eventKey, refetchOnLoad }) => {
     refetchEvent();
     refetchMatches();
   }, [refetchEvent, refetchMatches]);
+
+  // Sort matches
+  const matches = React.useMemo(
+    () =>
+      unsortedMatches.sort((a, b) => {
+        return a.getNaturalOrder() - b.getNaturalOrder();
+      }),
+    [unsortedMatches]
+  );
 
   if (!event) {
     return notFoundError();
@@ -55,11 +63,10 @@ const Event = ({ eventKey, refetchOnLoad }) => {
       refreshFunction={handleRefresh}
     >
       <Typography variant="h4">{event.name}</Typography>
-      <Link href="/">Home</Link>
       {matches.map(match => (
         <MatchRow key={match.key} eventKey={eventKey} match={match} />
       ))}
-      <MatchDialog eventKey={eventKey} />
+      <EventPageDialog eventKey={eventKey} />
     </Page>
   );
 };

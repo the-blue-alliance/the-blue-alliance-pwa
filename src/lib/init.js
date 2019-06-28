@@ -16,6 +16,15 @@ if (firebase.apps.length === 0) {
   }
 }
 
+// Track Google Analytics pageviews
 if (isProd) {
   Router.events.on("routeChangeComplete", url => gtag.pageview(url));
+}
+
+// Next.js clobbers history state on history.replaceState
+// Wrap history.replaceState to never clobber state
+if (typeof history !== "undefined") {
+  const wrap = fn => (state, title, url) =>
+    fn.call(history, Object.assign({}, history.state, state || {}), title, url);
+  history.replaceState = wrap(history.replaceState);
 }
