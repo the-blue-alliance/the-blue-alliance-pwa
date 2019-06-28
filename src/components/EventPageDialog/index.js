@@ -18,14 +18,37 @@ const EventPageDialog = ({ eventKey }) => {
   const queryTeamKey = router.query.teamKey;
   const open = !!queryMatchKey || !!queryTeamKey;
 
+  // Keep track of dialog modal depth
+  const [modalDepth, setModalDepth] = React.useState(
+    // Use history depth if it exists
+    (typeof history !== "undefined" &&
+      history.state &&
+      history.state.modalDepth) ||
+      0
+  );
+  React.useEffect(() => {
+    // Set history state whenever modalDepth updates
+    history.replaceState({ modalDepth });
+  }, [modalDepth]);
+  React.useEffect(() => {
+    // Update depth whenever query keys change
+    if (history.state.modalDepth === undefined) {
+      // History is being pushed
+      setModalDepth(modalDepth + 1);
+    } else if (modalDepth !== history.state.modalDepth) {
+      // Navigating to an existing point in history
+      setModalDepth(history.state.modalDepth);
+    }
+  }, [modalDepth, queryMatchKey, queryTeamKey]);
+
+  // Close dialog by backing out of modal
+  const onClose = React.useCallback(() => {
+    window.history.go(-modalDepth);
+  }, [modalDepth]);
+
   // The matchKey or teamKey to render
   const [matchKey, setMatchKey] = React.useState(undefined);
   const [teamKey, setTeamKey] = React.useState(undefined);
-
-  // Close dialog by routing back to event
-  const onClose = React.useCallback(() => {
-    window.history.go(-1);
-  }, []);
 
   // Update keys whenever query keys change, but only if the dialog is open
   // Otherwise, the dialog will render blank when closing

@@ -11,7 +11,7 @@ const MatchLink = ({ eventKey, matchKey }) => {
   const onClick = React.useCallback(
     e => {
       e.preventDefault();
-      Router.replace(`/event?eventKey=${eventKey}&matchKey=${matchKey}`, as, {
+      Router.push(`/event?eventKey=${eventKey}&matchKey=${matchKey}`, as, {
         shallow: true,
       });
     },

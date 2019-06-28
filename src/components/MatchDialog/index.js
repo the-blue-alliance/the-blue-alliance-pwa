@@ -14,7 +14,7 @@ const TeamLink = ({ eventKey, teamKey }) => {
   const onClick = React.useCallback(
     e => {
       e.preventDefault();
-      Router.replace(`/event?eventKey=${eventKey}&teamKey=${teamKey}`, as, {
+      Router.push(`/event?eventKey=${eventKey}&teamKey=${teamKey}`, as, {
         shallow: true,
       });
     },
