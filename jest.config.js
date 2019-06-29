@@ -7,7 +7,7 @@ module.exports = {
     __FIREBASE_CONFIG__: "",
     __STACKDRIVER_CONFIG__: "",
   },
-  setupFiles: ["./config/jest/setup.js"],
+  setupFiles: ["./config/jest/setup.js", "./src/lib/init.js"],
   testPathIgnorePatterns: ["./.next/", "./node_modules/"],
   transform: {
     "^.+\\.jsx?$": "babel-jest",

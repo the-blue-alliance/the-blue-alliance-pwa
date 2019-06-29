@@ -7,6 +7,7 @@ import Match from "../database/Match";
 
 const defaultState = fromJS({
   app: {
+    historyState: {},
     darkTheme: false,
   },
   models: {},

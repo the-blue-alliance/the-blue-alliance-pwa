@@ -8,13 +8,13 @@ const COMP_LEVELS = {
   sf: "Semis",
   f: "Finals",
 };
-// const PLAY_ORDER = {
-//   qm: 1,
-//   ef: 2,
-//   qf: 3,
-//   sf: 4,
-//   f: 5
-// };
+const PLAY_ORDER = {
+  qm: 1,
+  ef: 2,
+  qf: 3,
+  sf: 4,
+  f: 5,
+};
 // const rpAText = {
 //   2017: "Pressure Reached",
 //   2018: "Auto Quest"
@@ -62,11 +62,15 @@ export default class Match extends Record({
   getYear() {
     return parseInt(this.key.substring(0, 4), 10);
   }
-  //
-  // getNaturalOrder() {
-  //   return PLAY_ORDER[this.comp_level]*100000 + this.set_number*100 + this.match_number
-  // }
-  //
+
+  getNaturalOrder() {
+    return (
+      PLAY_ORDER[this.comp_level] * 100000 +
+      this.set_number * 100 +
+      this.match_number
+    );
+  }
+
   // getPlayOrder() {
   //   return PLAY_ORDER[this.comp_level]*100000 + this.match_number*100 + this.set_number
   // }
