@@ -1,5 +1,5 @@
 import { Record } from "immutable";
-// import moment from 'moment-timezone'
+import moment from "moment-timezone";
 
 export const REGIONAL = 0;
 export const DISTRICT = 1;
@@ -84,28 +84,31 @@ export default class Event extends Record({
   //   return this.cityStateCountryLower
   // }
 
-  // // Time
-  // getDateString() {
-  //   if (this.dateStr === undefined) {
-  //     const startDate = moment(this.start_date)
-  //     const endDate = moment(this.end_date)
-  //     this.dateStr = endDate.format('MMM D, YYYY').replace(/ /g, '\u00a0')
-  //     if (this.start_date !== this.end_date) {
-  //       const startDateStr = startDate.format('MMM D')
-  //       this.dateStr = `${startDateStr.replace(/ /g, '\u00a0')} to ${this.dateStr.replace(/ /g, '\u00a0')}`
-  //     }
-  //   }
-  //   return this.dateStr
-  // }
-  //
-  // startMoment() {
-  //   return moment.tz(this.start_date, this.timezone)
-  // }
-  //
-  // endMoment() {
-  //   // Add one day because end_date is 12 AM
-  //   return moment.tz(this.end_date, this.timezone).add(1, 'days')
-  // }
+  // Time
+  getDateString() {
+    if (this.dateStr === undefined) {
+      const startDate = moment(this.start_date);
+      const endDate = moment(this.end_date);
+      this.dateStr = endDate.format("MMM D, YYYY").replace(/ /g, "\u00a0");
+      if (this.start_date !== this.end_date) {
+        const startDateStr = startDate.format("MMM D");
+        this.dateStr = `${startDateStr.replace(
+          / /g,
+          "\u00a0"
+        )} to ${this.dateStr.replace(/ /g, "\u00a0")}`;
+      }
+    }
+    return this.dateStr;
+  }
+
+  startMoment() {
+    return moment.tz(this.start_date, this.timezone);
+  }
+
+  endMoment() {
+    // Add one day because end_date is 12 AM
+    return moment.tz(this.end_date, this.timezone).add(1, "days");
+  }
 
   // withinDays(negativeDaysBefore, daysAfter) {
   //   const now = moment.now()
@@ -114,17 +117,17 @@ export default class Event extends Record({
   //   return afterStart && beforeEnd
   // }
   //
-  // isNow() {
-  //   return !this.isPast() && !this.isFuture()
-  // }
-  //
-  // isPast() {
-  //   return this.endMoment() < moment.now()
-  // }
-  //
-  // isFuture() {
-  //   return this.startMoment() > moment.now()
-  // }
+  isNow() {
+    return !this.isPast() && !this.isFuture();
+  }
+
+  isPast() {
+    return this.endMoment() < moment.now();
+  }
+
+  isFuture() {
+    return this.startMoment() > moment.now();
+  }
 
   // isThisWeek() {
   //   // An event is this week iff

@@ -10,11 +10,11 @@ import useQueryParam from "../lib/useQueryParam";
 import useQueryParamSet from "../lib/useQueryParamSet";
 import notFoundError from "../lib/notFoundError";
 import Page from "../components/Page";
-import Link from "../components/Link";
 import { makeStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import EventListSearchCard from "../components/EventListSearchCard";
+import EventListCard from "../components/EventListCard";
 
 const useStyles = makeStyles({
   sideNav: {},
@@ -85,16 +85,7 @@ const Events = ({ year, refetchOnLoad }) => {
           <Typography variant="subtitle1">
             {filteredEvents.count()} results
           </Typography>
-          {filteredEvents.map(event => (
-            <div key={event.key}>
-              <Link
-                href={`/event?eventKey=${event.key}`}
-                as={`/event/${event.key}`}
-              >
-                {`${event.year} ${event.safeShortName()}`}
-              </Link>
-            </div>
-          ))}
+          <EventListCard events={filteredEvents} />
         </Grid>
       </Grid>
     </Page>
