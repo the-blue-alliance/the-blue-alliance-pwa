@@ -2,9 +2,11 @@ import React from "react";
 import PropTypes from "prop-types";
 import { makeStyles } from "@material-ui/core/styles";
 import Badge from "@material-ui/core/Badge";
+import Button from "@material-ui/core/Button";
 import Collapse from "@material-ui/core/Collapse";
 import IconButton from "@material-ui/core/IconButton";
 import Paper from "@material-ui/core/Paper";
+import NoSsr from "@material-ui/core/NoSsr";
 import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
 import FilterListIcon from "@material-ui/icons/FilterList";
@@ -34,6 +36,11 @@ const useStyles = makeStyles(theme => ({
     flex: 1,
     paddingRight: theme.spacing(1),
   },
+  filterActions: {
+    display: "flex",
+    justifyContent: "flex-end",
+    paddingTop: theme.spacing(1),
+  },
 }));
 
 const EventListSearchCard = ({ events }) => {
@@ -41,7 +48,7 @@ const EventListSearchCard = ({ events }) => {
   const searchRef = useSearchFocus();
   const [searchStr, setSearchStr] = useQueryParam("search");
   const [filterOpen, setFilterOpen] = React.useState(false);
-  const filters = useQueryParamSet("filters")[0];
+  const [filters, , , clearFilters] = useQueryParamSet("filters");
 
   const handleSearchStrChange = React.useCallback(
     e => {
@@ -86,26 +93,37 @@ const EventListSearchCard = ({ events }) => {
           </IconButton>
         )}
       </div>
-      {hasDistricts && (
-        <Collapse in={filterOpen}>
-          <Typography variant="subtitle1">Filters</Typography>
-          {hasRegional && (
-            <EventFilterChipContainer
-              filterKey="regional"
-              label="Regional"
-              color={districtColors.regional}
-            />
-          )}
-          {districts.map(district => (
-            <EventFilterChipContainer
-              key={district}
-              filterKey={district}
-              label={`${district.toUpperCase()} District`}
-              color={districtColors[district]}
-            />
-          ))}
-        </Collapse>
-      )}
+      <NoSsr>
+        {hasDistricts && (
+          <Collapse in={filterOpen}>
+            <Typography variant="subtitle1">Filters</Typography>
+            {hasRegional && (
+              <EventFilterChipContainer
+                filterKey="regional"
+                label="Regional"
+                color={districtColors.regional}
+              />
+            )}
+            {districts.map(district => (
+              <EventFilterChipContainer
+                key={district}
+                filterKey={district}
+                label={`${district.toUpperCase()} District`}
+                color={districtColors[district]}
+              />
+            ))}
+            <div className={classes.filterActions}>
+              <Button
+                onClick={clearFilters}
+                variant="outlined"
+                disabled={filters.size === 0}
+              >
+                Clear Filters
+              </Button>
+            </div>
+          </Collapse>
+        )}
+      </NoSsr>
     </Paper>
   );
 };
