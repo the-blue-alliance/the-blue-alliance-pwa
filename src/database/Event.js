@@ -26,7 +26,7 @@ export const PRESEASON = 100;
 //   FOC,
 // ])
 
-export default class Event extends Record({
+class Event extends Record({
   key: undefined,
   name: undefined,
   short_name: undefined,
@@ -176,3 +176,28 @@ export default class Event extends Record({
     return this.event_type === REGIONAL;
   }
 }
+
+Event.sortByDate = (a, b) => {
+  // Sort by date
+  if (a.start_date < b.start_date) {
+    return -1;
+  }
+  if (a.start_date > b.start_date) {
+    return 1;
+  }
+  if (a.end_date < b.end_date) {
+    return -1;
+  }
+  if (a.end_date > b.end_date) {
+    return 1;
+  }
+  if (a.name < b.name) {
+    return -1;
+  }
+  if (a.name > b.name) {
+    return 1;
+  }
+  return 0;
+};
+
+export default Event;

@@ -15,6 +15,7 @@ import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import EventListSearchCard from "../components/EventListSearchCard";
 import EventListCard from "../components/EventListCard";
+import Event from "../database/Event";
 
 const useStyles = makeStyles({
   sideNav: {},
@@ -22,19 +23,19 @@ const useStyles = makeStyles({
 
 const Events = ({ year, refetchOnLoad }) => {
   const classes = useStyles();
-  const [events, eventsFetchStatus, refetchEvents] = useData(
+  const [rawEvents, eventsFetchStatus, refetchEvents] = useData(
     state => getYearEventsFetchStatus(state, year),
     state => getYearEvents(state, year),
     React.useMemo(() => fetchYearEvents(year), [year]),
     refetchOnLoad.events
   );
 
-  // Apply filters from URL query
+  // Apply sort and filters from URL query
   const searchStr = useQueryParam("search")[0];
   const filters = useQueryParamSet("filters")[0];
-  const filteredEvents = React.useMemo(
+  const events = React.useMemo(
     () =>
-      events
+      rawEvents
         .filter(
           // Filter by district
           event => {
@@ -58,11 +59,12 @@ const Events = ({ year, refetchOnLoad }) => {
           event =>
             !searchStr ||
             event.name.toLowerCase().includes(searchStr.toLowerCase())
-        ),
-    [events, searchStr, filters]
+        )
+        .sort(Event.sortByDate),
+    [rawEvents, searchStr, filters]
   );
 
-  if (!events) {
+  if (!rawEvents) {
     return notFoundError();
   }
 
@@ -82,10 +84,8 @@ const Events = ({ year, refetchOnLoad }) => {
         </Grid>
         <Grid item xs={12} md={9} lg={10}>
           <EventListSearchCard events={events} />
-          <Typography variant="subtitle1">
-            {filteredEvents.count()} results
-          </Typography>
-          <EventListCard events={filteredEvents} />
+          <Typography variant="subtitle1">{events.count()} results</Typography>
+          <EventListCard events={events} />
         </Grid>
       </Grid>
     </Page>
