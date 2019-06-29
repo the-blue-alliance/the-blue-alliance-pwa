@@ -41,6 +41,9 @@ const useStyles = makeStyles(theme => ({
     justifyContent: "flex-end",
     paddingTop: theme.spacing(1),
   },
+  button: {
+    marginLeft: theme.spacing(1),
+  },
 }));
 
 const EventListSearchCard = ({ events }) => {
@@ -114,11 +117,20 @@ const EventListSearchCard = ({ events }) => {
             ))}
             <div className={classes.filterActions}>
               <Button
+                className={classes.button}
                 onClick={clearFilters}
                 variant="outlined"
                 disabled={filters.size === 0}
               >
                 Clear Filters
+              </Button>
+              <Button
+                className={classes.button}
+                onClick={toggleFilterOpen}
+                variant="outlined"
+                color="primary"
+              >
+                Okay
               </Button>
             </div>
           </Collapse>
