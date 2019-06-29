@@ -41,7 +41,7 @@ const useStyles = makeStyles(theme => ({
   dateContianer: {
     display: "flex",
     flexGrow: 1,
-    width: "35%",
+    width: "30%",
     justifyContent: "center",
     flexDirection: "column",
     paddingLeft: theme.spacing(1),
@@ -143,9 +143,7 @@ const EventListItem = ({ event }) => {
         </div>
 
         <div className={classes.dateContianer}>
-          <Typography variant="body2" noWrap>
-            {event.getDateString()}
-          </Typography>
+          <Typography variant="body2">{event.getDateString()}</Typography>
         </div>
 
         <div className={classes.webcastButtonContainer}>{webcastButton}</div>
