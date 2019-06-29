@@ -14,7 +14,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import EventListSearchCard from "../components/EventListSearchCard";
-import EventListCard from "../components/EventListCard";
+import GroupedEventList from "../components/GroupedEventList";
 import Event from "../database/Event";
 
 const useStyles = makeStyles({
@@ -85,7 +85,7 @@ const Events = ({ year, refetchOnLoad }) => {
         <Grid item xs={12} md={9} lg={10}>
           <EventListSearchCard events={rawEvents} />
           <Typography variant="subtitle1">{events.count()} results</Typography>
-          <EventListCard events={events} />
+          <GroupedEventList events={events} />
         </Grid>
       </Grid>
     </Page>

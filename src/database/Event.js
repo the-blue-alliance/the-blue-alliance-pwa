@@ -11,20 +11,17 @@ export const FOC = 6;
 export const OFFSEASON = 99;
 export const PRESEASON = 100;
 
-// const CMP_TYPES = new Set([
-//   CMP_DIVISION,
-//   CMP_FINALS,
-// ])
+const CMP_TYPES = new Set([CMP_DIVISION, CMP_FINALS]);
 
-// const OFFICIAL_TYPES = new Set([
-//   REGIONAL,
-//   DISTRICT,
-//   DISTRICT_CMP_DIVISION,
-//   DISTRICT_CMP,
-//   CMP_DIVISION,
-//   CMP_FINALS,
-//   FOC,
-// ])
+const OFFICIAL_TYPES = new Set([
+  REGIONAL,
+  DISTRICT,
+  DISTRICT_CMP_DIVISION,
+  DISTRICT_CMP,
+  CMP_DIVISION,
+  CMP_FINALS,
+  FOC,
+]);
 
 class Event extends Record({
   key: undefined,
@@ -155,26 +152,22 @@ class Event extends Record({
   //   return Math.abs(offset) <= 4
   // }
 
-  // // Event type
-  // isCMP() {
-  //   return CMP_TYPES.has(this.event_type)
-  // }
+  // Event type
+  isCMP() {
+    return CMP_TYPES.has(this.event_type);
+  }
 
-  // isDistrictQual() {
-  //   return this.event_type === DISTRICT
-  // }
+  isDistrictQual() {
+    return this.event_type === DISTRICT;
+  }
 
-  // isFOC() {
-  //   return this.event_type === FOC
-  // }
+  isFOC() {
+    return this.event_type === FOC;
+  }
 
-  // isPreseason() {
-  //   return this.event_type === PRESEASON
-  // }
-
-  // isOfficial() {
-  //   return OFFICIAL_TYPES.has(this.event_type)
-  // }
+  isOfficial() {
+    return OFFICIAL_TYPES.has(this.event_type);
+  }
 
   isRegional() {
     return this.event_type === REGIONAL;
