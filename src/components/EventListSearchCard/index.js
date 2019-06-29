@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 import { makeStyles } from "@material-ui/core/styles";
 import Badge from "@material-ui/core/Badge";
 import Collapse from "@material-ui/core/Collapse";
@@ -11,6 +12,7 @@ import EventFilterChipContainer from "../../containers/EventFilterChipContainer"
 import useQueryParam from "../../lib/useQueryParam";
 import useQueryParamSet from "../../lib/useQueryParamSet";
 import useSearchFocus from "../../lib/useSearchFocus";
+import districtColors from "../../constants/DistrictColors";
 
 const useStyles = makeStyles(theme => ({
   inputCard: {
@@ -33,7 +35,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const EventListSearchCard = () => {
+const EventListSearchCard = ({ events }) => {
   const classes = useStyles();
   const searchRef = useSearchFocus();
   const [searchStr, setSearchStr] = useQueryParam("search");
@@ -51,6 +53,19 @@ const EventListSearchCard = () => {
     filterOpen,
   ]);
 
+  // Determine which districts filters to show
+  let hasRegional = false;
+  const districtsSet = new Set();
+  events.forEach(event => {
+    if (event.district) {
+      districtsSet.add(event.district.get("abbreviation"));
+    } else if (event.isRegional()) {
+      hasRegional = true;
+    }
+  });
+  const districts = Array.from(districtsSet).sort();
+  const hasDistricts = districts.length > 0;
+
   return (
     <Paper className={classes.inputCard} square>
       <div className={classes.inputRow}>
@@ -62,23 +77,40 @@ const EventListSearchCard = () => {
           onChange={handleSearchStrChange}
           margin="none"
         />
-        <IconButton onClick={toggleFilterOpen}>
-          <Badge badgeContent={filters.size} color="secondary">
-            <FilterListIcon />
-          </Badge>
-        </IconButton>
+        {hasDistricts && (
+          <IconButton onClick={toggleFilterOpen}>
+            <Badge badgeContent={filters.size} color="secondary">
+              <FilterListIcon />
+            </Badge>
+          </IconButton>
+        )}
       </div>
-      <Collapse in={filterOpen}>
-        <Typography variant="subtitle1">Filters</Typography>
-        <EventFilterChipContainer
-          filterKey="regional"
-          label="Regional"
-          color="#fff"
-        />
-        <EventFilterChipContainer filterKey="fim" label="FIM" color="#3f51b5" />
-      </Collapse>
+      {hasDistricts && (
+        <Collapse in={filterOpen}>
+          <Typography variant="subtitle1">Filters</Typography>
+          {hasRegional && (
+            <EventFilterChipContainer
+              filterKey="regional"
+              label="Regional"
+              color={districtColors.regional}
+            />
+          )}
+          {districts.map(district => (
+            <EventFilterChipContainer
+              key={district}
+              filterKey={district}
+              label={`${district.toUpperCase()} District`}
+              color={districtColors[district]}
+            />
+          ))}
+        </Collapse>
+      )}
     </Paper>
   );
+};
+
+EventListSearchCard.propTypes = {
+  events: PropTypes.object,
 };
 
 export default React.memo(EventListSearchCard);

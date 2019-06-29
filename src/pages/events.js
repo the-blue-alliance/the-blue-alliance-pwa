@@ -81,7 +81,7 @@ const Events = ({ year, refetchOnLoad }) => {
           <div className={classes.sideNav}>TODO: YEAR PICKER & SECTIONS</div>
         </Grid>
         <Grid item xs={12} md={9} lg={10}>
-          <EventListSearchCard />
+          <EventListSearchCard events={events} />
           <Typography variant="subtitle1">
             {filteredEvents.count()} results
           </Typography>
