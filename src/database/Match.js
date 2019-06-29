@@ -58,6 +58,10 @@ export default class Match extends Record({
       }`;
     }
   }
+
+  getYear() {
+    return parseInt(this.key.substring(0, 4), 10);
+  }
   //
   // getNaturalOrder() {
   //   return PLAY_ORDER[this.comp_level]*100000 + this.set_number*100 + this.match_number

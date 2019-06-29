@@ -9,6 +9,7 @@ import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import Page from "../components/Page";
 import Link from "../components/Link";
+import MatchBreakdownTable from "../components/MatchBreakdownTable";
 import MatchVideos from "../components/MatchVideos";
 
 const Match = ({ matchKey, refetchOnLoad }) => {
@@ -53,11 +54,11 @@ const Match = ({ matchKey, refetchOnLoad }) => {
           {match && <Link href={`/event/${eventKey}`}>{event.name}</Link>}
         </small>
       </Typography>
-      <Grid container spacing={8}>
-        <Grid item xs={12} md={6}>
-          MatchBreakdownTable
+      <Grid container>
+        <Grid item xs={12} md={6} style={{ padding: 8 }}>
+          <MatchBreakdownTable match={match} />
         </Grid>
-        <Grid item xs={12} md={6}>
+        <Grid item xs={12} md={6} style={{ padding: 8 }}>
           <MatchVideos match={match} event={event} />
         </Grid>
       </Grid>
