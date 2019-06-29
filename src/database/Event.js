@@ -1,5 +1,5 @@
 import { Record } from "immutable";
-import moment from "moment-timezone";
+import { DateTime } from "luxon";
 
 export const REGIONAL = 0;
 export const DISTRICT = 1;
@@ -87,11 +87,13 @@ class Event extends Record({
   // Time
   getDateString() {
     if (this.dateStr === undefined) {
-      const startDate = moment(this.start_date);
-      const endDate = moment(this.end_date);
-      this.dateStr = endDate.format("MMM D, YYYY").replace(/ /g, "\u00a0");
+      const startDate = DateTime.fromISO(this.start_date);
+      const endDate = DateTime.fromISO(this.end_date);
+      // like "Aug 6, 2019"
+      this.dateStr = endDate.toFormat("LLL d, yyyy").replace(/ /g, "\u00a0");
       if (this.start_date !== this.end_date) {
-        const startDateStr = startDate.format("MMM D");
+        // Like "Aug 5"
+        const startDateStr = startDate.toFormat("LLL d");
         this.dateStr = `${startDateStr.replace(
           / /g,
           "\u00a0"
@@ -101,19 +103,21 @@ class Event extends Record({
     return this.dateStr;
   }
 
-  startMoment() {
-    return moment.tz(this.start_date, this.timezone);
+  startDateTime() {
+    return DateTime.fromISO(this.start_date, { zone: this.timezone });
   }
 
-  endMoment() {
+  endDateTime() {
     // Add one day because end_date is 12 AM
-    return moment.tz(this.end_date, this.timezone).add(1, "days");
+    return DateTime.fromISO(this.end_date, { zone: this.timezone }).plus({
+      days: 1,
+    });
   }
 
   // withinDays(negativeDaysBefore, daysAfter) {
   //   const now = moment.now()
-  //   const afterStart = this.startMoment().add(negativeDaysBefore, 'days') < now
-  //   const beforeEnd = this.endMoment().add(daysAfter, 'days') > now
+  //   const afterStart = this.startDateTime().add(negativeDaysBefore, 'days') < now
+  //   const beforeEnd = this.endDateTime().add(daysAfter, 'days') > now
   //   return afterStart && beforeEnd
   // }
   //
@@ -122,11 +126,11 @@ class Event extends Record({
   }
 
   isPast() {
-    return this.endMoment() < moment.now();
+    return this.endDateTime() < DateTime.local();
   }
 
   isFuture() {
-    return this.startMoment() > moment.now();
+    return this.startDateTime() > DateTime.local();
   }
 
   // isThisWeek() {
@@ -147,7 +151,7 @@ class Event extends Record({
   //   } else {
   //     closestWed = nextWed
   //   }
-  //   const offset = moment.duration(this.startMoment() - closestWed).asDays()
+  //   const offset = moment.duration(this.startDateTime() - closestWed).asDays()
   //   return Math.abs(offset) <= 4
   // }
 

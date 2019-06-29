@@ -49,9 +49,6 @@ const nextConfig = {
       fs: "empty",
     };
 
-    // Ignore all locale files of moment.js
-    config.plugins.push(new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/));
-
     // Optimize images
     config.module.rules.push({
       test: /\.(jpg|png|gif|svg)$/,
