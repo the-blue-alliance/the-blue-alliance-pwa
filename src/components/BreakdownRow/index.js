@@ -7,7 +7,7 @@ const useStyles = makeStyles({
   row: {
     minHeight: 40,
     fontSize: 14,
-    borderBottom: "1px solid #ffffff",
+    borderBottom: "1px solid #0000001f",
   },
   box: {
     display: "flex",
@@ -19,10 +19,7 @@ const useStyles = makeStyles({
     paddingTop: 2,
   },
   grey: {
-    backgroundColor: "#f0f0f0",
-  },
-  lightGrey: {
-    backgroundColor: "#ffffff",
+    backgroundColor: "#0000001f",
   },
   lightRed: {
     backgroundColor: "#ff000011",
