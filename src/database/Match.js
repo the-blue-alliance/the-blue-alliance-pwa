@@ -47,18 +47,6 @@ export default class Match extends Record({
     }
   }
 
-  getShortName() {
-    if (this.comp_level === "qm") {
-      return `Q${this.match_number}`;
-    } else if (this.comp_level === "f") {
-      return `F${this.match_number}`;
-    } else {
-      return `${this.comp_level.toUpperCase()}${this.set_number}-${
-        this.match_number
-      }`;
-    }
-  }
-
   getYear() {
     return parseInt(this.key.substring(0, 4), 10);
   }

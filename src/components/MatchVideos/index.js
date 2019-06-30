@@ -28,7 +28,7 @@ const useStyles = makeStyles(theme => ({
 const MatchVideos = ({ match, event }) => {
   const classes = useStyles();
   const youtubeSearchLink = `https://www.youtube.com/results?search_query=${encodeURIComponent(
-    `${match.getShortName()} ${event.year} ${event.name}`
+    `${match.getDisplayName()} ${event.year} ${event.name}`
   )}`;
   return (
     <div>
