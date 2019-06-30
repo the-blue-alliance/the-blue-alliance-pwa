@@ -8,6 +8,44 @@ import notFoundError from "../lib/notFoundError";
 import WindowScrollerList from "../components/WindowScrollerList";
 import TeamListItem from "../components/TeamListItem";
 
+class ServerFallback extends React.Component {
+  // Enables the hydration of client without re-rendering server-only fallback
+  // See https://github.com/facebook/react/issues/6985#issuecomment-326526059
+
+  getExistingHtml(id) {
+    if (typeof document === "undefined") return;
+    const node = document.getElementById(id);
+    return node && node.innerHTML;
+  }
+
+  shouldComponentUpdate() {
+    return false;
+  }
+
+  render() {
+    const { id, children } = this.props;
+    const html = this.getExistingHtml(id);
+
+    if (html) {
+      // Hydrate fallback on client without re-rendering
+      return <div id={id} dangerouslySetInnerHTML={{ __html: html }} />;
+    }
+    if (process.browser) {
+      // Don't render fallback on client
+      return null;
+    }
+    // Render fallback on server
+    return <div id={id}>{children}</div>;
+  }
+}
+ServerFallback.propTypes = {
+  id: PropTypes.string.isRequired,
+  children: PropTypes.oneOfType([
+    PropTypes.arrayOf(PropTypes.node),
+    PropTypes.node,
+  ]).isRequired,
+};
+
 const Teams = ({ page, teams }) => {
   const rowRenderer = React.useCallback(
     ({ index, style }) => {
@@ -23,9 +61,9 @@ const Teams = ({ page, teams }) => {
 
   let minTeam = 1;
   if (page > 0) {
-    minTeam = 1000 * page;
+    minTeam = 100 * page;
   }
-  const maxTeam = 1000 * page + 999;
+  const maxTeam = 100 * page + 99;
   const teamsRange = `${minTeam}-${maxTeam}`;
 
   return (
@@ -35,29 +73,32 @@ const Teams = ({ page, teams }) => {
     >
       <Typography variant="h4">Teams</Typography>
       <Typography variant="h5">{teamsRange}</Typography>
-      <Paper>
-        <NoSsr
-          fallback={
-            !process.browser &&
-            teams
-              .slice(minTeam - 1, maxTeam)
-              .map(team => <TeamListItem key={team.key} team={team} />)
-          }
-        >
+      <NoSsr
+        fallback={
+          <ServerFallback id="team-list-server-fallback">
+            <Paper>
+              {teams.slice(minTeam - 1, maxTeam).map(team => (
+                <TeamListItem key={team.key} team={team} />
+              ))}
+            </Paper>
+          </ServerFallback>
+        }
+      >
+        <Paper>
           <WindowScrollerList
             rowCount={teams.length}
             rowHeight={65}
             rowRenderer={rowRenderer}
           />
-        </NoSsr>
-      </Paper>
+        </Paper>
+      </NoSsr>
     </Page>
   );
 };
 
 Teams.getInitialProps = async ({ query }) => {
   let pageNum = 0;
-  const maxPage = 7; // TODO: don't hardcode
+  const maxPage = 70; // TODO: don't hardcode
 
   // Temp fake teams
   const teamNumbers = Array.apply(null, { length: 7999 }).map(
