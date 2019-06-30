@@ -52,7 +52,10 @@ const Match = ({ matchKey, refetchOnLoad }) => {
         {match.getDisplayName()} @{" "}
         <small>
           {match && (
-            <Link href={`/event/${eventKey}`} as={`/event/${eventKey}`}>
+            <Link
+              href={`/event?eventKey=${eventKey}`}
+              as={`/event/${eventKey}`}
+            >
               {event.name}
             </Link>
           )}
