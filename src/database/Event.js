@@ -1,5 +1,5 @@
 import { Record } from "immutable";
-// import moment from 'moment-timezone'
+import { DateTime } from "luxon";
 
 export const REGIONAL = 0;
 export const DISTRICT = 1;
@@ -11,22 +11,19 @@ export const FOC = 6;
 export const OFFSEASON = 99;
 export const PRESEASON = 100;
 
-// const CMP_TYPES = new Set([
-//   CMP_DIVISION,
-//   CMP_FINALS,
-// ])
+const CMP_TYPES = new Set([CMP_DIVISION, CMP_FINALS]);
 
-// const OFFICIAL_TYPES = new Set([
-//   REGIONAL,
-//   DISTRICT,
-//   DISTRICT_CMP_DIVISION,
-//   DISTRICT_CMP,
-//   CMP_DIVISION,
-//   CMP_FINALS,
-//   FOC,
-// ])
+const OFFICIAL_TYPES = new Set([
+  REGIONAL,
+  DISTRICT,
+  DISTRICT_CMP_DIVISION,
+  DISTRICT_CMP,
+  CMP_DIVISION,
+  CMP_FINALS,
+  FOC,
+]);
 
-export default class Event extends Record({
+class Event extends Record({
   key: undefined,
   name: undefined,
   short_name: undefined,
@@ -84,47 +81,54 @@ export default class Event extends Record({
   //   return this.cityStateCountryLower
   // }
 
-  // // Time
-  // getDateString() {
-  //   if (this.dateStr === undefined) {
-  //     const startDate = moment(this.start_date)
-  //     const endDate = moment(this.end_date)
-  //     this.dateStr = endDate.format('MMM D, YYYY').replace(/ /g, '\u00a0')
-  //     if (this.start_date !== this.end_date) {
-  //       const startDateStr = startDate.format('MMM D')
-  //       this.dateStr = `${startDateStr.replace(/ /g, '\u00a0')} to ${this.dateStr.replace(/ /g, '\u00a0')}`
-  //     }
-  //   }
-  //   return this.dateStr
-  // }
-  //
-  // startMoment() {
-  //   return moment.tz(this.start_date, this.timezone)
-  // }
-  //
-  // endMoment() {
-  //   // Add one day because end_date is 12 AM
-  //   return moment.tz(this.end_date, this.timezone).add(1, 'days')
-  // }
+  // Time
+  getDateString() {
+    if (this.dateStr === undefined) {
+      const startDate = DateTime.fromISO(this.start_date);
+      const endDate = DateTime.fromISO(this.end_date);
+      // like "Aug 6, 2019"
+      this.dateStr = endDate.toFormat("LLL d, yyyy").replace(/ /g, "\u00a0");
+      if (this.start_date !== this.end_date) {
+        // Like "Aug 5"
+        const startDateStr = startDate.toFormat("LLL d");
+        this.dateStr = `${startDateStr.replace(
+          / /g,
+          "\u00a0"
+        )} to ${this.dateStr.replace(/ /g, "\u00a0")}`;
+      }
+    }
+    return this.dateStr;
+  }
+
+  startDateTime() {
+    return DateTime.fromISO(this.start_date, { zone: this.timezone });
+  }
+
+  endDateTime() {
+    // Add one day because end_date is 12 AM
+    return DateTime.fromISO(this.end_date, { zone: this.timezone }).plus({
+      days: 1,
+    });
+  }
 
   // withinDays(negativeDaysBefore, daysAfter) {
   //   const now = moment.now()
-  //   const afterStart = this.startMoment().add(negativeDaysBefore, 'days') < now
-  //   const beforeEnd = this.endMoment().add(daysAfter, 'days') > now
+  //   const afterStart = this.startDateTime().add(negativeDaysBefore, 'days') < now
+  //   const beforeEnd = this.endDateTime().add(daysAfter, 'days') > now
   //   return afterStart && beforeEnd
   // }
   //
-  // isNow() {
-  //   return !this.isPast() && !this.isFuture()
-  // }
-  //
-  // isPast() {
-  //   return this.endMoment() < moment.now()
-  // }
-  //
-  // isFuture() {
-  //   return this.startMoment() > moment.now()
-  // }
+  isNow() {
+    return !this.isPast() && !this.isFuture();
+  }
+
+  isPast() {
+    return this.endDateTime() < DateTime.local();
+  }
+
+  isFuture() {
+    return this.startDateTime() > DateTime.local();
+  }
 
   // isThisWeek() {
   //   // An event is this week iff
@@ -144,32 +148,53 @@ export default class Event extends Record({
   //   } else {
   //     closestWed = nextWed
   //   }
-  //   const offset = moment.duration(this.startMoment() - closestWed).asDays()
+  //   const offset = moment.duration(this.startDateTime() - closestWed).asDays()
   //   return Math.abs(offset) <= 4
   // }
 
-  // // Event type
-  // isCMP() {
-  //   return CMP_TYPES.has(this.event_type)
-  // }
+  // Event type
+  isCMP() {
+    return CMP_TYPES.has(this.event_type);
+  }
 
-  // isDistrictQual() {
-  //   return this.event_type === DISTRICT
-  // }
+  isDistrictQual() {
+    return this.event_type === DISTRICT;
+  }
 
-  // isFOC() {
-  //   return this.event_type === FOC
-  // }
+  isFOC() {
+    return this.event_type === FOC;
+  }
 
-  // isPreseason() {
-  //   return this.event_type === PRESEASON
-  // }
-
-  // isOfficial() {
-  //   return OFFICIAL_TYPES.has(this.event_type)
-  // }
+  isOfficial() {
+    return OFFICIAL_TYPES.has(this.event_type);
+  }
 
   isRegional() {
     return this.event_type === REGIONAL;
   }
 }
+
+Event.sortByDate = (a, b) => {
+  // Sort by date
+  if (a.start_date < b.start_date) {
+    return -1;
+  }
+  if (a.start_date > b.start_date) {
+    return 1;
+  }
+  if (a.end_date < b.end_date) {
+    return -1;
+  }
+  if (a.end_date > b.end_date) {
+    return 1;
+  }
+  if (a.name < b.name) {
+    return -1;
+  }
+  if (a.name > b.name) {
+    return 1;
+  }
+  return 0;
+};
+
+export default Event;

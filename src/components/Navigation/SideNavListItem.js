@@ -9,10 +9,7 @@ import NextComposedLink from "../NextComposedLink";
 
 const useStyles = makeStyles(theme => ({
   activeIcon: {
-    color:
-      theme.palette.type === "light"
-        ? theme.palette.primary.main
-        : theme.palette.secondary.main,
+    color: theme.palette.linkColor,
   },
   activeText: {
     color:
