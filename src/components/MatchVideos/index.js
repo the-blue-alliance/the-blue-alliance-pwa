@@ -1,5 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
+import Match from "../../database/Match";
 import Button from "@material-ui/core/Button";
 import { makeStyles } from "@material-ui/core/styles/index";
 
@@ -44,28 +45,21 @@ const MatchVideos = ({ match, event }) => {
           </div>
         );
       })}
-      {event != null && (
-        <h3>
-          <Button variant="outlined" color="primary" className={classes.button}>
-            Add videos
-          </Button>
-          <Button
-            variant="outlined"
-            className={classes.button}
-            href={youtubeSearchLink}
-            target="_blank"
-          >
-            Search on YouTube
-          </Button>
-        </h3>
-      )}
+      <Button
+        variant="outlined"
+        className={classes.button}
+        href={youtubeSearchLink}
+        target="_blank"
+      >
+        Search on YouTube
+      </Button>
     </div>
   );
 };
 
 MatchVideos.propTypes = {
-  match: PropTypes.object.isRequired,
-  event: PropTypes.object,
+  match: PropTypes.instanceOf(Match).isRequired,
+  event: PropTypes.object.isRequired,
 };
 
 export default React.memo(MatchVideos);
