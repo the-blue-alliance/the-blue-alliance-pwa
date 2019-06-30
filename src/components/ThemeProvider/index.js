@@ -11,6 +11,7 @@ const createTheme = darkTheme => {
     palette: {
       primary: indigo,
       secondary: amber,
+      linkColor: darkTheme ? amber[500] : indigo[500],
       type: darkTheme ? "dark" : "light",
     },
   });

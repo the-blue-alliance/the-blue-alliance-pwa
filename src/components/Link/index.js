@@ -7,10 +7,7 @@ import NextComposedLink from "../NextComposedLink";
 
 const useStyles = makeStyles(theme => ({
   link: {
-    color:
-      theme.palette.type === "light"
-        ? theme.palette.primary.main
-        : theme.palette.secondary.main,
+    color: theme.palette.linkColor,
   },
 }));
 
