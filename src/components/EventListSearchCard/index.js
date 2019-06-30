@@ -27,7 +27,7 @@ const useStyles = makeStyles(theme => ({
     [theme.breakpoints.up("sm")]: {
       top: 64,
     },
-    zIndex: 1,
+    zIndex: theme.zIndex.appBar - 1,
   },
   inputRow: {
     display: "flex",

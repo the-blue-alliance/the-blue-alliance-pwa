@@ -1,9 +1,9 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { makeStyles } from "@material-ui/core/styles";
-import Divider from "@material-ui/core/Divider";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
+import StickySectionHeader from "../StickySectionHeader";
 import EventListItem from "./EventListItem";
 
 const useStyles = makeStyles(theme => ({
@@ -21,15 +21,17 @@ const useStyles = makeStyles(theme => ({
 
 const EventListCard = ({ events, label }) => {
   const classes = useStyles();
+
   return (
     <Paper className={classes.card}>
       {label && (
         <>
-          <div className={classes.header}>
-            <Typography variant="h6">{label}</Typography>
-            <Typography variant="caption">{events.length} Events</Typography>
-          </div>
-          <Divider />
+          <StickySectionHeader offset={64}>
+            <div className={classes.header}>
+              <Typography variant="h6">{label}</Typography>
+              <Typography variant="caption">{events.length} Events</Typography>
+            </div>
+          </StickySectionHeader>
         </>
       )}
       {events.map(event => (
@@ -40,7 +42,7 @@ const EventListCard = ({ events, label }) => {
 };
 
 EventListCard.propTypes = {
-  events: PropTypes.object.isRequired,
+  events: PropTypes.array.isRequired,
   label: PropTypes.string,
 };
 

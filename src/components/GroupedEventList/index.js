@@ -105,11 +105,19 @@ const GroupedEventList = ({ events }) => {
     <>
       <Typography variant="h5">Offical Events</Typography>
       {groupedOfficialEvents.map(group => (
-        <EventListCard label={group.label} events={group.events} />
+        <EventListCard
+          key={group.slug}
+          label={group.label}
+          events={group.events}
+        />
       ))}
       <Typography variant="h5">Unofficial Events</Typography>
       {groupedUnofficialEvents.map(group => (
-        <EventListCard label={group.label} events={group.events} />
+        <EventListCard
+          key={group.slug}
+          label={group.label}
+          events={group.events}
+        />
       ))}
     </>
   );
