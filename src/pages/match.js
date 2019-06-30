@@ -51,7 +51,11 @@ const Match = ({ matchKey, refetchOnLoad }) => {
       <Typography variant="h4" gutterBottom>
         {match.getDisplayName()} @{" "}
         <small>
-          {match && <Link href={`/event/${eventKey}`}>{event.name}</Link>}
+          {match && (
+            <Link href={`/event/${eventKey}`} as={`/event/${eventKey}`}>
+              {event.name}
+            </Link>
+          )}
         </small>
       </Typography>
       <Grid container>
