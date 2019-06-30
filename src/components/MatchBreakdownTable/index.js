@@ -1,6 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import MatchBreakdown2019 from "./breakdown2019";
+import Match from "../../database/Match";
 
 const MatchBreakdownTable = ({ match }) => {
   if (match.getYear() === 2019) {
@@ -10,7 +11,7 @@ const MatchBreakdownTable = ({ match }) => {
 };
 
 MatchBreakdownTable.propTypes = {
-  match: PropTypes.object.isRequired,
+  match: PropTypes.instanceOf(Match).isRequired,
 };
 
 export default React.memo(MatchBreakdownTable);
