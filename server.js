@@ -105,7 +105,7 @@ app.prepare().then(() => {
     renderAndCache(req, res, "/team", { teamKey: req.params.teamKey });
   });
   server.get("/teams", (req, res) => {
-    renderAndCache(req, res, "/teams");
+    renderAndCache(req, res, "/teams", req.query);
   });
 
   server.get("/match/:matchKey", (req, res) => {
