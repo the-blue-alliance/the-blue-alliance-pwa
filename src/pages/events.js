@@ -10,11 +10,12 @@ import useQueryParam from "../lib/useQueryParam";
 import useQueryParamSet from "../lib/useQueryParamSet";
 import notFoundError from "../lib/notFoundError";
 import Page from "../components/Page";
-import Link from "../components/Link";
 import { makeStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import EventListSearchCard from "../components/EventListSearchCard";
+import GroupedEventList from "../components/GroupedEventList";
+import Event from "../database/Event";
 
 const useStyles = makeStyles({
   sideNav: {},
@@ -22,19 +23,19 @@ const useStyles = makeStyles({
 
 const Events = ({ year, refetchOnLoad }) => {
   const classes = useStyles();
-  const [events, eventsFetchStatus, refetchEvents] = useData(
+  const [rawEvents, eventsFetchStatus, refetchEvents] = useData(
     state => getYearEventsFetchStatus(state, year),
     state => getYearEvents(state, year),
     React.useMemo(() => fetchYearEvents(year), [year]),
     refetchOnLoad.events
   );
 
-  // Apply filters from URL query
+  // Apply sort and filters from URL query
   const searchStr = useQueryParam("search")[0];
   const filters = useQueryParamSet("filters")[0];
-  const filteredEvents = React.useMemo(
+  const events = React.useMemo(
     () =>
-      events
+      rawEvents
         .filter(
           // Filter by district
           event => {
@@ -58,11 +59,12 @@ const Events = ({ year, refetchOnLoad }) => {
           event =>
             !searchStr ||
             event.name.toLowerCase().includes(searchStr.toLowerCase())
-        ),
-    [events, searchStr, filters]
+        )
+        .sort(Event.sortByDate),
+    [rawEvents, searchStr, filters]
   );
 
-  if (!events) {
+  if (!rawEvents) {
     return notFoundError();
   }
 
@@ -81,20 +83,9 @@ const Events = ({ year, refetchOnLoad }) => {
           <div className={classes.sideNav}>TODO: YEAR PICKER & SECTIONS</div>
         </Grid>
         <Grid item xs={12} md={9} lg={10}>
-          <EventListSearchCard />
-          <Typography variant="subtitle1">
-            {filteredEvents.count()} results
-          </Typography>
-          {filteredEvents.map(event => (
-            <div key={event.key}>
-              <Link
-                href={`/event?eventKey=${event.key}`}
-                as={`/event/${event.key}`}
-              >
-                {`${event.year} ${event.safeShortName()}`}
-              </Link>
-            </div>
-          ))}
+          <EventListSearchCard events={rawEvents} />
+          <Typography variant="subtitle1">{events.count()} results</Typography>
+          <GroupedEventList events={events} />
         </Grid>
       </Grid>
     </Page>
