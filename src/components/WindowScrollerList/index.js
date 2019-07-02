@@ -2,11 +2,24 @@ import React from "react";
 import PropTypes from "prop-types";
 import { AutoSizer, WindowScroller, List } from "react-virtualized";
 
-const WindowScrollerList = ({ rowCount, ...restProps }) => {
-  // const listRef = React.useRef();
+const WindowScrollerList = ({ rowCount, startingOffset, ...restProps }) => {
+  const listRef = React.useRef();
   // React.useEffect(() => {
   //   listRef.current.measureAllRows();
   // }, [rowCount]);
+
+  // Scroll to startingOffset after first render
+  const [firstRender, setFirstRender] = React.useState(false);
+  React.useLayoutEffect(() => {
+    if (firstRender && startingOffset) {
+      listRef.current.scrollToPosition(startingOffset);
+    }
+  }, [firstRender, startingOffset]);
+  const onRowsRendered = React.useCallback(() => {
+    if (!firstRender) {
+      setFirstRender(true);
+    }
+  }, [firstRender]);
 
   return (
     <WindowScroller>
@@ -15,7 +28,7 @@ const WindowScrollerList = ({ rowCount, ...restProps }) => {
           <AutoSizer disableHeight>
             {({ width }) => (
               <List
-                // ref={listRef}
+                ref={listRef}
                 autoHeight
                 width={width}
                 height={height}
@@ -24,6 +37,7 @@ const WindowScrollerList = ({ rowCount, ...restProps }) => {
                 scrollTop={scrollTop}
                 rowCount={rowCount}
                 tabIndex={null}
+                onRowsRendered={onRowsRendered}
                 {...restProps}
               />
             )}
@@ -36,6 +50,7 @@ const WindowScrollerList = ({ rowCount, ...restProps }) => {
 
 WindowScrollerList.propTypes = {
   rowCount: PropTypes.number.isRequired,
+  startingOffset: PropTypes.number,
 };
 
 export default React.memo(WindowScrollerList);

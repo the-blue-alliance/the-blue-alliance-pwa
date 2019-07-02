@@ -89,6 +89,7 @@ const Teams = ({ page, teams }) => {
             rowCount={teams.length}
             rowHeight={65}
             rowRenderer={rowRenderer}
+            startingOffset={(minTeam - 2) * 65}
           />
         </Paper>
       </NoSsr>
