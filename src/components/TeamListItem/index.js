@@ -20,11 +20,11 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const TeamListItem = ({ team, ...restProps }) => {
+const TeamListItem = ({ team }) => {
   const classes = useStyles();
 
   return (
-    <div {...restProps}>
+    <>
       <div className={classes.root}>
         <div className={classes.nameLoationContainer}>
           <Typography variant="subtitle1" noWrap>
@@ -40,7 +40,7 @@ const TeamListItem = ({ team, ...restProps }) => {
         </div>
       </div>
       <Divider />
-    </div>
+    </>
   );
 };
 

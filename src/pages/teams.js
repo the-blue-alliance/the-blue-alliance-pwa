@@ -50,7 +50,11 @@ const Teams = ({ page, maxPage, teams }) => {
   const rowRenderer = React.useCallback(
     ({ index, style }) => {
       const team = teams[index];
-      return <TeamListItem key={team.key} team={team} style={style} />;
+      return (
+        <div key={team.key} style={style}>
+          <TeamListItem team={team} />
+        </div>
+      );
     },
     [teams]
   );
