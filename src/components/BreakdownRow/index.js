@@ -39,7 +39,9 @@ const useStyles = makeStyles({
 });
 
 const BreakdownRow = ({
-  data,
+  label,
+  red,
+  blue,
   total = false,
   subtotal = false,
   vertical = false,
@@ -55,7 +57,7 @@ const BreakdownRow = ({
         xs={4}
         item
       >
-        {data[1]}
+        {red}
       </Grid>
       <Grid
         className={`${classes.box} ${
@@ -64,7 +66,7 @@ const BreakdownRow = ({
         xs={4}
         item
       >
-        {data[0]}
+        {label}
       </Grid>
       <Grid
         className={`${classes.box} ${
@@ -74,14 +76,24 @@ const BreakdownRow = ({
         xs={4}
         item
       >
-        {data[2]}
+        {blue}
       </Grid>
     </Grid>
   );
 };
 
 BreakdownRow.propTypes = {
-  data: PropTypes.array.isRequired,
+  label: PropTypes.string.isRequired,
+  red: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.number,
+    PropTypes.object,
+  ]).isRequired,
+  blue: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.number,
+    PropTypes.object,
+  ]).isRequired,
   total: PropTypes.bool,
   subtotal: PropTypes.bool,
   vertical: PropTypes.bool,

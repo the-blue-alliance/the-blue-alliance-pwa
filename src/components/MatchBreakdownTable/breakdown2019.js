@@ -20,204 +20,162 @@ const MatchBreakdown2019 = ({ match }) => {
   return (
     <div>
       <BreakdownRow
-        data={[
-          "Teams",
-          redTeams.map(team => (
-            <span key={team} style={{ display: "block" }}>
-              {team}
-            </span>
-          )),
-          blueTeams.map(team => (
-            <span key={team} style={{ display: "block" }}>
-              {team}
-            </span>
-          )),
-        ]}
+        label="Teams"
+        red={redTeams.map(team => (
+          <span key={team} style={{ display: "block" }}>
+            {team}
+          </span>
+        ))}
+        blue={blueTeams.map(team => (
+          <span key={team} style={{ display: "block" }}>
+            {team}
+          </span>
+        ))}
         vertical={true}
         subtotal={true}
       />
 
       <BreakdownRow
-        data={[
-          "Robot 1 Sandstorm Bonus",
-          getSandstormBonusFor(redBreakdown, 1),
-          getSandstormBonusFor(blueBreakdown, 1),
-        ]}
+        label="Robot 1 Sandstorm Bonus"
+        red={getSandstormBonus(redBreakdown, 1)}
+        blue={getSandstormBonus(blueBreakdown, 1)}
       />
 
       <BreakdownRow
-        data={[
-          "Robot 2 Sandstorm Bonus",
-          getSandstormBonusFor(redBreakdown, 2),
-          getSandstormBonusFor(blueBreakdown, 2),
-        ]}
+        label="Robot 2 Sandstorm Bonus"
+        red={getSandstormBonus(redBreakdown, 2)}
+        blue={getSandstormBonus(blueBreakdown, 2)}
       />
 
       <BreakdownRow
-        data={[
-          "Robot 3 Sandstorm Bonus",
-          getSandstormBonusFor(redBreakdown, 3),
-          getSandstormBonusFor(blueBreakdown, 3),
-        ]}
+        label="Robot 3 Sandstorm Bonus"
+        red={getSandstormBonus(redBreakdown, 3)}
+        blue={getSandstormBonus(blueBreakdown, 3)}
       />
 
       <BreakdownRow
-        data={[
-          "Total Sandstorm Bonus",
-          redBreakdown.sandStormBonusPoints,
-          blueBreakdown.sandStormBonusPoints,
-        ]}
+        label="Total Sandstorm Bonus"
+        red={redBreakdown.sandStormBonusPoints}
+        blue={blueBreakdown.sandStormBonusPoints}
         total={true}
       />
 
       <BreakdownRow
-        data={[
-          "Cargo Ship",
-          getCargoShipDataFor(redBreakdown),
-          getCargoShipDataFor(blueBreakdown),
-        ]}
+        label={"Cargo Ship"}
+        red={getCargoShipData(redBreakdown)}
+        blue={getCargoShipData(blueBreakdown)}
       />
 
       <BreakdownRow
-        data={[
-          "Rocket 1",
-          getRocketShipDataFor(redBreakdown, "Near"),
-          getRocketShipDataFor(blueBreakdown, "Near"),
-        ]}
+        label="Rocket 1"
+        red={getRocketShipData(redBreakdown, "Near")}
+        blue={getRocketShipData(blueBreakdown, "Near")}
       />
 
       <BreakdownRow
-        data={[
-          "Rocket 2",
-          getRocketShipDataFor(redBreakdown, "Far"),
-          getRocketShipDataFor(blueBreakdown, "Far"),
-        ]}
+        label={"Rocket 2"}
+        red={getRocketShipData(redBreakdown, "Far")}
+        blue={getRocketShipData(blueBreakdown, "Far")}
       />
 
       <BreakdownRow
-        data={[
-          "Total Hatch Panels",
-          ImageCount(
-            hatchPanelImage,
-            `${redBreakdown.hatchPanelPoints / 2} (+${
-              redBreakdown.hatchPanelPoints
-            })`
-          ),
-          ImageCount(
-            hatchPanelImage,
-            `${blueBreakdown.hatchPanelPoints / 2} (+${
-              blueBreakdown.hatchPanelPoints
-            })`
-          ),
-        ]}
+        label="Total Hatch Panels"
+        red={ImageCount(
+          hatchPanelImage,
+          `${redBreakdown.hatchPanelPoints / 2} (+${
+            redBreakdown.hatchPanelPoints
+          })`
+        )}
+        blue={ImageCount(
+          hatchPanelImage,
+          `${blueBreakdown.hatchPanelPoints / 2} (+${
+            blueBreakdown.hatchPanelPoints
+          })`
+        )}
         subtotal={true}
       />
 
       <BreakdownRow
-        data={[
-          "Total Points Cargo",
-          ImageCount(
-            cargoImage,
-            `${redBreakdown.cargoPoints / 3} (+${redBreakdown.cargoPoints})`
-          ),
-          ImageCount(
-            cargoImage,
-            `${blueBreakdown.cargoPoints / 3} (+${blueBreakdown.cargoPoints})`
-          ),
-        ]}
+        label="Total Points Cargo"
+        red={ImageCount(
+          cargoImage,
+          `${redBreakdown.cargoPoints / 3} (+${redBreakdown.cargoPoints})`
+        )}
+        blue={ImageCount(
+          cargoImage,
+          `${blueBreakdown.cargoPoints / 3} (+${blueBreakdown.cargoPoints})`
+        )}
         subtotal={true}
       />
 
       <BreakdownRow
-        data={[
-          "Robot 1 HAB Climb",
-          getHABClimbFor(redBreakdown, 1),
-          getHABClimbFor(blueBreakdown, 1),
-        ]}
+        label="Robot 1 HAB Climb"
+        red={getHABClimb(redBreakdown, 1)}
+        blue={getHABClimb(blueBreakdown, 1)}
       />
 
       <BreakdownRow
-        data={[
-          "Robot 2 HAB Climb",
-          getHABClimbFor(redBreakdown, 2),
-          getHABClimbFor(blueBreakdown, 2),
-        ]}
+        label="Robot 2 HAB Climb"
+        red={getHABClimb(redBreakdown, 2)}
+        blue={getHABClimb(blueBreakdown, 2)}
       />
 
       <BreakdownRow
-        data={[
-          "Robot 3 HAB Climb",
-          getHABClimbFor(redBreakdown, 3),
-          getHABClimbFor(blueBreakdown, 3),
-        ]}
+        label="Robot 3 HAB Climb"
+        red={getHABClimb(redBreakdown, 3)}
+        blue={getHABClimb(blueBreakdown, 3)}
       />
 
       <BreakdownRow
-        data={[
-          "HAB Climb Points",
-          redBreakdown.habClimbPoints,
-          blueBreakdown.habClimbPoints,
-        ]}
+        label="HAB Climb Points"
+        red={redBreakdown.habClimbPoints}
+        blue={blueBreakdown.habClimbPoints}
         subtotal={true}
       />
 
       <BreakdownRow
-        data={[
-          "Total Teleop",
-          redBreakdown.teleopPoints,
-          blueBreakdown.teleopPoints,
-        ]}
+        label="Total Teleop"
+        red={redBreakdown.teleopPoints}
+        blue={blueBreakdown.teleopPoints}
         total={true}
       />
 
       <BreakdownRow
-        data={[
-          "Complete Rocket",
-          redBreakdown.completeRocketRankingPoint ? vIcon : xIcon,
-          blueBreakdown.completeRocketRankingPoint ? vIcon : xIcon,
-        ]}
+        label="Complete Rocket"
+        red={redBreakdown.completeRocketRankingPoint ? vIcon : xIcon}
+        blue={blueBreakdown.completeRocketRankingPoint ? vIcon : xIcon}
       />
 
       <BreakdownRow
-        data={[
-          "HAB Docking",
-          redBreakdown.habDockingRankingPoint ? vIcon : xIcon,
-          blueBreakdown.habDockingRankingPoint ? vIcon : xIcon,
-        ]}
+        label="HAB Docking"
+        red={redBreakdown.habDockingRankingPoint ? vIcon : xIcon}
+        blue={blueBreakdown.habDockingRankingPoint ? vIcon : xIcon}
       />
 
       <BreakdownRow
-        data={[
-          "Fouls",
-          `+${redBreakdown.foulPoints}`,
-          `+${blueBreakdown.foulPoints}`,
-        ]}
+        label="Fouls"
+        red={`+${redBreakdown.foulPoints}`}
+        blue={`+${blueBreakdown.foulPoints}`}
       />
 
       <BreakdownRow
-        data={[
-          "Adjustments",
-          redBreakdown.adjustPoints,
-          blueBreakdown.adjustPoints,
-        ]}
+        label="Adjustments"
+        red={redBreakdown.adjustPoints}
+        blue={blueBreakdown.adjustPoints}
       />
 
       <BreakdownRow
-        data={[
-          "Total Score",
-          redBreakdown.totalPoints,
-          blueBreakdown.totalPoints,
-        ]}
+        label="Total Score"
+        red={redBreakdown.totalPoints}
+        blue={blueBreakdown.totalPoints}
         total={true}
       />
 
       {match.comp_level === "qm" ? (
         <BreakdownRow
-          data={[
-            "Ranking Points",
-            `+${redBreakdown.rp} RP`,
-            `+${blueBreakdown.rp} RP`,
-          ]}
+          label="Ranking Points"
+          red={`+${redBreakdown.rp} RP`}
+          blue={`+${blueBreakdown.rp} RP`}
         />
       ) : null}
     </div>
@@ -262,7 +220,7 @@ const ImageCount = (image, count) => {
   );
 };
 
-const getSandstormBonusFor = (breakdown, robotNumber) => {
+const getSandstormBonus = (breakdown, robotNumber) => {
   if (breakdown["habLineRobot" + robotNumber] === "CrossedHabLineInSandstorm") {
     const result = breakdown["preMatchLevelRobot" + robotNumber];
     if (result.includes("HabLevel")) {
@@ -274,7 +232,7 @@ const getSandstormBonusFor = (breakdown, robotNumber) => {
   return xIcon;
 };
 
-const getHABClimbFor = (breakdown, robotNumber) => {
+const getHABClimb = (breakdown, robotNumber) => {
   const result = breakdown["endgameRobot" + robotNumber];
   if (result.includes("HabLevel")) {
     const level = result.substr(-1);
@@ -284,7 +242,7 @@ const getHABClimbFor = (breakdown, robotNumber) => {
   return xIcon;
 };
 
-const getCargoShipDataFor = breakdown => {
+const getCargoShipData = breakdown => {
   let nullPanelCount = 0;
   let panelCount = 0;
   let cargoCount = 0;
@@ -318,7 +276,7 @@ const getCargoShipDataFor = breakdown => {
   ];
 };
 
-const getRocketShipDataFor = (breakdown, rocketLocation) => {
+const getRocketShipData = (breakdown, rocketLocation) => {
   const locations = [
     "topLeftRocket",
     "topRightRocket",
