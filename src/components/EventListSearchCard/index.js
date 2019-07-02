@@ -1,9 +1,12 @@
 import React from "react";
+import PropTypes from "prop-types";
 import { makeStyles } from "@material-ui/core/styles";
 import Badge from "@material-ui/core/Badge";
+import Button from "@material-ui/core/Button";
 import Collapse from "@material-ui/core/Collapse";
 import IconButton from "@material-ui/core/IconButton";
 import Paper from "@material-ui/core/Paper";
+import NoSsr from "@material-ui/core/NoSsr";
 import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
 import FilterListIcon from "@material-ui/icons/FilterList";
@@ -11,6 +14,7 @@ import EventFilterChipContainer from "../../containers/EventFilterChipContainer"
 import useQueryParam from "../../lib/useQueryParam";
 import useQueryParamSet from "../../lib/useQueryParamSet";
 import useSearchFocus from "../../lib/useSearchFocus";
+import districtColors from "../../constants/DistrictColors";
 
 const useStyles = makeStyles(theme => ({
   inputCard: {
@@ -23,6 +27,7 @@ const useStyles = makeStyles(theme => ({
     [theme.breakpoints.up("sm")]: {
       top: 64,
     },
+    zIndex: theme.zIndex.appBar - 1,
   },
   inputRow: {
     display: "flex",
@@ -31,14 +36,22 @@ const useStyles = makeStyles(theme => ({
     flex: 1,
     paddingRight: theme.spacing(1),
   },
+  filterActions: {
+    display: "flex",
+    justifyContent: "flex-end",
+    paddingTop: theme.spacing(1),
+  },
+  button: {
+    marginLeft: theme.spacing(1),
+  },
 }));
 
-const EventListSearchCard = () => {
+const EventListSearchCard = ({ events }) => {
   const classes = useStyles();
   const searchRef = useSearchFocus();
   const [searchStr, setSearchStr] = useQueryParam("search");
   const [filterOpen, setFilterOpen] = React.useState(false);
-  const filters = useQueryParamSet("filters")[0];
+  const [filters, , , clearFilters] = useQueryParamSet("filters");
 
   const handleSearchStrChange = React.useCallback(
     e => {
@@ -51,6 +64,19 @@ const EventListSearchCard = () => {
     filterOpen,
   ]);
 
+  // Determine which districts filters to show
+  let hasRegional = false;
+  const districtsSet = new Set();
+  events.forEach(event => {
+    if (event.district) {
+      districtsSet.add(event.district.get("abbreviation"));
+    } else if (event.isRegional()) {
+      hasRegional = true;
+    }
+  });
+  const districts = Array.from(districtsSet).sort();
+  const hasDistricts = districts.length > 0;
+
   return (
     <Paper className={classes.inputCard} square>
       <div className={classes.inputRow}>
@@ -62,23 +88,60 @@ const EventListSearchCard = () => {
           onChange={handleSearchStrChange}
           margin="none"
         />
-        <IconButton onClick={toggleFilterOpen}>
-          <Badge badgeContent={filters.size} color="secondary">
-            <FilterListIcon />
-          </Badge>
-        </IconButton>
+        {hasDistricts && (
+          <IconButton onClick={toggleFilterOpen}>
+            <Badge badgeContent={filters.size} color="secondary">
+              <FilterListIcon />
+            </Badge>
+          </IconButton>
+        )}
       </div>
-      <Collapse in={filterOpen}>
-        <Typography variant="subtitle1">Filters</Typography>
-        <EventFilterChipContainer
-          filterKey="regional"
-          label="Regional"
-          color="#fff"
-        />
-        <EventFilterChipContainer filterKey="fim" label="FIM" color="#3f51b5" />
-      </Collapse>
+      <NoSsr>
+        {hasDistricts && (
+          <Collapse in={filterOpen}>
+            <Typography variant="subtitle1">Filters</Typography>
+            {hasRegional && (
+              <EventFilterChipContainer
+                filterKey="regional"
+                label="Regional"
+                color={districtColors.regional}
+              />
+            )}
+            {districts.map(district => (
+              <EventFilterChipContainer
+                key={district}
+                filterKey={district}
+                label={`${district.toUpperCase()} District`}
+                color={districtColors[district]}
+              />
+            ))}
+            <div className={classes.filterActions}>
+              <Button
+                className={classes.button}
+                onClick={clearFilters}
+                variant="outlined"
+                disabled={filters.size === 0}
+              >
+                Clear Filters
+              </Button>
+              <Button
+                className={classes.button}
+                onClick={toggleFilterOpen}
+                variant="outlined"
+                color="primary"
+              >
+                Okay
+              </Button>
+            </div>
+          </Collapse>
+        )}
+      </NoSsr>
     </Paper>
   );
+};
+
+EventListSearchCard.propTypes = {
+  events: PropTypes.object,
 };
 
 export default React.memo(EventListSearchCard);
