@@ -16,10 +16,10 @@ const WindowScrollerList = ({ rowCount, startingOffset, ...restProps }) => {
     }
   }, [firstRender, startingOffset]);
   const onRowsRendered = React.useCallback(() => {
-    if (!firstRender) {
+    if (!firstRender && startingOffset) {
       setFirstRender(true);
     }
-  }, [firstRender]);
+  }, [firstRender, startingOffset]);
 
   return (
     <WindowScroller>

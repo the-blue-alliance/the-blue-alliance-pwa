@@ -102,7 +102,7 @@ const Teams = ({ page, maxPage, teams }) => {
             rowCount={teams.length}
             rowHeight={65}
             rowRenderer={rowRenderer}
-            startingOffset={(minTeam - 2) * 65}
+            startingOffset={page === 0 ? null : (minTeam - 2) * 65}
           />
         </Paper>
       </NoSsr>
