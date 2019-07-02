@@ -17,7 +17,7 @@ const nextConfig = {
     globPatterns: ["**/*.{ico,json}"],
   },
   // Webpack
-  webpack: (config, { dev, webpack }) => {
+  webpack: (config, { dev, isServer, webpack }) => {
     // Add build info
     const buildTime = new Date().toLocaleString("en-US", {
       timeZone: "America/New_York",
@@ -48,6 +48,52 @@ const nextConfig = {
     config.node = {
       fs: "empty",
     };
+
+    // Configure vendor bundles
+    // See: https://www.chrisclaxton.me.uk/chris-claxtons-blog/webpack-chunksplitting-deepdive
+    // and https://hackernoon.com/the-100-correct-way-to-split-your-chunks-with-webpack-f8a9df5b7758
+    if (!isServer && !dev) {
+      config.optimization.splitChunks = {
+        hidePathInfo: true,
+        chunks: "all",
+        maxInitialRequests: Infinity,
+        maxAsyncRequests: Infinity,
+        cacheGroups: {
+          default: false, // disable the built-in groups, default & vendors (vendors is overwritten below)
+          vendorSplit: {
+            // split vendor node module into separate chunk if module is bigger than minSize
+            chunks: "all",
+            test: /[\\/]node_modules[\\/]/,
+            name(module) {
+              // get the name. E.g. node_modules/packageName/not/this/part.js
+              // or node_modules/packageName
+              const packageName = module.context.match(
+                /[\\/]node_modules[\\/](.*?)([\\/]|$)/
+              )[1];
+              // npm package names are URL-safe, but some servers don't like @ symbols
+              return `npm.${packageName.replace("@", "")}`;
+            },
+            priority: 2,
+          },
+          vendors: {
+            // picks up everything else being used from node_modules that is less than minSize
+            chunks: "all",
+            test: /[\\/]node_modules[\\/]/,
+            name: "vendors",
+            priority: 1,
+            enforce: true, // create chunk regardless of the size of the chunk
+          },
+          commons: {
+            // picks up everything else being shared
+            chunks: "all",
+            name: "commons",
+            minChunks: 2,
+            priority: 0,
+            enforce: true, // create chunk regardless of the size of the chunk
+          },
+        },
+      };
+    }
 
     // Optimize images
     config.module.rules.push({

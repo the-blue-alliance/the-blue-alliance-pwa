@@ -19,9 +19,8 @@ const useQueryParamSet = param => {
     },
     [set, setArray]
   );
-  const clearSet = React.useCallback(() => setArray([]), [setArray]);
 
-  return [set, addItem, deleteItem, clearSet];
+  return [set, addItem, deleteItem];
 };
 
 export default useQueryParamSet;

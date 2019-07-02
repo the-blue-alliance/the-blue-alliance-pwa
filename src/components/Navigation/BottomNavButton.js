@@ -17,7 +17,10 @@ const useStyles = makeStyles(theme => ({
         : theme.palette.grey[300],
   },
   active: {
-    color: theme.palette.linkColor,
+    color:
+      theme.palette.type === "light"
+        ? theme.palette.primary.main
+        : theme.palette.secondary.main,
   },
 }));
 
