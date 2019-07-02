@@ -46,7 +46,7 @@ ServerFallback.propTypes = {
   ]).isRequired,
 };
 
-const Teams = ({ page, teams }) => {
+const Teams = ({ page, maxPage, teams }) => {
   const rowRenderer = React.useCallback(
     ({ index, style }) => {
       const team = teams[index];
@@ -70,6 +70,19 @@ const Teams = ({ page, teams }) => {
     <Page
       title="Teams"
       metaDescription="List of teams in the FIRST Robotics Competition."
+      additionalMetas={
+        <>
+          {page > 0 && (
+            <link
+              rel="prev"
+              href={page === 1 ? "/teams" : `/teams?page=${page}`}
+            />
+          )}
+          {page < maxPage && (
+            <link rel="next" href={`/teams?page=${page + 2}`} />
+          )}
+        </>
+      }
     >
       <Typography variant="h4">Teams</Typography>
       <Typography variant="h5">{teamsRange}</Typography>
