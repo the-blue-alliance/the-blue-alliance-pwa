@@ -84,16 +84,8 @@ const BreakdownRow = ({
 
 BreakdownRow.propTypes = {
   label: PropTypes.string.isRequired,
-  red: PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.number,
-    PropTypes.object,
-  ]).isRequired,
-  blue: PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.number,
-    PropTypes.object,
-  ]).isRequired,
+  red: PropTypes.node.isRequired,
+  blue: PropTypes.node.isRequired,
   total: PropTypes.bool,
   subtotal: PropTypes.bool,
   vertical: PropTypes.bool,
