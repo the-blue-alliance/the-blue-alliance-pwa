@@ -80,31 +80,43 @@ const MatchBreakdown2019 = ({ match }) => {
 
       <BreakdownRow
         label="Total Hatch Panels"
-        red={ImageCount(
-          hatchPanelImage,
-          `${redBreakdown.hatchPanelPoints / 2} (+${
-            redBreakdown.hatchPanelPoints
-          })`
-        )}
-        blue={ImageCount(
-          hatchPanelImage,
-          `${blueBreakdown.hatchPanelPoints / 2} (+${
-            blueBreakdown.hatchPanelPoints
-          })`
-        )}
+        red={
+          <ImageCount
+            image={hatchPanelImage}
+            count={`${redBreakdown.hatchPanelPoints / 2} (+${
+              redBreakdown.hatchPanelPoints
+            })`}
+          />
+        }
+        blue={
+          <ImageCount
+            image={hatchPanelImage}
+            count={`${blueBreakdown.hatchPanelPoints / 2} (+${
+              blueBreakdown.hatchPanelPoints
+            })`}
+          />
+        }
         subtotal={true}
       />
 
       <BreakdownRow
         label="Total Points Cargo"
-        red={ImageCount(
-          cargoImage,
-          `${redBreakdown.cargoPoints / 3} (+${redBreakdown.cargoPoints})`
-        )}
-        blue={ImageCount(
-          cargoImage,
-          `${blueBreakdown.cargoPoints / 3} (+${blueBreakdown.cargoPoints})`
-        )}
+        red={
+          <ImageCount
+            image={cargoImage}
+            count={`${redBreakdown.cargoPoints / 3} (+${
+              redBreakdown.cargoPoints
+            })`}
+          />
+        }
+        blue={
+          <ImageCount
+            image={cargoImage}
+            count={`${blueBreakdown.cargoPoints / 3} (+${
+              blueBreakdown.cargoPoints
+            })`}
+          />
+        }
         subtotal={true}
       />
 
@@ -200,7 +212,7 @@ const cargoImage = (
 const xIcon = <Close />;
 const vIcon = <CheckRounded />;
 
-const ImageCount = (image, count) => {
+const ImageCount = ({ image, count }) => {
   return (
     <div
       style={{
@@ -218,6 +230,10 @@ const ImageCount = (image, count) => {
       </div>
     </div>
   );
+};
+ImageCount.propTypes = {
+  image: PropTypes.object.isRequired,
+  count: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
 };
 
 const getSandstormBonus = (breakdown, robotNumber) => {
@@ -269,11 +285,13 @@ const getCargoShipData = breakdown => {
     }
   }
 
-  return [
-    ImageCount(nullHatchPanelImage, nullPanelCount),
-    ImageCount(hatchPanelImage, panelCount),
-    ImageCount(cargoImage, cargoCount),
-  ];
+  return (
+    <>
+      <ImageCount image={nullHatchPanelImage} count={nullPanelCount} />
+      <ImageCount image={hatchPanelImage} count={panelCount} />
+      <ImageCount image={cargoImage} count={cargoCount} />
+    </>
+  );
 };
 
 const getRocketShipData = (breakdown, rocketLocation) => {
@@ -296,10 +314,12 @@ const getRocketShipData = (breakdown, rocketLocation) => {
     }
   });
 
-  return [
-    ImageCount(hatchPanelImage, panelCount),
-    ImageCount(cargoImage, cargoCount),
-  ];
+  return (
+    <>
+      <ImageCount image={hatchPanelImage} count={panelCount} />
+      <ImageCount image={cargoImage} count={cargoCount} />
+    </>
+  );
 };
 
 MatchBreakdown2019.propTypes = {
