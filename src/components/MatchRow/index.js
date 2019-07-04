@@ -2,6 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import Router from "next/router";
 import Link from "../Link";
+import Match from "../../database/Match";
 
 const MatchRow = ({ eventKey, match }) => {
   const matchKey = match.key;
@@ -27,7 +28,7 @@ const MatchRow = ({ eventKey, match }) => {
 
 MatchRow.propTypes = {
   eventKey: PropTypes.string.isRequired,
-  match: PropTypes.object.isRequired,
+  match: PropTypes.instanceOf(Match).isRequired,
 };
 
 export default React.memo(MatchRow);
