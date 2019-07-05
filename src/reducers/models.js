@@ -69,6 +69,27 @@ const models = (state = Map(), action) => {
         ["matchesStatus", "collections", "byEvent", `${action.eventKey}`],
         "error"
       );
+    case types.FETCH_MATCH_REQUEST:
+      return state.setIn(
+        ["matchesStatus", "byKey", `${action.matchKey}`],
+        "fetching"
+      );
+    case types.FETCH_MATCH_SUCCESS:
+      state = updateSingle(
+        state,
+        "matches",
+        action.matchKey,
+        new Match(fromJS(action.data))
+      );
+      return state.setIn(
+        ["matchesStatus", "byKey", `${action.matchKey}`],
+        "success"
+      );
+    case types.FETCH_MATCH_ERROR:
+      return state.setIn(
+        ["matchesStatus", "byKey", `${action.matchKey}`],
+        "error"
+      );
     default:
       return state;
   }
