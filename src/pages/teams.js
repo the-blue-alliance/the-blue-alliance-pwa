@@ -1,79 +1,86 @@
 import React from "react";
 import PropTypes from "prop-types";
 import Page from "../components/Page";
-import NoSsr from "@material-ui/core/NoSsr";
-import Paper from "@material-ui/core/Paper";
+// import NoSsr from "@material-ui/core/NoSsr";
 import Typography from "@material-ui/core/Typography";
 import notFoundError from "../lib/notFoundError";
-import WindowScrollerList from "../components/WindowScrollerList";
+import GroupedListCards from "../components/GroupedListCards";
+// import WindowScrollerList from "../components/WindowScrollerList";
+// import StickySectionHeader from "../components/StickySectionHeader";
 import TeamListItem from "../components/TeamListItem";
 
-class ServerFallback extends React.Component {
-  // Enables the hydration of client without re-rendering server-only fallback
-  // See https://github.com/facebook/react/issues/6985#issuecomment-326526059
-
-  getExistingHtml(id) {
-    if (typeof document === "undefined") return;
-    const node = document.getElementById(id);
-    return node && node.innerHTML;
-  }
-
-  shouldComponentUpdate() {
-    return false;
-  }
-
-  render() {
-    const { id, children } = this.props;
-    const html = this.getExistingHtml(id);
-
-    if (html) {
-      // Hydrate fallback on client without re-rendering
-      return <div id={id} dangerouslySetInnerHTML={{ __html: html }} />;
-    }
-    if (process.browser) {
-      // Don't render fallback on client
-      return null;
-    }
-    // Render fallback on server
-    return <div id={id}>{children}</div>;
-  }
-}
-ServerFallback.propTypes = {
-  id: PropTypes.string.isRequired,
-  children: PropTypes.oneOfType([
-    PropTypes.arrayOf(PropTypes.node),
-    PropTypes.node,
-  ]).isRequired,
-};
+// class ServerFallback extends React.Component {
+//   // Enables the hydration of client without re-rendering server-only fallback
+//   // See https://github.com/facebook/react/issues/6985#issuecomment-326526059
+//
+//   getExistingHtml(id) {
+//     if (typeof document === "undefined") return;
+//     const node = document.getElementById(id);
+//     return node && node.innerHTML;
+//   }
+//
+//   shouldComponentUpdate() {
+//     return false;
+//   }
+//
+//   render() {
+//     const { id, children } = this.props;
+//     const html = this.getExistingHtml(id);
+//
+//     if (html) {
+//       // Hydrate fallback on client without re-rendering
+//       return <div id={id} dangerouslySetInnerHTML={{ __html: html }} />;
+//     }
+//     if (process.browser) {
+//       // Don't render fallback on client
+//       return null;
+//     }
+//     // Render fallback on server
+//     return <div id={id}>{children}</div>;
+//   }
+// }
+// ServerFallback.propTypes = {
+//   id: PropTypes.string.isRequired,
+//   children: PropTypes.oneOfType([
+//     PropTypes.arrayOf(PropTypes.node),
+//     PropTypes.node,
+//   ]).isRequired,
+// };
 
 const Teams = ({ page, maxPage, teams }) => {
-  const rowRenderer = React.useCallback(
-    ({ index, style }) => {
-      const team = teams[index];
-      return (
-        <div key={team.key} style={style}>
-          <TeamListItem team={team} />
-        </div>
-      );
-    },
-    [teams]
-  );
+  const itemRenderer = React.useCallback(team => {
+    return <TeamListItem key={team.key} team={team} />;
+  }, []);
 
   if (!teams) {
     return notFoundError();
   }
 
-  let minTeam = 1;
-  if (page > 0) {
-    minTeam = 100 * page;
-  }
-  const maxTeam = 100 * page + 99;
-  const teamsRange = `${minTeam}-${maxTeam}`;
+  // Group teams
+  const groups = [];
+  teams.forEach(team => {
+    const group = Math.floor(team.team_number / 100);
+    if (group < groups.length) {
+      groups[group].items.push(team);
+    } else {
+      let header;
+      if (group == 0) {
+        header = "1-99";
+      } else {
+        header = `${group * 100}'s`;
+      }
+      groups[group] = {
+        header,
+        items: [team],
+      };
+    }
+  });
 
   return (
     <Page
       title="Teams"
-      metaDescription="List of teams in the FIRST Robotics Competition."
+      metaDescription={`List of teams in the FIRST Robotics Competition. (Page ${page +
+        1} of ${maxPage + 1})`}
       additionalMetas={
         <>
           {page > 0 && (
@@ -89,8 +96,9 @@ const Teams = ({ page, maxPage, teams }) => {
       }
     >
       <Typography variant="h4">Teams</Typography>
-      <Typography variant="h5">{teamsRange}</Typography>
-      <NoSsr
+      <GroupedListCards groups={groups} itemRenderer={itemRenderer} />
+
+      {/*<NoSsr
         fallback={
           <ServerFallback id="team-list-server-fallback">
             <Paper>
@@ -109,7 +117,7 @@ const Teams = ({ page, maxPage, teams }) => {
             startingOffset={page === 0 ? null : (minTeam - 2) * 65}
           />
         </Paper>
-      </NoSsr>
+      </NoSsr>*/}
     </Page>
   );
 };
@@ -119,7 +127,7 @@ Teams.getInitialProps = async ({ query }) => {
   const maxPage = 70; // TODO: don't hardcode
 
   // Temp fake teams
-  const teamNumbers = Array.apply(null, { length: 7999 }).map(
+  const teamNumbers = Array.apply(null, { length: 1199 }).map(
     Number.call,
     Number
   );
