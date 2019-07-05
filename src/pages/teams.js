@@ -48,8 +48,12 @@ import TeamListItem from "../components/TeamListItem";
 // };
 
 const Teams = ({ page, maxPage, teams }) => {
-  const itemRenderer = React.useCallback(team => {
-    return <TeamListItem key={team.key} team={team} />;
+  const itemRenderer = React.useCallback(({ item: team, style }) => {
+    return (
+      <div key={team.key} style={style}>
+        <TeamListItem team={team} />
+      </div>
+    );
   }, []);
 
   if (!teams) {
@@ -70,6 +74,7 @@ const Teams = ({ page, maxPage, teams }) => {
         header = `${group * 100}'s`;
       }
       groups[group] = {
+        key: group, // TODO: Make it identifiable
         header,
         items: [team],
       };
@@ -96,7 +101,11 @@ const Teams = ({ page, maxPage, teams }) => {
       }
     >
       <Typography variant="h4">Teams</Typography>
-      <GroupedListCards groups={groups} itemRenderer={itemRenderer} />
+      <GroupedListCards
+        groups={groups}
+        itemRenderer={itemRenderer}
+        itemHeight={65}
+      />
 
       {/*<NoSsr
         fallback={
