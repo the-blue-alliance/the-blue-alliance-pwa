@@ -27,6 +27,10 @@ const GroupedListCards = ({
   overscan = 10,
 }) => {
   const classes = useStyles();
+  const ref = React.useRef();
+  React.useEffect(() => {
+    ref.current.__handleWindowScrollEvent();
+  });
 
   const groupHeights = [];
   let containerHeight = 0;
@@ -41,7 +45,7 @@ const GroupedListCards = ({
   });
 
   return (
-    <WindowScroller>
+    <WindowScroller ref={ref}>
       {({ height, scrollTop }) => {
         const startRenderY = scrollTop - overscan * itemHeight;
         const endRenderY = scrollTop + height + overscan * itemHeight;

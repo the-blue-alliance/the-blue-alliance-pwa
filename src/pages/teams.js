@@ -136,7 +136,7 @@ Teams.getInitialProps = async ({ query }) => {
   const maxPage = 70; // TODO: don't hardcode
 
   // Temp fake teams
-  const teamNumbers = Array.apply(null, { length: 1199 }).map(
+  const teamNumbers = Array.apply(null, { length: 7999 }).map(
     Number.call,
     Number
   );
