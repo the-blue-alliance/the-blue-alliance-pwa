@@ -32,6 +32,7 @@ const GroupedListCards = ({
     ref.current.__handleWindowScrollEvent();
   });
 
+  // Precompute dimensions of groups
   const groupHeights = [];
   let containerHeight = 0;
   const groupStartingYs = [];
@@ -47,8 +48,10 @@ const GroupedListCards = ({
   return (
     <WindowScroller ref={ref}>
       {({ height, scrollTop }) => {
-        const startRenderY = scrollTop - overscan * itemHeight;
-        const endRenderY = scrollTop + height + overscan * itemHeight;
+        // Top of viewport - overscan
+        const startViewportY = scrollTop - overscan * itemHeight;
+        // Bottom of viewport + oversan
+        const endViewportY = scrollTop + height + overscan * itemHeight;
 
         return (
           <AutoSizer disableHeight>
@@ -61,24 +64,27 @@ const GroupedListCards = ({
                   const groupStartingY = groupStartingYs[groupIdx];
                   const groupEndingY = groupEndingYs[groupIdx];
                   if (
-                    (groupStartingY >= startRenderY && // Top edge is in view
-                      groupStartingY <= endRenderY) ||
-                    (groupEndingY >= startRenderY && // Bottom edge is in view
-                      groupEndingY <= endRenderY) ||
-                    (groupStartingY <= startRenderY && // Top edge is above view & bottom edge is below view
-                      groupEndingY >= endRenderY)
+                    (groupStartingY >= startViewportY && // Top edge is in view
+                      groupStartingY <= endViewportY) ||
+                    (groupEndingY >= startViewportY && // Bottom edge is in view
+                      groupEndingY <= endViewportY) ||
+                    (groupStartingY <= startViewportY && // Top edge is above view & bottom edge is below view
+                      groupEndingY >= endViewportY)
                   ) {
-                    const shiftedStartRenderY = startRenderY - groupStartingY;
+                    // Shift viewport pixes into group pixels
+                    const shiftedStartViewportY =
+                      startViewportY - groupStartingY;
+                    const shiftedEndViewportY = endViewportY - groupStartingY;
+
                     const startItemIdx = Math.max(
                       Math.floor(
-                        (shiftedStartRenderY - HEADER_HEIGHT) / itemHeight
+                        (shiftedStartViewportY - HEADER_HEIGHT) / itemHeight
                       ),
                       0
                     );
-                    const shiftedEndRenderY = endRenderY - groupStartingY;
                     const endItemIdx = Math.min(
                       Math.ceil(
-                        (shiftedEndRenderY - HEADER_HEIGHT) / itemHeight
+                        (shiftedEndViewportY - HEADER_HEIGHT) / itemHeight
                       ),
                       items.length
                     );
