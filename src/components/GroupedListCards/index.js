@@ -58,19 +58,26 @@ const GroupedListCards = ({
 
   if (!isMounted) {
     // Render SSR fallback initially
-    const group = groups[ssrGroup];
+    let ssrGroups;
+    if (ssrGroup === undefined) {
+      ssrGroups = groups;
+    } else {
+      ssrGroups = [groups[ssrGroup]];
+    }
     return (
       <ServerFallback id={ssrFallbackId}>
-        <Paper className={classes.card}>
-          <StickySectionHeader>
-            <div className={classes.header}>
-              <Typography variant="h6">{group.header}</Typography>
-            </div>
-          </StickySectionHeader>
-          {group.items.map(item => {
-            return itemRenderer({ item });
-          })}
-        </Paper>
+        {ssrGroups.map(group => (
+          <Paper key={group.key} className={classes.card}>
+            <StickySectionHeader>
+              <div className={classes.header}>
+                <Typography variant="h6">{group.header}</Typography>
+              </div>
+            </StickySectionHeader>
+            {group.items.map(item => {
+              return itemRenderer({ item });
+            })}
+          </Paper>
+        ))}
       </ServerFallback>
     );
   }
