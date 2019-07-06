@@ -29,8 +29,9 @@ const GroupedListCards = ({
   const classes = useStyles();
   const ref = React.useRef();
   React.useEffect(() => {
+    // Force scroll event on mount to deal with restored scroll state
     ref.current.__handleWindowScrollEvent();
-  });
+  }, []);
 
   // Precompute dimensions of groups
   const groupHeights = [];
