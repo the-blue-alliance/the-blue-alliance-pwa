@@ -16,7 +16,7 @@ const useStyles = makeStyles(theme => ({
     padding: `1px ${theme.spacing(0.5)}px`,
     fontSize: 14,
     textAlign: "center",
-    height: 60,
+    height: 64,
     [theme.breakpoints.up("lg")]: {
       height: 30,
     },
