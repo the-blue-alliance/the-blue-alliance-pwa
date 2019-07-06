@@ -11,7 +11,7 @@ const HEADER_HEIGHT = 41;
 
 const useStyles = makeStyles(theme => ({
   container: {
-    position: "absolute",
+    position: "relative",
   },
   card: {
     marginBottom: theme.spacing(1),
@@ -28,6 +28,7 @@ const GroupedListCards = ({
   overscan = 10,
   ssrFallbackId,
   ssrGroup,
+  stickyOffset = 0,
 }) => {
   // Precompute dimensions of groups
   const groupHeights = [];
@@ -68,7 +69,7 @@ const GroupedListCards = ({
       <ServerFallback id={ssrFallbackId}>
         {ssrGroups.map(group => (
           <Paper key={group.key} className={classes.card}>
-            <StickySectionHeader>
+            <StickySectionHeader offset={stickyOffset}>
               <div className={classes.header}>
                 <Typography variant="h6">{group.header}</Typography>
               </div>
@@ -139,7 +140,7 @@ const GroupedListCards = ({
                           width,
                         }}
                       >
-                        <StickySectionHeader>
+                        <StickySectionHeader offset={stickyOffset}>
                           <div className={classes.header}>
                             <Typography variant="h6">{header}</Typography>
                           </div>
@@ -182,6 +183,7 @@ GroupedListCards.propTypes = {
   overscan: PropTypes.number,
   ssrFallbackId: PropTypes.string.isRequired,
   ssrGroup: PropTypes.number,
+  stickyOffset: PropTypes.number,
 };
 
 export default React.memo(GroupedListCards);

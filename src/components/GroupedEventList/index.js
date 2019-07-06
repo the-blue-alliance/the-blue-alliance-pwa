@@ -114,23 +114,16 @@ const GroupedEventList = ({ events }) => {
         itemRenderer={itemRenderer}
         itemHeight={65}
         ssrFallbackId="official-events-list-server-fallback"
+        stickyOffset={64}
       />
-      {/*
-      {groupedOfficialEvents.map(group => (
-        <EventListCard
-          key={group.slug}
-          label={group.label}
-          events={group.events}
-        />
-      ))}
-      <Typography variant="h5">Unofficial Events</Typography>
-      {groupedUnofficialEvents.map(group => (
-        <EventListCard
-          key={group.slug}
-          label={group.label}
-          events={group.events}
-        />
-      ))}*/}
+      <Typography variant="h5">Unoffical Events</Typography>
+      <GroupedListCards
+        groups={groupedUnofficialEvents}
+        itemRenderer={itemRenderer}
+        itemHeight={65}
+        ssrFallbackId="unofficial-events-list-server-fallback"
+        stickyOffset={64}
+      />
     </>
   );
 };
