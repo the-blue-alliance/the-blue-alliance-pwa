@@ -66,6 +66,8 @@ const Teams = ({ page, maxPage, teams }) => {
         itemHeight={65}
         ssrFallbackId="team-list-server-fallback"
         ssrGroup={page}
+        singularCountLabel="Team"
+        pluralCountLabel="Teams"
       />
     </Page>
   );

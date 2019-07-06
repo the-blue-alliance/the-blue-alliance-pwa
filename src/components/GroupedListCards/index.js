@@ -17,6 +17,10 @@ const useStyles = makeStyles(theme => ({
     marginBottom: theme.spacing(1),
   },
   header: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
     padding: `${theme.spacing(0.5)}px ${theme.spacing(2)}px`,
   },
 }));
@@ -29,6 +33,8 @@ const GroupedListCards = ({
   ssrFallbackId,
   ssrGroup,
   stickyOffset = 0,
+  singularCountLabel,
+  pluralCountLabel,
 }) => {
   // Precompute dimensions of groups
   const groupHeights = [];
@@ -72,6 +78,12 @@ const GroupedListCards = ({
             <StickySectionHeader offset={stickyOffset}>
               <div className={classes.header}>
                 <Typography variant="h6">{group.header}</Typography>
+                <Typography variant="caption">
+                  {group.items.length}{" "}
+                  {group.items.length === 1
+                    ? singularCountLabel
+                    : pluralCountLabel}
+                </Typography>
               </div>
             </StickySectionHeader>
             {group.items.map(item => {
@@ -143,6 +155,12 @@ const GroupedListCards = ({
                         <StickySectionHeader offset={stickyOffset}>
                           <div className={classes.header}>
                             <Typography variant="h6">{header}</Typography>
+                            <Typography variant="caption">
+                              {items.length}{" "}
+                              {items.length === 1
+                                ? singularCountLabel
+                                : pluralCountLabel}
+                            </Typography>
                           </div>
                         </StickySectionHeader>
                         {itemSlice.map((item, itemIdx) => {
@@ -184,6 +202,8 @@ GroupedListCards.propTypes = {
   ssrFallbackId: PropTypes.string.isRequired,
   ssrGroup: PropTypes.number,
   stickyOffset: PropTypes.number,
+  singularCountLabel: PropTypes.string.isRequired,
+  pluralCountLabel: PropTypes.string.isRequired,
 };
 
 export default React.memo(GroupedListCards);

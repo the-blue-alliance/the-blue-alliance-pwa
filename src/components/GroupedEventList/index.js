@@ -115,6 +115,8 @@ const GroupedEventList = ({ events }) => {
         itemHeight={65}
         ssrFallbackId="official-events-list-server-fallback"
         stickyOffset={64}
+        singularCountLabel="Event"
+        pluralCountLabel="Events"
       />
       <Typography variant="h5">Unoffical Events</Typography>
       <GroupedListCards
@@ -123,6 +125,8 @@ const GroupedEventList = ({ events }) => {
         itemHeight={65}
         ssrFallbackId="unofficial-events-list-server-fallback"
         stickyOffset={64}
+        singularCountLabel="Event"
+        pluralCountLabel="Events"
       />
     </>
   );
