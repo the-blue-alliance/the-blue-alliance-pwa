@@ -64,6 +64,21 @@ const GroupedListCards = ({
                     (groupStartingY <= startRenderY && // Top edge is above view & bottom edge is below view
                       groupEndingY >= endRenderY)
                   ) {
+                    const shiftedStartRenderY = startRenderY - groupStartingY;
+                    const startItemIdx = Math.max(
+                      Math.floor(
+                        (shiftedStartRenderY - HEADER_HEIGHT) / itemHeight
+                      ),
+                      0
+                    );
+                    const shiftedEndRenderY = endRenderY - groupStartingY;
+                    const endItemIdx = Math.min(
+                      Math.ceil(
+                        (shiftedEndRenderY - HEADER_HEIGHT) / itemHeight
+                      ),
+                      items.length
+                    );
+
                     return (
                       <Paper
                         key={key}
@@ -80,31 +95,20 @@ const GroupedListCards = ({
                             <Typography variant="h6">{header}</Typography>
                           </div>
                         </StickySectionHeader>
-                        {items.map((item, itemIdx) => {
-                          const itemStartingY =
-                            HEADER_HEIGHT + itemHeight * itemIdx;
-                          const itemEndingY = itemStartingY + itemHeight;
-                          const shiftedStartRenderY =
-                            startRenderY - groupStartingY;
-                          const shiftedEndRenderY = endRenderY - groupStartingY;
-                          if (
-                            (itemStartingY >= shiftedStartRenderY && // Top edge is in view
-                              itemStartingY <= shiftedEndRenderY) ||
-                            (itemEndingY >= shiftedStartRenderY && // Bottom edge is in view
-                              itemEndingY <= shiftedEndRenderY) ||
-                            (itemStartingY <= shiftedStartRenderY && // Top edge is above view & bottom edge is below view
-                              itemEndingY >= shiftedEndRenderY)
-                          ) {
+                        {items
+                          .slice(startItemIdx, endItemIdx)
+                          .map((item, itemIdx) => {
                             return itemRenderer({
                               item,
                               style: {
                                 position: "absolute",
-                                top: itemStartingY,
+                                top:
+                                  HEADER_HEIGHT +
+                                  itemHeight * (startItemIdx + itemIdx),
                                 width,
                               },
                             });
-                          }
-                        })}
+                          })}
                       </Paper>
                     );
                   }
