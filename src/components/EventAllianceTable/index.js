@@ -13,6 +13,9 @@ const useStyles = makeStyles({
   tr: {
     height: 32,
   },
+  th: {
+    padding: "6px 2px 6px 8px",
+  },
   td: {
     fontSize: 13,
     padding: "6px 2px 6px 8px",
@@ -100,7 +103,7 @@ const EventAllianceTable = ({ eventKey, alliances }) => {
                   const backupTeamNum = a.getIn(["backup", "in"]).substr(3);
                   backupTeam = (
                     <React.Fragment>
-                      &nbsp;
+                      &nbsp;(
                       <Link
                         href={`/event?eventKey=${eventKey}&teamKey=${teamKey}`}
                         as={`/team/${teamKey.substring(3)}/${yearStr}`}
