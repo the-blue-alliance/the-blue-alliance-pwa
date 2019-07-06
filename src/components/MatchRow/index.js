@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import Router from "next/router";
-import classNames from "classnames";
+import clsx from "clsx";
 import Link from "../Link";
 import Match from "../../database/Match";
 import ListItem from "@material-ui/core/ListItem";
@@ -230,11 +230,9 @@ const MatchRow = ({ match, selectedTeamKey, favoriteTeamKeys }) => {
       </Link>
       <div className={classes.match}>
         <div
-          className={classNames({
-            [classes.alliance]: true,
-            [classes.redAlliance]: true,
-            [classes.redWin]: redWin,
-          })}
+          className={clsx(classes.alliance, classes.redAlliance, [
+            redWin && classes.redWin,
+          ])}
         >
           <Teams
             classes={classes}
@@ -245,11 +243,9 @@ const MatchRow = ({ match, selectedTeamKey, favoriteTeamKeys }) => {
           />
         </div>
         <div
-          className={classNames({
-            [classes.alliance]: true,
-            [classes.blueAlliance]: true,
-            [classes.blueWin]: blueWin,
-          })}
+          className={clsx(classes.alliance, classes.blueAlliance, [
+            blueWin && classes.blueWin,
+          ])}
         >
           <Teams
             classes={classes}
@@ -261,30 +257,22 @@ const MatchRow = ({ match, selectedTeamKey, favoriteTeamKeys }) => {
         </div>
         {!showTime && (
           <div
-            className={classNames({
-              [classes.score]: true,
-              [classes.redScore]: true,
-              [classes.redWin]: redWin,
-              [classes.selectedTeam]: match.isOnAlliance(
-                selectedTeamKey,
-                "red"
-              ),
-            })}
+            className={clsx(classes.score, classes.redScore, [
+              redWin && classes.redWin,
+              match.isOnAlliance(selectedTeamKey, "red") &&
+                classes.selectedTeam,
+            ])}
           >
             <Score classes={classes} match={match} score={redScore} />
           </div>
         )}
         {!showTime && (
           <div
-            className={classNames({
-              [classes.score]: true,
-              [classes.blueScore]: true,
-              [classes.blueWin]: blueWin,
-              [classes.selectedTeam]: match.isOnAlliance(
-                selectedTeamKey,
-                "blue"
-              ),
-            })}
+            className={clsx(classes.score, classes.blueScore, [
+              blueWin && classes.blueWin,
+              match.isOnAlliance(selectedTeamKey, "blue") &&
+                classes.selectedTeam,
+            ])}
           >
             <Score
               classes={classes}
@@ -353,7 +341,7 @@ const Teams = ({ match, teamKeys, selectedTeamKey, favoriteTeamKeys }) => {
     return (
       <div key={teamKey} className={classes.team}>
         <Link
-          className={classNames({
+          className={clsx({
             [classes.selectedTeam]: teamKey === selectedTeamKey && !dq,
             [classes.dq]: dq && teamKey !== selectedTeamKey,
             [classes.selectedTeamDQ]: teamKey === selectedTeamKey && dq,
@@ -429,7 +417,7 @@ export const MatchListItemHeader = () => {
       </div>
       <div className={classes.match}>
         <div
-          className={classNames({
+          className={clsx({
             [classes.alliance]: true,
             [classes.redAlliance]: true,
           })}
@@ -439,7 +427,7 @@ export const MatchListItemHeader = () => {
           </div>
         </div>
         <div
-          className={classNames({
+          className={clsx({
             [classes.alliance]: true,
             [classes.blueAlliance]: true,
           })}
