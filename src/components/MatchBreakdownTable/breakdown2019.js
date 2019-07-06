@@ -5,7 +5,7 @@ import LensIcon from "@material-ui/icons/Lens";
 import TripOriginIcon from "@material-ui/icons/TripOrigin";
 import Tooltip from "@material-ui/core/Tooltip";
 import PropTypes from "prop-types";
-import BreakdownRow from "../BreakdownRow";
+import BreakdownRow from "./BreakdownRow";
 
 const MatchBreakdown2019 = ({ match }) => {
   match = match.toJS();
