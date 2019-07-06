@@ -11,12 +11,16 @@ const HEADER_HEIGHT = 41;
 
 const useStyles = makeStyles(theme => ({
   container: {
-    position: "absolute",
+    position: "relative",
   },
   card: {
     marginBottom: theme.spacing(1),
   },
   header: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
     padding: `${theme.spacing(0.5)}px ${theme.spacing(2)}px`,
   },
 }));
@@ -28,6 +32,9 @@ const GroupedListCards = ({
   overscan = 10,
   ssrFallbackId,
   ssrGroup,
+  stickyOffset = 0,
+  singularCountLabel,
+  pluralCountLabel,
 }) => {
   // Precompute dimensions of groups
   const groupHeights = [];
@@ -58,19 +65,32 @@ const GroupedListCards = ({
 
   if (!isMounted) {
     // Render SSR fallback initially
-    const group = groups[ssrGroup];
+    let ssrGroups;
+    if (ssrGroup === undefined) {
+      ssrGroups = groups;
+    } else {
+      ssrGroups = [groups[ssrGroup]];
+    }
     return (
       <ServerFallback id={ssrFallbackId}>
-        <Paper className={classes.card}>
-          <StickySectionHeader>
-            <div className={classes.header}>
-              <Typography variant="h6">{group.header}</Typography>
-            </div>
-          </StickySectionHeader>
-          {group.items.map(item => {
-            return itemRenderer({ item });
-          })}
-        </Paper>
+        {ssrGroups.map(group => (
+          <Paper key={group.key} className={classes.card}>
+            <StickySectionHeader offset={stickyOffset}>
+              <div className={classes.header}>
+                <Typography variant="h6">{group.header}</Typography>
+                <Typography variant="caption">
+                  {group.items.length}{" "}
+                  {group.items.length === 1
+                    ? singularCountLabel
+                    : pluralCountLabel}
+                </Typography>
+              </div>
+            </StickySectionHeader>
+            {group.items.map(item => {
+              return itemRenderer({ item });
+            })}
+          </Paper>
+        ))}
       </ServerFallback>
     );
   }
@@ -119,6 +139,8 @@ const GroupedListCards = ({
                       items.length
                     );
 
+                    const itemSlice = items.slice(startItemIdx, endItemIdx);
+
                     return (
                       <Paper
                         key={key}
@@ -130,25 +152,30 @@ const GroupedListCards = ({
                           width,
                         }}
                       >
-                        <StickySectionHeader>
+                        <StickySectionHeader offset={stickyOffset}>
                           <div className={classes.header}>
                             <Typography variant="h6">{header}</Typography>
+                            <Typography variant="caption">
+                              {items.length}{" "}
+                              {items.length === 1
+                                ? singularCountLabel
+                                : pluralCountLabel}
+                            </Typography>
                           </div>
                         </StickySectionHeader>
-                        {items
-                          .slice(startItemIdx, endItemIdx)
-                          .map((item, itemIdx) => {
-                            return itemRenderer({
-                              item,
-                              style: {
-                                position: "absolute",
-                                top:
-                                  HEADER_HEIGHT +
-                                  itemHeight * (startItemIdx + itemIdx),
-                                width,
-                              },
-                            });
-                          })}
+                        {itemSlice.map((item, itemIdx) => {
+                          return itemRenderer({
+                            item,
+                            style: {
+                              position: "absolute",
+                              top:
+                                HEADER_HEIGHT +
+                                itemHeight * (startItemIdx + itemIdx),
+                              width,
+                            },
+                            isLast: itemIdx === itemSlice.length - 1,
+                          });
+                        })}
                       </Paper>
                     );
                   }
@@ -174,6 +201,9 @@ GroupedListCards.propTypes = {
   overscan: PropTypes.number,
   ssrFallbackId: PropTypes.string.isRequired,
   ssrGroup: PropTypes.number,
+  stickyOffset: PropTypes.number,
+  singularCountLabel: PropTypes.string.isRequired,
+  pluralCountLabel: PropTypes.string.isRequired,
 };
 
 export default React.memo(GroupedListCards);

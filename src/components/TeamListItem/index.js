@@ -20,7 +20,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const TeamListItem = ({ team }) => {
+const TeamListItem = ({ team, divider = false }) => {
   const classes = useStyles();
 
   return (
@@ -39,13 +39,14 @@ const TeamListItem = ({ team }) => {
           </Typography>
         </div>
       </div>
-      <Divider />
+      {divider && <Divider />}
     </>
   );
 };
 
 TeamListItem.propTypes = {
   team: PropTypes.object.isRequired,
+  divider: PropTypes.bool,
 };
 
 export default React.memo(TeamListItem);
