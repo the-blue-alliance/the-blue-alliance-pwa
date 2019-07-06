@@ -363,7 +363,7 @@ const Teams = ({ match, teamKeys, selectedTeamKey, favoriteTeamKeys }) => {
 };
 Teams.propTypes = {
   match: PropTypes.instanceOf(Match).isRequired,
-  teamKeys: PropTypes.array,
+  teamKeys: PropTypes.object,
   selectedTeamKey: PropTypes.string,
   favoriteTeamKeys: PropTypes.instanceOf(Set),
 };

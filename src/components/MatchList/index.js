@@ -5,7 +5,6 @@ import ListSubheader from "@material-ui/core/ListSubheader";
 import ListItemText from "@material-ui/core/ListItemText";
 import Typography from "@material-ui/core/Typography";
 import VideogameAssetRounded from "@material-ui/icons/VideogameAssetRounded";
-import Match from "../../database/Match";
 import MatchRow, { MatchListItemHeader } from "../MatchRow";
 import { makeStyles } from "@material-ui/core/styles";
 
@@ -132,7 +131,7 @@ const computeGroupedMatches = (
 };
 
 MatchList.propTypes = {
-  matches: PropTypes.arrayOf(PropTypes.instanceOf(Match)).isRequired,
+  matches: PropTypes.object.isRequired,
   selectedTeamKey: PropTypes.string,
   showSubheaders: PropTypes.bool,
   justQuals: PropTypes.bool,

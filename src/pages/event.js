@@ -5,7 +5,11 @@ import {
   getEventMatchesFetchStatus,
   getEventMatches,
 } from "../selectors/MatchSelectors";
-import { fetchEvent, fetchEventMatches } from "../actions";
+import {
+  getEventAlliancesFetchStatus,
+  getEventAlliances,
+} from "../selectors/AllianceSelectors";
+import { fetchEvent, fetchEventMatches, fetchEventAlliances } from "../actions";
 import useData from "../lib/useData";
 import notFoundError from "../lib/notFoundError";
 import Paper from "@material-ui/core/Paper";
@@ -14,6 +18,7 @@ import Tab from "@material-ui/core/Tab";
 import Typography from "@material-ui/core/Typography";
 import Page from "../components/Page";
 import MatchList from "../components/MatchList";
+import EventAllianceTable from "../components/EventAllianceTable";
 import EventPageDialog from "../components/EventPageDialog";
 import PageTabs from "../components/PageTabs";
 import StickySectionHeader from "../components/StickySectionHeader";
@@ -63,10 +68,17 @@ const Event = ({ eventKey, refetchOnLoad }) => {
     React.useMemo(() => fetchEventMatches(eventKey), [eventKey]),
     refetchOnLoad.eventMatches
   );
+  const [alliances, alliancesFetchStatus, refetchAlliances] = useData(
+    state => getEventAlliancesFetchStatus(state, eventKey),
+    state => getEventAlliances(state, eventKey),
+    React.useMemo(() => fetchEventAlliances(eventKey), [eventKey]),
+    refetchOnLoad.eventMatches
+  );
   const handleRefresh = React.useCallback(() => {
     refetchEvent();
     refetchMatches();
-  }, [refetchEvent, refetchMatches]);
+    refetchAlliances();
+  }, [refetchEvent, refetchMatches, refetchAlliances]);
 
   // Sort matches
   const matches = React.useMemo(
@@ -95,7 +107,9 @@ const Event = ({ eventKey, refetchOnLoad }) => {
         </>
       }
       isLoading={
-        eventFetchStatus === "fetching" || matchesFetchStatus === "fetching"
+        eventFetchStatus === "fetching" ||
+        matchesFetchStatus === "fetching" ||
+        alliancesFetchStatus === "fetching"
       }
       refreshFunction={handleRefresh}
     >
@@ -150,7 +164,7 @@ const Event = ({ eventKey, refetchOnLoad }) => {
           <Grid xs={12} sm={6} style={{ padding: 8 }} item>
             <Paper className={classes.sectionCard}>
               <StickySectionHeader offset={47}>Alliances</StickySectionHeader>
-              TODO
+              <EventAllianceTable eventKey={eventKey} alliances={alliances} />
             </Paper>
             <Paper className={classes.sectionCard}>
               <StickySectionHeader offset={47}>
@@ -179,6 +193,8 @@ Event.getInitialProps = async ({ reduxStore, query }) => {
   const eventFetchInitial = getEventFetchStatus(state, eventKey) !== "success";
   const eventMatchesFetchInitial =
     getEventMatchesFetchStatus(state, eventKey) !== "success";
+  const eventAlliancesFetchInitial =
+    getEventAlliancesFetchStatus(state, eventKey) !== "success";
 
   const fetchPromises = [];
   if (eventFetchInitial) {
@@ -187,6 +203,9 @@ Event.getInitialProps = async ({ reduxStore, query }) => {
   if (eventMatchesFetchInitial) {
     fetchPromises.push(reduxStore.dispatch(fetchEventMatches(eventKey)));
   }
+  if (eventAlliancesFetchInitial) {
+    fetchPromises.push(reduxStore.dispatch(fetchEventAlliances(eventKey)));
+  }
   await Promise.all(fetchPromises);
 
   return {
@@ -194,6 +213,7 @@ Event.getInitialProps = async ({ reduxStore, query }) => {
     refetchOnLoad: {
       event: !eventFetchInitial,
       eventMatches: !eventMatchesFetchInitial,
+      eventAlliances: !eventAlliancesFetchInitial,
     },
   };
 };

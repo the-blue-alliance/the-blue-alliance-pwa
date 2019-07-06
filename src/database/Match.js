@@ -80,11 +80,11 @@ export default class Match extends Record({
   }
 
   getTimeStr() {
-    return DateTime.fromISO(this.time).toFormat("ddd h:mm A");
+    return DateTime.fromSeconds(this.time).toFormat("ccc h:mm a");
   }
 
   getPredictedTimeStr() {
-    return DateTime.fromISO(this.predicted_time).toFormat("ddd h:mm A");
+    return DateTime.fromSeconds(this.predicted_time).toFormat("ccc h:mm a");
   }
 
   hasBeenPlayed() {

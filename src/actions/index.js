@@ -109,6 +109,31 @@ export const fetchEventMatches = eventKey => dispatch => {
     });
 };
 
+export const fetchEventAlliances = eventKey => dispatch => {
+  dispatch({
+    type: types.FETCH_EVENT_ALLIANCES_REQUEST,
+    eventKey,
+  });
+  return tracedFetch(
+    `${baseURL}/api/v3/event/${eventKey}/alliances`,
+    fetchOptions
+  )
+    .then(handleErrors)
+    .then(alliances =>
+      dispatch({
+        type: types.FETCH_EVENT_ALLIANCES_SUCCESS,
+        eventKey,
+        data: alliances,
+      })
+    )
+    .catch(() => {
+      dispatch({
+        type: types.FETCH_EVENT_ALLIANCES_ERROR,
+        eventKey,
+      });
+    });
+};
+
 // Match page
 export const fetchMatch = matchKey => dispatch => {
   dispatch({
