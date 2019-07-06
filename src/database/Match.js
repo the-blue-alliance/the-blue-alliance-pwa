@@ -1,5 +1,5 @@
 import { Record } from "immutable";
-// import moment from 'moment'
+import { DateTime } from "luxon";
 
 const COMP_LEVELS = {
   qm: "Quals",
@@ -15,14 +15,18 @@ const PLAY_ORDER = {
   sf: 4,
   f: 5,
 };
-// const rpAText = {
-//   2017: "Pressure Reached",
-//   2018: "Auto Quest"
-// };
-// const rpBText = {
-//   2017: "All Rotors Engaged",
-//   2018: "Face the Boss"
-// };
+const rpAText = {
+  2016: "Defenses Breached",
+  2017: "Pressure Reached",
+  2018: "Auto Quest",
+  2019: "Complete Rocket",
+};
+const rpBText = {
+  2016: "Tower Captured",
+  2017: "All Rotors Engaged",
+  2018: "Face the Boss",
+  2019: "HAB Docking",
+};
 
 export default class Match extends Record({
   key: undefined,
@@ -59,69 +63,76 @@ export default class Match extends Record({
     );
   }
 
+  isDQ(teamKey) {
+    return (
+      this.getIn(["alliances", "red", "dq_team_keys"]).includes(teamKey) ||
+      this.getIn(["alliances", "blue", "dq_team_keys"]).includes(teamKey)
+    );
+  }
+
+  isSurrogate(teamKey) {
+    return (
+      this.getIn(["alliances", "red", "surrogate_team_keys"]).includes(
+        teamKey
+      ) ||
+      this.getIn(["alliances", "blue", "surrogate_team_keys"]).includes(teamKey)
+    );
+  }
+
+  getTimeStr() {
+    return DateTime.fromISO(this.time).toFormat("ddd h:mm A");
+  }
+
+  getPredictedTimeStr() {
+    return DateTime.fromISO(this.predicted_time).toFormat("ddd h:mm A");
+  }
+
+  hasBeenPlayed() {
+    return (
+      this.alliances.getIn(["red", "score"]) !== -1 &&
+      this.alliances.getIn(["blue", "score"]) !== -1
+    );
+  }
+
+  isOnAlliance(teamKey, color) {
+    return this.getIn(["alliances", color, "team_keys"]).includes(teamKey);
+  }
+
+  rpEarnedA(color) {
+    const breakdown = this.getIn(["score_breakdown", color]);
+    return !!(
+      breakdown &&
+      ((this.getYear() === 2017 &&
+        (breakdown.get("kPaRankingPointAchieved") ||
+          breakdown.get("kPaBonusPoints"))) ||
+        (this.getYear() === 2018 && breakdown.get("autoQuestRankingPoint")))
+    );
+  }
+
+  rpEarnedB(color) {
+    const breakdown = this.getIn(["score_breakdown", color]);
+    return !!(
+      breakdown &&
+      ((this.getYear() === 2017 &&
+        (breakdown.get("rotorRankingPointAchieved") ||
+          breakdown.get("rotorBonusPoints"))) ||
+        (this.getYear() === 2018 && breakdown.get("faceTheBossRankingPoint")))
+    );
+  }
+
+  rpEarnedTextA() {
+    return rpAText[this.getYear()];
+  }
+
+  rpEarnedTextB() {
+    return rpBText[this.getYear()];
+  }
+
   // getPlayOrder() {
   //   return PLAY_ORDER[this.comp_level]*100000 + this.match_number*100 + this.set_number
   // }
   //
-  // getYear() {
-  //   return parseInt(this.key.substr(0, 4), 10)
-  // }
-  //
-  // getTimeStr() {
-  //   return moment.unix(this.time).format('ddd h:mm A')
-  // }
-  //
-  // getPredictedTimeStr() {
-  //   return moment.unix(this.predicted_time).format('ddd h:mm A')
-  // }
-  //
-  // hasBeenPlayed() {
-  //   return this.alliances.getIn(['red', 'score']) !== -1 && this.alliances.getIn(['blue', 'score']) !== -1
-  // }
-  //
-  // isDQ(teamKey) {
-  //   return this.getIn(['alliances', 'red', 'dq_team_keys']).includes(teamKey) || this.getIn(['alliances', 'blue', 'dq_team_keys']).includes(teamKey)
-  // }
-  //
-  // isSurrogate(teamKey) {
-  //   return this.getIn(['alliances', 'red', 'surrogate_team_keys']).includes(teamKey) || this.getIn(['alliances', 'blue', 'surrogate_team_keys']).includes(teamKey)
-  // }
-  //
-  // isOnAlliance(teamKey, color) {
-  //   return this.getIn(['alliances', color, 'team_keys']).includes(teamKey)
-  // }
-  //
   // hasTeamKey(teamKey) {
   //   return this.getIn(['alliances', 'red', 'team_keys']).includes(teamKey) || this.getIn(['alliances', 'blue', 'team_keys']).includes(teamKey)
-  // }
-  //
-  // rpEarnedA(color) {
-  //   const breakdown = this.getIn(['score_breakdown', color])
-  //   if (breakdown && (
-  //     (this.getYear() === 2017 && (breakdown.get('kPaRankingPointAchieved') || breakdown.get('kPaBonusPoints'))) ||
-  //     (this.getYear() === 2018 && (breakdown.get('autoQuestRankingPoint')))
-  //   )) {
-  //     return true
-  //   }
-  //   return false
-  // }
-  //
-  // rpEarnedB(color) {
-  //   const breakdown = this.getIn(['score_breakdown', color])
-  //   if (breakdown && (
-  //     (this.getYear() === 2017 && (breakdown.get('rotorRankingPointAchieved') || breakdown.get('rotorBonusPoints'))) ||
-  //     (this.getYear() === 2018 && (breakdown.get('faceTheBossRankingPoint')))
-  //   )) {
-  //     return true
-  //   }
-  //   return false
-  // }
-  //
-  // rpEarnedTextA() {
-  //   return rpAText[this.getYear()]
-  // }
-  //
-  // rpEarnedTextB() {
-  //   return rpBText[this.getYear()]
   // }
 }

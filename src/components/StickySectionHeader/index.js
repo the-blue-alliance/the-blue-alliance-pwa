@@ -27,6 +27,10 @@ const useStyles = makeStyles(theme => ({
       top: -(64 + offset + 1),
     },
   }),
+  label: {
+    padding: "4px 16px",
+    fontSize: 20,
+  },
 }));
 
 const StickySectionHeader = ({ children, offset = 0 }) => {
@@ -41,7 +45,11 @@ const StickySectionHeader = ({ children, offset = 0 }) => {
         square={isRaised}
       >
         <div ref={ref} className={classes.observer} />
-        {children}
+        {typeof children === "string" ? (
+          <div className={classes.label}>{children}</div>
+        ) : (
+          children
+        )}
       </Paper>
       <Divider />
     </>
