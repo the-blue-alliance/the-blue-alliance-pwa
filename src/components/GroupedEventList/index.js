@@ -10,10 +10,10 @@ import { slugify } from "../../lib/utils";
 const useStyles = makeStyles(theme => ({}));
 
 const GroupedEventList = ({ events }) => {
-  const itemRenderer = React.useCallback(({ item: event, style }) => {
+  const itemRenderer = React.useCallback(({ item: event, style, isLast }) => {
     return (
       <div key={event.key} style={style}>
-        <EventListItem event={event} />
+        <EventListItem event={event} divider={!isLast} />
       </div>
     );
   }, []);

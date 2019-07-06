@@ -126,6 +126,8 @@ const GroupedListCards = ({
                       items.length
                     );
 
+                    const itemSlice = items.slice(startItemIdx, endItemIdx);
+
                     return (
                       <Paper
                         key={key}
@@ -142,20 +144,19 @@ const GroupedListCards = ({
                             <Typography variant="h6">{header}</Typography>
                           </div>
                         </StickySectionHeader>
-                        {items
-                          .slice(startItemIdx, endItemIdx)
-                          .map((item, itemIdx) => {
-                            return itemRenderer({
-                              item,
-                              style: {
-                                position: "absolute",
-                                top:
-                                  HEADER_HEIGHT +
-                                  itemHeight * (startItemIdx + itemIdx),
-                                width,
-                              },
-                            });
-                          })}
+                        {itemSlice.map((item, itemIdx) => {
+                          return itemRenderer({
+                            item,
+                            style: {
+                              position: "absolute",
+                              top:
+                                HEADER_HEIGHT +
+                                itemHeight * (startItemIdx + itemIdx),
+                              width,
+                            },
+                            isLast: itemIdx === itemSlice.length - 1,
+                          });
+                        })}
                       </Paper>
                     );
                   }

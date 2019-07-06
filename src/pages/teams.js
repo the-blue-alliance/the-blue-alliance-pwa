@@ -7,10 +7,10 @@ import GroupedListCards from "../components/GroupedListCards";
 import TeamListItem from "../components/TeamListItem";
 
 const Teams = ({ page, maxPage, teams }) => {
-  const itemRenderer = React.useCallback(({ item: team, style }) => {
+  const itemRenderer = React.useCallback(({ item: team, style, isLast }) => {
     return (
       <div key={team.key} style={style}>
-        <TeamListItem team={team} />
+        <TeamListItem team={team} divider={!isLast} />
       </div>
     );
   }, []);
