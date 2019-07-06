@@ -105,6 +105,8 @@ const Teams = ({ page, maxPage, teams }) => {
         groups={groups}
         itemRenderer={itemRenderer}
         itemHeight={65}
+        ssrFallbackId="team-list-server-fallback"
+        ssrGroup={page}
       />
 
       {/*<NoSsr
