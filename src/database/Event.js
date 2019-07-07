@@ -1,5 +1,7 @@
+import React from "react";
 import { Record } from "immutable";
 import { DateTime } from "luxon";
+import escape from "escape-html";
 
 export const REGIONAL = 0;
 export const DISTRICT = 1;
@@ -39,6 +41,7 @@ class Event extends Record({
   city: undefined,
   state_prov: undefined,
   country: undefined,
+  postal_code: undefined,
   location_name: undefined,
   gmaps_url: undefined,
   website: undefined,
@@ -105,9 +108,11 @@ class Event extends Record({
   }
 
   endDateTime() {
-    // Add one day because end_date is 12 AM
+    // Add time because end_date is 11:59:59 PM
     return DateTime.fromISO(this.end_date, { zone: this.timezone }).plus({
-      days: 1,
+      hours: 23,
+      minutes: 59,
+      seconds: 59,
     });
   }
 
@@ -171,6 +176,35 @@ class Event extends Record({
 
   isRegional() {
     return this.event_type === REGIONAL;
+  }
+
+  structuredData() {
+    return (
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "http://schema.org",
+            "@type": "Event",
+            name: escape(this.name),
+            startDate: escape(this.startDateTime().toISO()),
+            endDate: escape(this.endDateTime().toISO()),
+            location: {
+              "@type": "Place",
+              name: escape(this.location_name),
+              address: {
+                "@type": "PostalAddress",
+                streetAddress: escape(this.address),
+                addressLocality: escape(this.city),
+                addressRegion: escape(this.state_prov),
+                addressCountry: escape(this.country),
+                postalCode: escape(this.postal_code),
+              },
+            },
+          }),
+        }}
+      />
+    );
   }
 }
 
