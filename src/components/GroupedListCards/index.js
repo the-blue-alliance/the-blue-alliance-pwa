@@ -59,7 +59,9 @@ const GroupedListCards = ({
     // Force scroll event on mount to deal with restored scroll state
     if (isMounted) {
       ref.current.__handleWindowScrollEvent();
-      window.scrollTo(0, groupStartingYs[ssrGroup]);
+      if (ssrGroup) {
+        window.scrollTo(0, groupStartingYs[ssrGroup]);
+      }
     }
   }, [isMounted, groupStartingYs, ssrGroup]);
 
