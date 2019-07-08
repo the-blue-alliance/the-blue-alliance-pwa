@@ -139,25 +139,28 @@ export const fetchAllTeamsHelper = pageNum => {
   );
 };
 
-export const fetchAllTeams = () => {
-  return async dispatch => {
-    dispatch({
-      type: types.FETCH_ALL_TEAMS_REQUEST,
-    });
-    try {
+export const fetchAllTeams = () => dispatch => {
+  dispatch({
+    type: types.FETCH_ALL_TEAMS_REQUEST,
+  });
+
+  const fetchPromises = [];
+  // TODO: don't hardcode
+  for (let pageNum = 0; pageNum < 16; pageNum++) {
+    fetchPromises.push(fetchAllTeamsHelper(pageNum));
+  }
+  return Promise.all(fetchPromises)
+    .then(pageOfTeams => {
       let allTeams = [];
-      for (let pageNum = 0; pageNum < 1; pageNum++) {
-        const teams = await fetchAllTeamsHelper(pageNum);
-        allTeams = allTeams.concat(teams);
-      }
+      pageOfTeams.forEach(page => (allTeams = allTeams.concat(page)));
       dispatch({
         type: types.FETCH_ALL_TEAMS_SUCCESS,
         data: allTeams,
       });
-    } catch {
+    })
+    .catch(() =>
       dispatch({
         type: types.FETCH_ALL_TEAMS_ERROR,
-      });
-    }
-  };
+      })
+    );
 };
