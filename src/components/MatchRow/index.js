@@ -375,12 +375,12 @@ Teams.propTypes = {
   favoriteTeamKeys: PropTypes.instanceOf(Set),
 };
 
-const Score = ({ match, score, color }) => {
+const Score = ({ match, score, color, hasSelectedTeam }) => {
   const classes = useStyles();
   const rpEarnedTextA = match.rpEarnedTextA();
   const rpEarnedTextB = match.rpEarnedTextB();
   return (
-    <div>
+    <div className={hasSelectedTeam ? classes.selectedTeam : ""}>
       {match.rpEarnedA(color) && (
         <Tooltip title={rpEarnedTextA} placement="top">
           <svg className={classes.rpDotA}>
@@ -403,6 +403,7 @@ Score.propTypes = {
   match: PropTypes.instanceOf(Match).isRequired,
   score: PropTypes.number.isRequired,
   color: PropTypes.string.isRequired,
+  hasSelectedTeam: PropTypes.bool,
 };
 
 export const MatchListItemHeader = () => {
