@@ -151,6 +151,7 @@ const EventListItem = ({ event, divider = false }) => {
         {event.isNow() && <div className={classes.eventLiveIndicator} />}
       </div>
       {divider && <Divider />}
+      {event.structuredData()}
     </>
   );
 };

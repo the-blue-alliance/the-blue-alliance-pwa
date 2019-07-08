@@ -67,6 +67,7 @@ const Event = ({ eventKey, refetchOnLoad }) => {
         <MatchRow key={match.key} eventKey={eventKey} match={match} />
       ))}
       <EventPageDialog eventKey={eventKey} />
+      {event.structuredData()}
     </Page>
   );
 };
