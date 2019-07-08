@@ -139,14 +139,16 @@ export const fetchAllTeamsHelper = pageNum => {
   );
 };
 
-export const fetchAllTeams = () => dispatch => {
+export const fetchAllTeams = () => (dispatch, getState) => {
   dispatch({
     type: types.FETCH_ALL_TEAMS_REQUEST,
   });
 
+  const state = getState();
+  const maxPage = state.getIn(["apiStatus", "max_teams_page"]);
+
   const fetchPromises = [];
-  // TODO: don't hardcode
-  for (let pageNum = 0; pageNum < 16; pageNum++) {
+  for (let pageNum = 0; pageNum < maxPage; pageNum++) {
     fetchPromises.push(fetchAllTeamsHelper(pageNum));
   }
   return Promise.all(fetchPromises)

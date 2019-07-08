@@ -7,6 +7,10 @@ import Match from "../database/Match";
 import Team from "../database/Team";
 
 const defaultState = fromJS({
+  apiStatus: {
+    max_season: 2019,
+    max_teams_page: 16,
+  },
   app: {
     historyState: {},
     darkTheme: false,
