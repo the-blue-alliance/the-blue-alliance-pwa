@@ -6,6 +6,7 @@ import createReducer from "../reducers";
 
 import Event from "../database/Event";
 import Match from "../database/Match";
+import Team from "../database/Team";
 
 function initializeStore(state) {
   return createStore(
@@ -20,6 +21,7 @@ const __NEXT_REDUX_STORE__ = "__NEXT_REDUX_STORE__";
 const MODEL_TYPES = {
   events: Event,
   matches: Match,
+  teams: Team,
 };
 
 const convertCollections = (
