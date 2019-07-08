@@ -263,7 +263,13 @@ const MatchRow = ({ match, selectedTeamKey, favoriteTeamKeys }) => {
                 classes.selectedTeam,
             ])}
           >
-            <Score classes={classes} match={match} score={redScore} />
+            <Score
+              classes={classes}
+              match={match}
+              score={redScore}
+              color="red"
+              hasSelectedTeam={match.isOnAlliance(selectedTeamKey, "red")}
+            />
           </div>
         )}
         {!showTime && (
@@ -278,6 +284,7 @@ const MatchRow = ({ match, selectedTeamKey, favoriteTeamKeys }) => {
               classes={classes}
               match={match}
               score={blueScore}
+              color="blue"
               hasSelectedTeam={match.isOnAlliance(selectedTeamKey, "blue")}
             />
           </div>
@@ -368,20 +375,20 @@ Teams.propTypes = {
   favoriteTeamKeys: PropTypes.instanceOf(Set),
 };
 
-const Score = ({ match, score }) => {
+const Score = ({ match, score, color }) => {
   const classes = useStyles();
   const rpEarnedTextA = match.rpEarnedTextA();
   const rpEarnedTextB = match.rpEarnedTextB();
   return (
     <div>
-      {match.rpEarnedA("red") && (
+      {match.rpEarnedA(color) && (
         <Tooltip title={rpEarnedTextA} placement="top">
           <svg className={classes.rpDotA}>
             <circle cx="2" cy="2" r="2" />
           </svg>
         </Tooltip>
       )}
-      {match.rpEarnedB("red") && (
+      {match.rpEarnedB(color) && (
         <Tooltip title={rpEarnedTextB} placement="top">
           <svg className={classes.rpDotB}>
             <circle cx="2" cy="2" r="2" />
@@ -395,6 +402,7 @@ const Score = ({ match, score }) => {
 Score.propTypes = {
   match: PropTypes.instanceOf(Match).isRequired,
   score: PropTypes.number.isRequired,
+  color: PropTypes.string.isRequired,
 };
 
 export const MatchListItemHeader = () => {
