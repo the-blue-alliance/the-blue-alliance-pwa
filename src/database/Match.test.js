@@ -89,4 +89,12 @@ describe("Match record", () => {
   it("has correct short displayName for finals matches", () => {
     expect(match_f1m1.getDisplayName(true)).toEqual("Finals 1");
   });
+
+  it("has correct timeStr", () => {
+    expect(match_f1m1.getTimeStr()).toEqual("Sun 4:12 PM");
+  });
+
+  it("has correct predictedTimeStr", () => {
+    expect(match_f1m1.getPredictedTimeStr()).toEqual("Sun 3:36 PM");
+  });
 });
