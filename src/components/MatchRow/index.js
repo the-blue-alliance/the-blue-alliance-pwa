@@ -318,61 +318,90 @@ MatchRow.propTypes = {
 };
 
 const Teams = ({ match, teamKeys, selectedTeamKey, favoriteTeamKeys }) => {
-  const classes = useStyles();
-  return teamKeys.map(teamKey => {
-    const teamNum = teamKey.substr(3);
-    const dq = match.isDQ(teamKey);
-    const surrogate = match.isSurrogate(teamKey);
-
-    let teamEl = teamNum;
-    if (dq && surrogate) {
-      teamEl = (
-        <Tooltip title="DQ | Surrogate" placement="top">
-          <span>{teamNum}</span>
-        </Tooltip>
-      );
-    } else if (dq) {
-      teamEl = (
-        <Tooltip title="DQ" placement="top">
-          <span>{teamNum}</span>
-        </Tooltip>
-      );
-    } else if (surrogate) {
-      teamEl = (
-        <Tooltip title="Surrogate" placement="top">
-          <span>{teamNum}</span>
-        </Tooltip>
-      );
-    }
-
-    return (
-      <div key={teamKey} className={classes.team}>
-        <Link
-          className={clsx({
-            [classes.selectedTeam]: teamKey === selectedTeamKey && !dq,
-            [classes.dq]: dq && teamKey !== selectedTeamKey,
-            [classes.selectedTeamDQ]: teamKey === selectedTeamKey && dq,
-            [classes.surrogate]: surrogate,
-          })}
-          href={`/event?eventKey=${match.event_key}&teamKey=${teamKey}`}
-          as={`/team/${teamKey.substring(3)}/${match.getYear()}`}
-        >
-          {teamEl}
-          {favoriteTeamKeys && favoriteTeamKeys.has(teamKey) && (
-            <svg className={classes.favoriteDot}>
-              <circle cx="2.5" cy="2.5" r="2.5" />
-            </svg>
-          )}
-        </Link>
-      </div>
-    );
-  });
+  return teamKeys.map(teamKey => (
+    <TeamLink
+      key={teamKey}
+      match={match}
+      teamKey={teamKey}
+      selected={selectedTeamKey === teamKey}
+      favorite={favoriteTeamKeys && favoriteTeamKeys.has(teamKey)}
+    />
+  ));
 };
 Teams.propTypes = {
   match: PropTypes.instanceOf(Match).isRequired,
   teamKeys: PropTypes.object,
   selectedTeamKey: PropTypes.string,
   favoriteTeamKeys: PropTypes.instanceOf(Set),
+};
+
+const TeamLink = ({ match, teamKey, selected, favorite }) => {
+  const eventKey = match.event_key;
+  const classes = useStyles();
+  const openTeamModal = React.useCallback(
+    e => {
+      e.preventDefault();
+      Router.push(
+        `/event?eventKey=${eventKey}&teamKey=${teamKey}`,
+        `/team/${teamKey}`,
+        { shallow: true }
+      );
+    },
+    [eventKey, teamKey]
+  );
+
+  const teamNum = teamKey.substr(3);
+  const dq = match.isDQ(teamKey);
+  const surrogate = match.isSurrogate(teamKey);
+
+  let teamEl = teamNum;
+  if (dq && surrogate) {
+    teamEl = (
+      <Tooltip title="DQ | Surrogate" placement="top">
+        <span>{teamNum}</span>
+      </Tooltip>
+    );
+  } else if (dq) {
+    teamEl = (
+      <Tooltip title="DQ" placement="top">
+        <span>{teamNum}</span>
+      </Tooltip>
+    );
+  } else if (surrogate) {
+    teamEl = (
+      <Tooltip title="Surrogate" placement="top">
+        <span>{teamNum}</span>
+      </Tooltip>
+    );
+  }
+
+  return (
+    <div key={teamKey} className={classes.team}>
+      <Link
+        className={clsx({
+          [classes.selectedTeam]: selected && !dq,
+          [classes.dq]: dq && !selected,
+          [classes.selectedTeamDQ]: selected && dq,
+          [classes.surrogate]: surrogate,
+        })}
+        href={`/team/${teamKey.substring(3)}/${match.getYear()}`}
+        onClick={openTeamModal}
+      >
+        {teamEl}
+        {favorite && (
+          <svg className={classes.favoriteDot}>
+            <circle cx="2.5" cy="2.5" r="2.5" />
+          </svg>
+        )}
+      </Link>
+    </div>
+  );
+};
+TeamLink.propTypes = {
+  match: PropTypes.instanceOf(Match).isRequired,
+  teamKey: PropTypes.string.isRequired,
+  selected: PropTypes.bool,
+  favorite: PropTypes.bool,
 };
 
 const Score = ({ match, score, color, hasSelectedTeam }) => {
