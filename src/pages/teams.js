@@ -1,12 +1,18 @@
 import React from "react";
 import PropTypes from "prop-types";
+import {
+  getAllTeamsFetchStatus,
+  getAllTeams,
+} from "../selectors/TeamSelectors";
+import { fetchAllTeams } from "../actions";
+import useData from "../lib/useData";
 import Page from "../components/Page";
 import Typography from "@material-ui/core/Typography";
 import notFoundError from "../lib/notFoundError";
 import GroupedListCards from "../components/GroupedListCards";
 import TeamListItem from "../components/TeamListItem";
 
-const Teams = ({ page, maxPage, teams }) => {
+const Teams = ({ page, maxPage, refetchOnLoad }) => {
   const itemRenderer = React.useCallback(({ item: team, style, isLast }) => {
     return (
       <div key={team.key} style={style}>
@@ -14,6 +20,13 @@ const Teams = ({ page, maxPage, teams }) => {
       </div>
     );
   }, []);
+
+  const [teams, teamsFetchStatus, refetchTeams] = useData(
+    state => getAllTeamsFetchStatus(state),
+    state => getAllTeams(state),
+    React.useMemo(() => fetchAllTeams(), []),
+    refetchOnLoad.teams
+  );
 
   if (!teams) {
     return notFoundError();
@@ -58,6 +71,8 @@ const Teams = ({ page, maxPage, teams }) => {
           )}
         </>
       }
+      isLoading={teamsFetchStatus === "fetching"}
+      refreshFunction={refetchTeams}
     >
       <Typography variant="h4">Teams</Typography>
       <GroupedListCards
@@ -73,46 +88,48 @@ const Teams = ({ page, maxPage, teams }) => {
   );
 };
 
-Teams.getInitialProps = async ({ query }) => {
-  let pageNum = 0;
-  const maxPage = 70; // TODO: don't hardcode
-
-  // Temp fake teams
-  const teamNumbers = Array.apply(null, { length: 7999 }).map(
-    Number.call,
-    Number
-  );
-  let teams = teamNumbers.map(number => ({
-    key: `frc${number + 1}`,
-    team_number: number + 1,
-    nickname: "Test",
-    location: "San Jose, CA, USA",
-  }));
+Teams.getInitialProps = async ({ reduxStore, query }) => {
+  const state = reduxStore.getState();
 
   // Ensure query.page is a positive integer <= maxPage
+  let pageNum = 0;
+  const maxPage = (state.getIn(["apiStatus", "max_teams_page"]) * 10) / 2 - 1;
+  let validPage = true;
   if (query.page) {
     if (query.page.match(/^\d+$/)) {
       // convert 1-index to 0-index
       pageNum = parseInt(query.page, 10) - 1;
-      if (pageNum <= 0 || pageNum > maxPage) {
-        teams = null;
+      if (pageNum <= 0 || pageNum >= maxPage) {
+        validPage = false;
       }
     } else {
-      teams = null;
+      validPage = false;
     }
+  }
+
+  const teamsFetchInitial = getAllTeamsFetchStatus(state) !== "success";
+  if (validPage) {
+    // Only fetch teams if page is valid
+    const fetchPromises = [];
+    if (teamsFetchInitial) {
+      fetchPromises.push(reduxStore.dispatch(fetchAllTeams()));
+    }
+    await Promise.all(fetchPromises);
   }
 
   return {
     page: pageNum,
     maxPage,
-    teams,
+    refetchOnLoad: {
+      teams: !teamsFetchInitial,
+    },
   };
 };
 
 Teams.propTypes = {
   page: PropTypes.number.isRequired,
   maxPage: PropTypes.number.isRequired,
-  teams: PropTypes.array,
+  refetchOnLoad: PropTypes.object,
 };
 
 export default Teams;

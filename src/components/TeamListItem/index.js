@@ -4,6 +4,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import Divider from "@material-ui/core/Divider";
 import Typography from "@material-ui/core/Typography";
 import Link from "../Link";
+import Team from "../../database/Team";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -35,7 +36,7 @@ const TeamListItem = ({ team, divider = false }) => {
             </Link>
           </Typography>
           <Typography variant="body2" noWrap>
-            {team.location}
+            {team.getCityStateCountry()}
           </Typography>
         </div>
       </div>
@@ -45,7 +46,7 @@ const TeamListItem = ({ team, divider = false }) => {
 };
 
 TeamListItem.propTypes = {
-  team: PropTypes.object.isRequired,
+  team: PropTypes.instanceOf(Team).isRequired,
   divider: PropTypes.bool,
 };
 
