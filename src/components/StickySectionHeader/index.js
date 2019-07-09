@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { makeStyles } from "@material-ui/core/styles";
 import Divider from "@material-ui/core/Divider";
 import Paper from "@material-ui/core/Paper";
+import Typography from "@material-ui/core/Typography";
 import { useInView } from "react-intersection-observer";
 
 const useStyles = makeStyles(theme => ({
@@ -28,8 +29,7 @@ const useStyles = makeStyles(theme => ({
     },
   }),
   label: {
-    padding: "4px 16px",
-    fontSize: 20,
+    padding: `${theme.spacing(0.5)}px ${theme.spacing(2)}px`,
   },
 }));
 
@@ -46,7 +46,9 @@ const StickySectionHeader = ({ children, offset = 0 }) => {
       >
         <div ref={ref} className={classes.observer} />
         {typeof children === "string" ? (
-          <div className={classes.label}>{children}</div>
+          <Typography className={classes.label} variant="h6">
+            {children}
+          </Typography>
         ) : (
           children
         )}
