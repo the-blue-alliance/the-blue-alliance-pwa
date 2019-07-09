@@ -46,92 +46,85 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const PlayoffMatchup = ({ eventKey, compLevel, setNumber, rightSide }) => {
+const PlayoffMatchup = ({ compLevel, setNumber, rightSide }) => {
   const classes = useStyles();
+  const { eventKey, selectedSeed, winStats } = React.useContext(BracketContext);
+  let redSeed = "?";
+  let redWins = "?";
+  let blueSeed = "?";
+  let blueWins = "?";
+  let winner = null;
+  if (winStats) {
+    redSeed = winStats[compLevel][setNumber].redAllianceId + 1;
+    redWins = winStats[compLevel][setNumber].redWins;
+    blueSeed = winStats[compLevel][setNumber].blueAllianceId + 1;
+    blueWins = winStats[compLevel][setNumber].blueWins;
+    winner = winStats[compLevel][setNumber].winner;
+  }
+
+  let winnerSeed = null;
+  if (winner === "red") {
+    winnerSeed = redSeed;
+  } else if (winner === "blue") {
+    winnerSeed = blueSeed;
+  }
 
   return (
-    <BracketContext.Consumer>
-      {({ selectedSeed, winStats }) => {
-        let redSeed = "?";
-        let redWins = "?";
-        let blueSeed = "?";
-        let blueWins = "?";
-        let winner = null;
-        if (winStats) {
-          redSeed = winStats[compLevel][setNumber].redAllianceId + 1;
-          redWins = winStats[compLevel][setNumber].redWins;
-          blueSeed = winStats[compLevel][setNumber].blueAllianceId + 1;
-          blueWins = winStats[compLevel][setNumber].blueWins;
-          winner = winStats[compLevel][setNumber].winner;
-        }
-
-        let winnerSeed = null;
-        if (winner === "red") {
-          winnerSeed = redSeed;
-        } else if (winner === "blue") {
-          winnerSeed = blueSeed;
-        }
-
-        return (
-          <>
-            <Spacer />
-            <PlayoffMatchupAlliance
-              eventKey={eventKey}
-              color="red"
-              seed={redSeed}
-              wins={redWins}
-              isWinner={winner === "red"}
-              spaceLeft={rightSide}
-              spaceRight={!rightSide}
-            />
-            <div
-              className={clsx({
-                [classes.centerSpacer]: true,
-                [classes.centerSpacerRight]: rightSide,
-              })}
-            >
-              <div
-                className={clsx({
-                  [classes.join]: true,
-                  [classes.joinLeft]: !rightSide,
-                  [classes.joinRight]: rightSide,
-                  [classes.joinBottom]: rightSide && compLevel === "sf",
-                  [classes.redWin]: winner === "red",
-                  [classes.blueWin]: winner === "blue",
-                  [classes.notSelected]:
-                    selectedSeed !== null && winnerSeed !== selectedSeed,
-                })}
-              >
-                <div
-                  className={clsx({
-                    [classes.joinBar]: true,
-                    [classes.redWin]: winner === "red",
-                    [classes.blueWin]: winner === "blue",
-                    [classes.notSelected]:
-                      selectedSeed !== null && winnerSeed !== selectedSeed,
-                  })}
-                />
-              </div>
-            </div>
-            <PlayoffMatchupAlliance
-              eventKey={eventKey}
-              color="blue"
-              seed={blueSeed}
-              wins={blueWins}
-              isWinner={winner === "blue"}
-              spaceLeft={rightSide}
-              spaceRight={!rightSide}
-            />
-            <Spacer />
-          </>
-        );
-      }}
-    </BracketContext.Consumer>
+    <>
+      <Spacer />
+      <PlayoffMatchupAlliance
+        eventKey={eventKey}
+        color="red"
+        seed={redSeed}
+        wins={redWins}
+        isWinner={winner === "red"}
+        spaceLeft={rightSide}
+        spaceRight={!rightSide}
+      />
+      <div
+        className={clsx({
+          [classes.centerSpacer]: true,
+          [classes.centerSpacerRight]: rightSide,
+        })}
+      >
+        <div
+          className={clsx({
+            [classes.join]: true,
+            [classes.joinLeft]: !rightSide,
+            [classes.joinRight]: rightSide,
+            [classes.joinBottom]: rightSide && compLevel === "sf",
+            [classes.redWin]: winner === "red",
+            [classes.blueWin]: winner === "blue",
+            [classes.notSelected]:
+              selectedSeed !== null && winnerSeed !== selectedSeed,
+          })}
+        >
+          <div
+            className={clsx({
+              [classes.joinBar]: true,
+              [classes.redWin]: winner === "red",
+              [classes.blueWin]: winner === "blue",
+              [classes.notSelected]:
+                selectedSeed !== null && winnerSeed !== selectedSeed,
+            })}
+          />
+        </div>
+      </div>
+      <PlayoffMatchupAlliance
+        eventKey={eventKey}
+        color="blue"
+        seed={blueSeed}
+        wins={blueWins}
+        isWinner={winner === "blue"}
+        spaceLeft={rightSide}
+        spaceRight={!rightSide}
+      />
+      <Spacer />
+    </>
   );
 };
 
 PlayoffMatchup.propTypes = {
-  eventKey: PropTypes.string.isRequired,
   compLevel: PropTypes.string.isRequired,
   setNumber: PropTypes.number.isRequired,
   rightSide: PropTypes.bool,

@@ -20,7 +20,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const updateAlliances = (alliances, matches, playoffType, state, setState) => {
+const computeBracketInfo = (alliances, matches, playoffType) => {
   let allianceTeamKeys = null;
   const teamAllianceMap = {};
   if (alliances) {
@@ -74,17 +74,7 @@ const updateAlliances = (alliances, matches, playoffType, state, setState) => {
     });
   }
 
-  setState({
-    allianceTeamKeys,
-    winStats,
-    selectedSeed: null,
-    setState: setState,
-    setSelectedSeed: (seed, state) => {
-      const newState = Object.assign({}, state);
-      newState.selectedSeed = seed;
-      state.setState(newState);
-    },
-  });
+  return [winStats, allianceTeamKeys];
 };
 
 const EventPlayoffBracket = ({
@@ -94,13 +84,13 @@ const EventPlayoffBracket = ({
   eventKey,
 }) => {
   const classes = useStyles();
-  const [state, setState] = useState();
-  if (!state) {
-    updateAlliances(alliances, playoffMatches, playoffType, state, setState);
-    return null;
-  }
+  const [selectedSeed, setSelectedSeed] = useState(null);
+  const [winStats, allianceTeamKeys] = React.useMemo(
+    () => computeBracketInfo(alliances, playoffMatches, playoffType),
+    [alliances, playoffMatches, playoffType]
+  );
 
-  const { winStats } = state;
+  // Determine what parts of the bracket to show
   let hasQf = true;
   let hasSf = true;
   if (playoffType === 4) {
@@ -109,46 +99,39 @@ const EventPlayoffBracket = ({
   }
 
   return (
-    <BracketContext.Provider value={state}>
+    <BracketContext.Provider
+      value={{
+        eventKey,
+        winStats,
+        selectedSeed,
+        setSelectedSeed,
+        allianceTeamKeys,
+      }}
+    >
       <div className={classes.container}>
         {winStats && winStats.qf && hasQf && (
           <div className={classes.round}>
-            <PlayoffMatchup eventKey={eventKey} compLevel="qf" setNumber={1} />
-            <PlayoffMatchup eventKey={eventKey} compLevel="qf" setNumber={2} />
+            <PlayoffMatchup compLevel="qf" setNumber={1} />
+            <PlayoffMatchup compLevel="qf" setNumber={2} />
           </div>
         )}
         {winStats && winStats.sf && hasSf && (
           <div className={classes.round}>
-            <PlayoffMatchup eventKey={eventKey} compLevel="sf" setNumber={1} />
+            <PlayoffMatchup compLevel="sf" setNumber={1} />
           </div>
         )}
         <div className={classes.round}>
-          <PlayoffFinalsMatchup eventKey={eventKey} />
+          <PlayoffFinalsMatchup />
         </div>
         {winStats && winStats.sf && hasSf && (
           <div className={classes.round}>
-            <PlayoffMatchup
-              eventKey={eventKey}
-              compLevel="sf"
-              setNumber={2}
-              rightSide
-            />
+            <PlayoffMatchup compLevel="sf" setNumber={2} rightSide />
           </div>
         )}
         {winStats && winStats.qf && hasQf && (
           <div className={classes.round}>
-            <PlayoffMatchup
-              eventKey={eventKey}
-              compLevel="qf"
-              setNumber={3}
-              rightSide
-            />
-            <PlayoffMatchup
-              eventKey={eventKey}
-              compLevel="qf"
-              setNumber={4}
-              rightSide
-            />
+            <PlayoffMatchup compLevel="qf" setNumber={3} rightSide />
+            <PlayoffMatchup compLevel="qf" setNumber={4} rightSide />
           </div>
         )}
       </div>

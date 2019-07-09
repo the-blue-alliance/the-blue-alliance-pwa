@@ -77,7 +77,6 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const PlayoffMatchupAlliance = ({
-  eventKey,
   color,
   seed,
   wins,
@@ -87,82 +86,85 @@ const PlayoffMatchupAlliance = ({
   isFinals,
 }) => {
   const classes = useStyles();
+  const {
+    eventKey,
+    selectedSeed,
+    setSelectedSeed,
+    allianceTeamKeys,
+  } = React.useContext(BracketContext);
+  const onMouseEnter = React.useCallback(() => setSelectedSeed(seed), [
+    setSelectedSeed,
+    seed,
+  ]);
+  const onMouseLeave = React.useCallback(() => setSelectedSeed(null), [
+    setSelectedSeed,
+  ]);
+
   const isRed = color === "red";
+
   return (
-    <BracketContext.Consumer>
-      {state => {
-        const { selectedSeed, setSelectedSeed, allianceTeamKeys } = state;
-        return (
-          <div
-            className={clsx({
-              [classes.alliance]: true,
-              [classes.red]: isRed,
-              [classes.blue]: !isRed,
-              [classes.selected]: selectedSeed === seed,
-              [classes.notSelected]:
-                selectedSeed !== null && selectedSeed !== seed,
-              [classes.spaceLeft]: spaceLeft,
-              [classes.spaceRight]: spaceRight,
-            })}
-            onMouseEnter={() => setSelectedSeed(seed, state)}
-            onMouseLeave={() => setSelectedSeed(null, state)}
-          >
-            <div
-              className={clsx({
-                [classes.winsContainer]: true,
-                [isRed ? classes.redWins : classes.blueWins]: true,
-                [classes.winner]: isWinner,
-                [classes.hasMedal]: isFinals,
-              })}
-            >
-              <div className={classes.seed}>{seed.toString()}.</div>
-              <div>{wins}</div>
-              <div className={classes.medal}>
-                {isFinals && isWinner && (
-                  <Tooltip title="Winner" placement="top">
-                    <img
-                      src={GoldMedal}
-                      className={classes.medalIcon}
-                      alt="Gold medal"
-                    />
-                  </Tooltip>
-                )}
-                {isFinals && !isWinner && (
-                  <Tooltip title="Finalist" placement="top">
-                    <img
-                      src={SilverMedal}
-                      className={classes.medalIcon}
-                      alt="Silver medal"
-                    />
-                  </Tooltip>
-                )}
-              </div>
+    <div
+      className={clsx({
+        [classes.alliance]: true,
+        [classes.red]: isRed,
+        [classes.blue]: !isRed,
+        [classes.selected]: selectedSeed === seed,
+        [classes.notSelected]: selectedSeed !== null && selectedSeed !== seed,
+        [classes.spaceLeft]: spaceLeft,
+        [classes.spaceRight]: spaceRight,
+      })}
+      onMouseEnter={onMouseEnter}
+      onMouseLeave={onMouseLeave}
+    >
+      <div
+        className={clsx({
+          [classes.winsContainer]: true,
+          [isRed ? classes.redWins : classes.blueWins]: true,
+          [classes.winner]: isWinner,
+          [classes.hasMedal]: isFinals,
+        })}
+      >
+        <div className={classes.seed}>{seed.toString()}.</div>
+        <div>{wins}</div>
+        <div className={classes.medal}>
+          {isFinals && isWinner && (
+            <Tooltip title="Winner" placement="top">
+              <img
+                src={GoldMedal}
+                className={classes.medalIcon}
+                alt="Gold medal"
+              />
+            </Tooltip>
+          )}
+          {isFinals && !isWinner && (
+            <Tooltip title="Finalist" placement="top">
+              <img
+                src={SilverMedal}
+                className={classes.medalIcon}
+                alt="Silver medal"
+              />
+            </Tooltip>
+          )}
+        </div>
+      </div>
+      <div className={classes.teamContainer}>
+        {allianceTeamKeys &&
+          allianceTeamKeys[seed - 1] &&
+          allianceTeamKeys[seed - 1].map(teamKey => (
+            <div key={teamKey}>
+              <Link
+                href={`/event?eventKey=${eventKey}&teamKey=${teamKey}`}
+                as={`/team/${teamKey.substring(3)}/${eventKey.substring(0, 4)}`}
+              >
+                {teamKey.substring(3)}
+              </Link>
             </div>
-            <div className={classes.teamContainer}>
-              {allianceTeamKeys &&
-                allianceTeamKeys[seed - 1] &&
-                allianceTeamKeys[seed - 1].map(teamKey => (
-                  <div key={teamKey}>
-                    <Link
-                      href={`/event?eventKey=${eventKey}&teamKey=${teamKey}`}
-                      as={`/team/${teamKey.substring(3)}/${eventKey.substring(
-                        0,
-                        4
-                      )}`}
-                    >
-                      {teamKey.substring(3)}
-                    </Link>
-                  </div>
-                ))}
-            </div>
-          </div>
-        );
-      }}
-    </BracketContext.Consumer>
+          ))}
+      </div>
+    </div>
   );
 };
 PlayoffMatchupAlliance.propTypes = {
-  eventKey: PropTypes.string.isRequired,
   color: PropTypes.string.isRequired,
   seed: PropTypes.number.isRequired,
   wins: PropTypes.number.isRequired,
