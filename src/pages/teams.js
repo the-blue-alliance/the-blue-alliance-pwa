@@ -89,15 +89,17 @@ const Teams = ({ page, maxPage, refetchOnLoad }) => {
 };
 
 Teams.getInitialProps = async ({ reduxStore, query }) => {
+  const state = reduxStore.getState();
+
   // Ensure query.page is a positive integer <= maxPage
   let pageNum = 0;
-  const maxPage = 70; // TODO: don't hardcode
+  const maxPage = (state.getIn(["apiStatus", "max_teams_page"]) * 10) / 2 - 1;
   let validPage = true;
   if (query.page) {
     if (query.page.match(/^\d+$/)) {
       // convert 1-index to 0-index
       pageNum = parseInt(query.page, 10) - 1;
-      if (pageNum <= 0 || pageNum > maxPage) {
+      if (pageNum <= 0 || pageNum >= maxPage) {
         validPage = false;
       }
     } else {
@@ -105,7 +107,6 @@ Teams.getInitialProps = async ({ reduxStore, query }) => {
     }
   }
 
-  const state = reduxStore.getState();
   const teamsFetchInitial = getAllTeamsFetchStatus(state) !== "success";
   if (validPage) {
     // Only fetch teams if page is valid
