@@ -69,7 +69,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const EventListItem = ({ event }) => {
+const EventListItem = ({ event, divider = false }) => {
   const classes = useStyles();
 
   const webcastStatus = "online"; // Temp use data from Firebase
@@ -150,13 +150,15 @@ const EventListItem = ({ event }) => {
 
         {event.isNow() && <div className={classes.eventLiveIndicator} />}
       </div>
-      <Divider />
+      {divider && <Divider />}
+      {event.structuredData()}
     </>
   );
 };
 
 EventListItem.propTypes = {
   event: PropTypes.instanceOf(Event).isRequired,
+  divider: PropTypes.bool,
 };
 
 export default React.memo(EventListItem);

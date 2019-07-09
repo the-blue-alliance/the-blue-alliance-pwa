@@ -21,6 +21,10 @@ describe("Event record", () => {
     it("has correct isRegional", () => {
       expect(event.isRegional()).toBe(true);
     });
+
+    it("has expected structured data", () => {
+      expect(event.structuredData()).toMatchSnapshot();
+    });
   });
 
   describe("null model", () => {

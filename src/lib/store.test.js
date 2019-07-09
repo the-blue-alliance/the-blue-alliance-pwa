@@ -4,8 +4,13 @@ import getOrCreateStore from "./store";
 
 import Event from "../database/Event";
 import Match from "../database/Match";
+import Team from "../database/Team";
 
 const defaultState = fromJS({
+  apiStatus: {
+    max_season: 2019,
+    max_teams_page: 16,
+  },
   app: {
     historyState: {},
     darkTheme: false,
@@ -36,6 +41,16 @@ const initialState = fromJS({
         },
       },
     },
+    teams: {
+      byKey: {
+        frc254: {},
+        frc604: {},
+      },
+      collections: {
+        all: ["frc254", "frc604"],
+        byEvent: { "2019casj": ["frc254", "frc604"] },
+      },
+    },
   },
 });
 
@@ -61,6 +76,16 @@ const typedInitialState = fromJS({
             "2019": new Set(["2019casj_qm1", "2019casj_qm2"]),
           },
         },
+      },
+    },
+    teams: {
+      byKey: {
+        frc254: new Team({}),
+        frc604: new Team({}),
+      },
+      collections: {
+        all: new Set(["frc254", "frc604"]),
+        byEvent: { "2019casj": new Set(["frc254", "frc604"]) },
       },
     },
   },

@@ -1,0 +1,12 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Event record typical model has expected structured data 1`] = `
+<script
+  dangerouslySetInnerHTML={
+    Object {
+      "__html": "{\\"@context\\":\\"http://schema.org\\",\\"@type\\":\\"Event\\",\\"name\\":\\"Silicon Valley Regional\\",\\"startDate\\":\\"2019-03-28T00:00:00.000-07:00\\",\\"endDate\\":\\"2019-03-31T23:59:59.000-07:00\\",\\"location\\":{\\"@type\\":\\"Place\\",\\"name\\":\\"The Event Center at SJSU\\",\\"address\\":{\\"@type\\":\\"PostalAddress\\",\\"streetAddress\\":\\"290 S 7th St, San Jose, CA 95112, USA\\",\\"addressLocality\\":\\"San Jose\\",\\"addressRegion\\":\\"CA\\",\\"addressCountry\\":\\"USA\\",\\"postalCode\\":\\"95112\\"}}}",
+    }
+  }
+  type="application/ld+json"
+/>
+`;

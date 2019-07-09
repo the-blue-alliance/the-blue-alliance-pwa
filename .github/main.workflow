@@ -10,11 +10,6 @@ action "1.1 Install packages" {
   args = "install"
 }
 
-action "1.2 Authenticate Google Cloud" {
-  uses = "actions/gcloud/auth@ba93088eb19c4a04638102a838312bb32de0b052"
-  secrets = ["GCLOUD_AUTH"]
-}
-
 action "2.1 Test" {
   uses = "actions/npm@59b64a598378f31e49cb76f27d6f3312b582f680"
   args = "test"
@@ -68,10 +63,16 @@ action "4.1 Is not [nodeploy]" {
   needs = ["3.1 Is master branch"]
 }
 
+action "4.2 Authenticate Google Cloud" {
+  uses = "actions/gcloud/auth@ba93088eb19c4a04638102a838312bb32de0b052"
+  secrets = ["GCLOUD_AUTH"]
+  needs = ["3.1 Is master branch"]
+}
+
 action "5.1 Deploy" {
   uses = "actions/gcloud/cli@ba93088eb19c4a04638102a838312bb32de0b052"
   args = "app deploy --project tbatv-prod-hrd --version 1 --quiet"
-  needs = ["1.2 Authenticate Google Cloud", "4.1 Is not [nodeploy]"]
+  needs = ["4.1 Is not [nodeploy]", "4.2 Authenticate Google Cloud"]
 }
 
 workflow "Delete merged branch" {

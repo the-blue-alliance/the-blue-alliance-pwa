@@ -4,6 +4,7 @@ import { updateSingle, updateMulti } from "../lib/reduxImmutableMergeHelpers";
 import Event from "../database/Event";
 import Match from "../database/Match";
 import Alliance from "../database/Alliance";
+import Team from "../database/Team";
 
 const models = (state = Map(), action) => {
   switch (action.type) {
@@ -125,6 +126,18 @@ const models = (state = Map(), action) => {
         ["matchesStatus", "byKey", `${action.matchKey}`],
         "error"
       );
+    case types.FETCH_ALL_TEAMS_REQUEST:
+      return state.setIn(["teamsStatus", "collections", "all"], "fetching");
+    case types.FETCH_ALL_TEAMS_SUCCESS:
+      state = updateMulti(
+        state,
+        "teams",
+        ["all"],
+        fromJS(action.data).map(o => new Team(o))
+      );
+      return state.setIn(["teamsStatus", "collections", "all"], "success");
+    case types.FETCH_ALL_TEAMS_ERROR:
+      return state.setIn(["teamsStatus", "collections", "all"], "error");
     default:
       return state;
   }

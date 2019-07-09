@@ -1,11 +1,12 @@
 import { createStore, applyMiddleware } from "redux";
 import thunk from "redux-thunk";
 import { composeWithDevTools } from "redux-devtools-extension";
-import { List, Map, Set } from "immutable";
+import { List, Map } from "immutable";
 import createReducer from "../reducers";
 
 import Event from "../database/Event";
 import Match from "../database/Match";
+import Team from "../database/Team";
 
 function initializeStore(state) {
   return createStore(
@@ -20,31 +21,23 @@ const __NEXT_REDUX_STORE__ = "__NEXT_REDUX_STORE__";
 const MODEL_TYPES = {
   events: Event,
   matches: Match,
+  teams: Team,
 };
 
-const convertCollections = (
-  state,
-  collectionsPath,
-  collectionEntries,
-  collectionKey
-) => {
+const convertCollections = (state, path, entry) => {
   // Turn preloaded collections from Lists to Sets
   // Do recursively
-  collectionEntries.forEach((collection, entryKey) => {
-    if (collection instanceof List || collection instanceof Set) {
-      state = state.setIn(
-        collectionsPath.concat([collectionKey, entryKey]),
-        collection.toSet()
-      );
-    } else {
+  if (entry instanceof Map) {
+    entry.forEach((collectionEntries, collectionKey) => {
       state = convertCollections(
         state,
-        collectionsPath.concat(collectionKey),
-        collection,
-        entryKey
+        path.concat([collectionKey]),
+        collectionEntries
       );
-    }
-  });
+    });
+  } else if (entry instanceof List) {
+    state = state.setIn(path, entry.toSet());
+  }
   return state;
 };
 
@@ -62,18 +55,14 @@ function getOrCreateStore(initialState = Map()) {
       }
 
       // Convert collection Lists to Sets
-      // Turn collection keys to integers if it is a number
       const collectionsPath = ["models", key, "collections"];
       const collections = initialState.getIn(collectionsPath);
       if (collections) {
-        collections.forEach((collectionEntries, collectionKey) => {
-          initialState = convertCollections(
-            initialState,
-            collectionsPath,
-            collectionEntries,
-            collectionKey
-          );
-        });
+        initialState = convertCollections(
+          initialState,
+          collectionsPath,
+          collections
+        );
       }
     });
   }
