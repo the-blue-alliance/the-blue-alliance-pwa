@@ -3,7 +3,6 @@ import * as types from "../constants/ActionTypes";
 import { updateSingle, updateMulti } from "../lib/reduxImmutableMergeHelpers";
 import Event from "../database/Event";
 import Match from "../database/Match";
-import Alliance from "../database/Alliance";
 
 const models = (state = Map(), action) => {
   switch (action.type) {
@@ -72,36 +71,23 @@ const models = (state = Map(), action) => {
       );
     case types.FETCH_EVENT_ALLIANCES_REQUEST:
       return state.setIn(
-        [
-          "eventAlliancesStatus",
-          "collections",
-          "byEvent",
-          `${action.eventKey}`,
-        ],
+        ["eventAlliancesStatus", "byKey", `${action.eventKey}`],
         "fetching"
       );
     case types.FETCH_EVENT_ALLIANCES_SUCCESS:
-      state = state.setIn(
-        ["eventAlliances", "collections", "byEvent", `${action.eventKey}`],
-        fromJS(action.data).map(o => new Alliance(o))
+      state = updateSingle(
+        state,
+        "eventAlliances",
+        action.eventKey,
+        fromJS(action.data)
       );
       return state.setIn(
-        [
-          "eventAlliancesStatus",
-          "collections",
-          "byEvent",
-          `${action.eventKey}`,
-        ],
+        ["eventAlliancesStatus", "byKey", `${action.eventKey}`],
         "success"
       );
     case types.FETCH_EVENT_ALLIANCES_ERROR:
       return state.setIn(
-        [
-          "eventAlliancesStatus",
-          "collections",
-          "byEvent",
-          `${action.eventKey}`,
-        ],
+        ["eventAlliancesStatus", "byKey", "byEvent", `${action.eventKey}`],
         "error"
       );
     case types.FETCH_MATCH_REQUEST:
