@@ -66,7 +66,10 @@ const EventAllianceTable = ({ eventKey, alliances }) => {
       <TableBody>
         {alliances.map((a, i) => {
           let status;
-          if (a.getIn(["status", "status"]) === "won") {
+          if (
+            a.getIn(["status", "level"]) === "f" &&
+            a.getIn(["status", "status"]) === "won"
+          ) {
             status = (
               <Tooltip title="Winner" placement="top">
                 <img
