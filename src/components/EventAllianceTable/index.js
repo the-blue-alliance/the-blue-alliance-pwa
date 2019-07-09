@@ -8,6 +8,8 @@ import TableRow from "@material-ui/core/TableRow";
 import TableCell from "@material-ui/core/TableCell";
 import Tooltip from "@material-ui/core/Tooltip";
 import { makeStyles } from "@material-ui/core/styles";
+import GoldMedal from "../../icons/medal-gold.svg";
+import SilverMedal from "../../icons/medal-silver.svg";
 
 const useStyles = makeStyles({
   tr: {
@@ -68,7 +70,7 @@ const EventAllianceTable = ({ eventKey, alliances }) => {
             status = (
               <Tooltip title="Winner" placement="top">
                 <img
-                  src="/medal-gold.svg"
+                  src={GoldMedal}
                   className={classes.medalIcon}
                   alt="Gold medal"
                 />
@@ -78,7 +80,7 @@ const EventAllianceTable = ({ eventKey, alliances }) => {
             status = (
               <Tooltip title="Finalist" placement="top">
                 <img
-                  src="/medal-silver.svg"
+                  src={SilverMedal}
                   className={classes.medalIcon}
                   alt="Silver medal"
                 />

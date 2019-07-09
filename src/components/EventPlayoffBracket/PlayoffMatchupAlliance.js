@@ -5,6 +5,8 @@ import { makeStyles } from "@material-ui/core/styles/index";
 import Tooltip from "@material-ui/core/Tooltip";
 import BracketContext from "./BracketContext";
 import Link from "../Link";
+import GoldMedal from "../../icons/medal-gold.svg";
+import SilverMedal from "../../icons/medal-silver.svg";
 
 const useStyles = makeStyles(theme => ({
   alliance: {
@@ -119,7 +121,7 @@ const PlayoffMatchupAlliance = ({
                 {isFinals && isWinner && (
                   <Tooltip title="Winner" placement="top">
                     <img
-                      src="/medal-gold.svg"
+                      src={GoldMedal}
                       className={classes.medalIcon}
                       alt="Gold medal"
                     />
@@ -128,7 +130,7 @@ const PlayoffMatchupAlliance = ({
                 {isFinals && !isWinner && (
                   <Tooltip title="Finalist" placement="top">
                     <img
-                      src="/medal-silver.svg"
+                      src={SilverMedal}
                       className={classes.medalIcon}
                       alt="Silver medal"
                     />
