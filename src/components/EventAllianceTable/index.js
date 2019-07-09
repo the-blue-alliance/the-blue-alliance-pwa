@@ -104,17 +104,22 @@ const EventAllianceTable = ({ eventKey, alliances }) => {
                 if (a.getIn(["backup", "out"]) === teamKey) {
                   const backupTeamNum = a.getIn(["backup", "in"]).substr(3);
                   backupTeam = (
-                    <Link
-                      href={`/event?eventKey=${eventKey}&teamKey=${teamKey}`}
-                      as={`/team/${teamKey.substring(3)}/${yearStr}`}
-                    >
-                      <Tooltip
-                        title={`This team was called as a backup for Team ${teamNum}`}
-                        placement="top"
+                    <>
+                      {" "}
+                      (
+                      <Link
+                        href={`/event?eventKey=${eventKey}&teamKey=${teamKey}`}
+                        as={`/team/${teamKey.substring(3)}/${yearStr}`}
                       >
-                        <span>{backupTeamNum}</span>
-                      </Tooltip>
-                    </Link>
+                        <Tooltip
+                          title={`This team was called as a backup for Team ${teamNum}`}
+                          placement="top"
+                        >
+                          <span>{backupTeamNum}</span>
+                        </Tooltip>
+                      </Link>
+                      )
+                    </>
                   );
                 }
                 return (
