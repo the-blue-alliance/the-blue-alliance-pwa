@@ -1,5 +1,6 @@
 /* eslint-env jest */
 import { fromJS } from "immutable";
+import timezone_mock from "timezone-mock";
 import Match from "./Match";
 
 describe("Match record", () => {
@@ -91,10 +92,12 @@ describe("Match record", () => {
   });
 
   it("has correct timeStr", () => {
+    timezone_mock.register("US/Pacific");
     expect(match_f1m1.getTimeStr()).toEqual("Sun 4:12 PM");
   });
 
   it("has correct predictedTimeStr", () => {
+    timezone_mock.register("US/Pacific");
     expect(match_f1m1.getPredictedTimeStr()).toEqual("Sun 3:36 PM");
   });
 });
