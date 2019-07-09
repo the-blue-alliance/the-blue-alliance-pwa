@@ -130,16 +130,14 @@ const Event = ({ eventKey, refetchOnLoad }) => {
         </Typography>
         <Typography className={classes.eventInfo}>
           <PlaceIcon fontSize="inherit" className={classes.icon} />
-          <React.Fragment>
-            <Link
-              href={event.gmaps_url}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              {event.location_name}
-            </Link>
-            <span>{` in ${event.getCityStateCountry()}`}</span>
-          </React.Fragment>
+          <Link
+            href={event.gmaps_url}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {event.location_name}
+          </Link>
+          <span>{` in ${event.getCityStateCountry()}`}</span>
         </Typography>
         <Typography className={classes.eventInfo}>
           <LinkIcon fontSize="inherit" className={classes.icon} />

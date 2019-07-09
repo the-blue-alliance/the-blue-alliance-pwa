@@ -30,7 +30,7 @@ const PlayoffFinalsMatchup = ({ eventKey }) => {
           winner = winStats.f[1].winner;
         }
         return (
-          <React.Fragment>
+          <>
             <Spacer />
             <PlayoffMatchupAlliance
               eventKey={eventKey}
@@ -50,7 +50,7 @@ const PlayoffFinalsMatchup = ({ eventKey }) => {
               isFinals
             />
             <Spacer />
-          </React.Fragment>
+          </>
         );
       }}
     </BracketContext.Consumer>

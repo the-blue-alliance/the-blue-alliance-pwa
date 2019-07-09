@@ -73,7 +73,7 @@ const PlayoffMatchup = ({ eventKey, compLevel, setNumber, rightSide }) => {
         }
 
         return (
-          <React.Fragment>
+          <>
             <Spacer />
             <PlayoffMatchupAlliance
               eventKey={eventKey}
@@ -123,7 +123,7 @@ const PlayoffMatchup = ({ eventKey, compLevel, setNumber, rightSide }) => {
               spaceRight={!rightSide}
             />
             <Spacer />
-          </React.Fragment>
+          </>
         );
       }}
     </BracketContext.Consumer>
