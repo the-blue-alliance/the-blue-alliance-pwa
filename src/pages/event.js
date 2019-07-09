@@ -19,6 +19,7 @@ import Typography from "@material-ui/core/Typography";
 import Page from "../components/Page";
 import MatchList from "../components/MatchList";
 import EventAllianceTable from "../components/EventAllianceTable";
+import EventPlayoffBracket from "../components/EventPlayoffBracket";
 import EventPageDialog from "../components/EventPageDialog";
 import PageTabs from "../components/PageTabs";
 import StickySectionHeader from "../components/StickySectionHeader";
@@ -87,6 +88,11 @@ const Event = ({ eventKey, refetchOnLoad }) => {
         return a.getNaturalOrder() - b.getNaturalOrder();
       }),
     [unsortedMatches]
+  );
+  // Playoff matches
+  const playoffMatches = React.useMemo(
+    () => matches.filter(m => m.get("comp_level") !== "qm"),
+    [matches]
   );
 
   if (!event) {
@@ -176,7 +182,12 @@ const Event = ({ eventKey, refetchOnLoad }) => {
               <StickySectionHeader offset={47}>
                 Playoff Bracket
               </StickySectionHeader>
-              TODO
+              <EventPlayoffBracket
+                eventKey={eventKey}
+                alliances={alliances}
+                playoffMatches={playoffMatches}
+                playoffType={event.playoff_type}
+              />
             </Paper>
           </Grid>
         </Grid>

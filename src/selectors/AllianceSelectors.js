@@ -1,10 +1,10 @@
 export const getEventAlliances = (state, eventKey) =>
-  state.getIn(["models", "alliances", "collections", "byEvent", eventKey]);
+  state.getIn(["models", "eventAlliances", "collections", "byEvent", eventKey]);
 
 export const getEventAlliancesFetchStatus = (state, eventKey) =>
   state.getIn([
     "models",
-    "alliancesStatus",
+    "eventAlliancesStatus",
     "collections",
     "byEvent",
     eventKey,

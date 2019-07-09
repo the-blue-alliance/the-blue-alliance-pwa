@@ -72,21 +72,36 @@ const models = (state = Map(), action) => {
       );
     case types.FETCH_EVENT_ALLIANCES_REQUEST:
       return state.setIn(
-        ["alliancesStatus", "collections", "byEvent", `${action.eventKey}`],
+        [
+          "eventAlliancesStatus",
+          "collections",
+          "byEvent",
+          `${action.eventKey}`,
+        ],
         "fetching"
       );
     case types.FETCH_EVENT_ALLIANCES_SUCCESS:
       state = state.setIn(
-        ["alliances", "collections", "byEvent", `${action.eventKey}`],
+        ["eventAlliances", "collections", "byEvent", `${action.eventKey}`],
         fromJS(action.data).map(o => new Alliance(o))
       );
       return state.setIn(
-        ["alliancesStatus", "collections", "byEvent", `${action.eventKey}`],
+        [
+          "eventAlliancesStatus",
+          "collections",
+          "byEvent",
+          `${action.eventKey}`,
+        ],
         "success"
       );
     case types.FETCH_EVENT_ALLIANCES_ERROR:
       return state.setIn(
-        ["alliancesStatus", "collections", "byEvent", `${action.eventKey}`],
+        [
+          "eventAlliancesStatus",
+          "collections",
+          "byEvent",
+          `${action.eventKey}`,
+        ],
         "error"
       );
     case types.FETCH_MATCH_REQUEST:

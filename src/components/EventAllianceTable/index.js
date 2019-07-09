@@ -45,7 +45,7 @@ const EventAllianceTable = ({ eventKey, alliances }) => {
           {[...Array(teamsPerAlliance).keys()].map(i => {
             if (i === 0) {
               return (
-                <TableCell key={i} className={classes.th} numeric>
+                <TableCell key={i} className={classes.th} align="right">
                   Captain
                 </TableCell>
               );
@@ -54,7 +54,7 @@ const EventAllianceTable = ({ eventKey, alliances }) => {
                 <TableCell
                   key={i}
                   className={classes.th}
-                  numeric
+                  align="right"
                 >{`Pick ${i}`}</TableCell>
               );
             }
@@ -120,7 +120,7 @@ const EventAllianceTable = ({ eventKey, alliances }) => {
                   );
                 }
                 return (
-                  <TableCell key={teamKey} className={classes.td} numeric>
+                  <TableCell key={teamKey} className={classes.td} align="right">
                     <Link
                       href={`/event?eventKey=${eventKey}&teamKey=${teamKey}`}
                       as={`/team/${teamKey.substring(3)}/${yearStr}`}
