@@ -191,6 +191,7 @@ const Event = ({ eventKey, refetchOnLoad }) => {
         </Grid>
       </div>
       <EventPageDialog eventKey={eventKey} />
+      {event.structuredData()}
     </Page>
   );
 };

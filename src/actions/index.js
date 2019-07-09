@@ -156,3 +156,38 @@ export const fetchMatch = matchKey => dispatch => {
       });
     });
 };
+
+// Team list page
+export const fetchAllTeamsHelper = pageNum => {
+  return tracedFetch(`${baseURL}/api/v3/teams/${pageNum}`, fetchOptions).then(
+    handleErrors
+  );
+};
+
+export const fetchAllTeams = () => (dispatch, getState) => {
+  dispatch({
+    type: types.FETCH_ALL_TEAMS_REQUEST,
+  });
+
+  const state = getState();
+  const maxPage = state.getIn(["apiStatus", "max_teams_page"]);
+
+  const fetchPromises = [];
+  for (let pageNum = 0; pageNum < maxPage; pageNum++) {
+    fetchPromises.push(fetchAllTeamsHelper(pageNum));
+  }
+  return Promise.all(fetchPromises)
+    .then(pageOfTeams => {
+      let allTeams = [];
+      pageOfTeams.forEach(page => (allTeams = allTeams.concat(page)));
+      dispatch({
+        type: types.FETCH_ALL_TEAMS_SUCCESS,
+        data: allTeams,
+      });
+    })
+    .catch(() =>
+      dispatch({
+        type: types.FETCH_ALL_TEAMS_ERROR,
+      })
+    );
+};

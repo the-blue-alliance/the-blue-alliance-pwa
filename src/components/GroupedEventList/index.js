@@ -3,12 +3,21 @@ import React from "react";
 import PropTypes from "prop-types";
 import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
-import EventListCard from "../EventListCard";
+import GroupedListCards from "../GroupedListCards";
+import EventListItem from "../EventListItem";
 import { slugify } from "../../lib/utils";
 
 const useStyles = makeStyles(theme => ({}));
 
 const GroupedEventList = ({ events }) => {
+  const itemRenderer = React.useCallback(({ item: event, style, isLast }) => {
+    return (
+      <div key={event.key} style={style}>
+        <EventListItem event={event} divider={!isLast} />
+      </div>
+    );
+  }, []);
+
   const classes = useStyles();
 
   // Group official events by week/Champs
@@ -42,10 +51,9 @@ const GroupedEventList = ({ events }) => {
   });
   for (let week in eventsByWeek) {
     groupedOfficialEvents.push({
-      label: week,
-      slug: slugify(week),
-      events: eventsByWeek[week],
-      isOfficial: true,
+      key: slugify(week),
+      header: week,
+      items: eventsByWeek[week],
     });
   }
 
@@ -64,20 +72,18 @@ const GroupedEventList = ({ events }) => {
   });
   for (let cmp in eventsByCmp) {
     groupedOfficialEvents.push({
-      label: cmp,
-      slug: slugify(cmp),
-      events: eventsByCmp[cmp],
-      isOfficial: true,
+      key: slugify(cmp),
+      header: cmp,
+      items: eventsByCmp[cmp],
     });
   }
 
   // Add FOC
   if (focEvents.length !== 0) {
     groupedOfficialEvents.push({
-      label: "Festival of Champions",
-      slug: "foc",
-      events: focEvents,
-      isOfficial: true,
+      key: "foc",
+      header: "Festival of Champions",
+      items: focEvents,
     });
   }
 
@@ -94,31 +100,34 @@ const GroupedEventList = ({ events }) => {
   });
   for (let month in unofficialEventsByMonth) {
     groupedUnofficialEvents.push({
-      label: month,
-      slug: slugify(month),
-      events: unofficialEventsByMonth[month],
-      isOfficial: false,
+      key: slugify(month),
+      header: month,
+      items: unofficialEventsByMonth[month],
     });
   }
 
   return (
     <>
       <Typography variant="h5">Offical Events</Typography>
-      {groupedOfficialEvents.map(group => (
-        <EventListCard
-          key={group.slug}
-          label={group.label}
-          events={group.events}
-        />
-      ))}
-      <Typography variant="h5">Unofficial Events</Typography>
-      {groupedUnofficialEvents.map(group => (
-        <EventListCard
-          key={group.slug}
-          label={group.label}
-          events={group.events}
-        />
-      ))}
+      <GroupedListCards
+        groups={groupedOfficialEvents}
+        itemRenderer={itemRenderer}
+        itemHeight={65}
+        ssrFallbackId="official-events-list-server-fallback"
+        stickyOffset={64}
+        singularCountLabel="Event"
+        pluralCountLabel="Events"
+      />
+      <Typography variant="h5">Unoffical Events</Typography>
+      <GroupedListCards
+        groups={groupedUnofficialEvents}
+        itemRenderer={itemRenderer}
+        itemHeight={65}
+        ssrFallbackId="unofficial-events-list-server-fallback"
+        stickyOffset={64}
+        singularCountLabel="Event"
+        pluralCountLabel="Events"
+      />
     </>
   );
 };

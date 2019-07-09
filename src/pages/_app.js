@@ -5,7 +5,7 @@ import { Provider } from "react-redux";
 import withReduxStore from "../lib/withReduxStore";
 import errorReporter from "../lib/errorReporter";
 import CssBaseline from "@material-ui/core/CssBaseline";
-import Error from "../components/Error";
+import TopLevelError from "../components/TopLevelError";
 import RouteChangeProgress from "../components/RouteChangeProgress";
 import ThemeProvider from "../components/ThemeProvider";
 import Navigation from "../components/Navigation";
@@ -37,7 +37,7 @@ class MyApp extends App {
           <ThemeProvider>
             <CssBaseline />
             {hasError ? (
-              <Error />
+              <TopLevelError />
             ) : (
               <>
                 <RouteChangeProgress />
