@@ -30,7 +30,6 @@ const useStyles = makeStyles(theme => ({
   }),
   label: {
     padding: `${theme.spacing(0.5)}px ${theme.spacing(2)}px`,
-    fontWeight: 400,
   },
 }));
 
