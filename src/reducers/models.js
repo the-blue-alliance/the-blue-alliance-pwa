@@ -70,6 +70,27 @@ const models = (state = Map(), action) => {
         ["matchesStatus", "collections", "byEvent", `${action.eventKey}`],
         "error"
       );
+    case types.FETCH_EVENT_ALLIANCES_REQUEST:
+      return state.setIn(
+        ["eventAlliancesStatus", "byKey", `${action.eventKey}`],
+        "fetching"
+      );
+    case types.FETCH_EVENT_ALLIANCES_SUCCESS:
+      state = updateSingle(
+        state,
+        "eventAlliances",
+        action.eventKey,
+        fromJS(action.data)
+      );
+      return state.setIn(
+        ["eventAlliancesStatus", "byKey", `${action.eventKey}`],
+        "success"
+      );
+    case types.FETCH_EVENT_ALLIANCES_ERROR:
+      return state.setIn(
+        ["eventAlliancesStatus", "byKey", "byEvent", `${action.eventKey}`],
+        "error"
+      );
     case types.FETCH_MATCH_REQUEST:
       return state.setIn(
         ["matchesStatus", "byKey", `${action.matchKey}`],

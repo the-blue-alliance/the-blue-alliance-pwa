@@ -5,15 +5,58 @@ import {
   getEventMatchesFetchStatus,
   getEventMatches,
 } from "../selectors/MatchSelectors";
-import { fetchEvent, fetchEventMatches } from "../actions";
+import {
+  getEventAlliancesFetchStatus,
+  getEventAlliances,
+} from "../selectors/AllianceSelectors";
+import { fetchEvent, fetchEventMatches, fetchEventAlliances } from "../actions";
 import useData from "../lib/useData";
 import notFoundError from "../lib/notFoundError";
+import Paper from "@material-ui/core/Paper";
+import Grid from "@material-ui/core/Grid";
+import Tab from "@material-ui/core/Tab";
 import Typography from "@material-ui/core/Typography";
 import Page from "../components/Page";
-import MatchRow from "../components/MatchRow";
+import MatchList from "../components/MatchList";
+import EventAllianceTable from "../components/EventAllianceTable";
+import EventPlayoffBracket from "../components/EventPlayoffBracket";
 import EventPageDialog from "../components/EventPageDialog";
+import PageTabs from "../components/PageTabs";
+import StickySectionHeader from "../components/StickySectionHeader";
+import Link from "../components/Link";
+import { makeStyles } from "@material-ui/core/styles/index";
+import EventIcon from "@material-ui/icons/Event";
+import LinkIcon from "@material-ui/icons/Link";
+import PlaceIcon from "@material-ui/icons/Place";
+
+const useStyles = makeStyles(theme => ({
+  eventInfoContainer: {
+    marginTop: theme.spacing(1),
+    marginBottom: theme.spacing(2),
+  },
+  eventInfo: {
+    fontSize: 14,
+  },
+  icon: {
+    top: "0.125em",
+    position: "relative",
+    marginRight: theme.spacing(1),
+  },
+  cardTitle: {
+    fontWeight: 400,
+  },
+  sectionCard: {
+    marginBottom: theme.spacing(2),
+  },
+}));
 
 const Event = ({ eventKey, refetchOnLoad }) => {
+  const classes = useStyles();
+  const [tabIndex, setTabIndex] = React.useState(0);
+  function handleTabChange(event, newIndex) {
+    setTabIndex(newIndex);
+  }
+
   const [event, eventFetchStatus, refetchEvent] = useData(
     state => getEventFetchStatus(state, eventKey),
     state => getEvent(state, eventKey),
@@ -26,10 +69,17 @@ const Event = ({ eventKey, refetchOnLoad }) => {
     React.useMemo(() => fetchEventMatches(eventKey), [eventKey]),
     refetchOnLoad.eventMatches
   );
+  const [alliances, alliancesFetchStatus, refetchAlliances] = useData(
+    state => getEventAlliancesFetchStatus(state, eventKey),
+    state => getEventAlliances(state, eventKey),
+    React.useMemo(() => fetchEventAlliances(eventKey), [eventKey]),
+    refetchOnLoad.eventMatches
+  );
   const handleRefresh = React.useCallback(() => {
     refetchEvent();
     refetchMatches();
-  }, [refetchEvent, refetchMatches]);
+    refetchAlliances();
+  }, [refetchEvent, refetchMatches, refetchAlliances]);
 
   // Sort matches
   const matches = React.useMemo(
@@ -38,6 +88,11 @@ const Event = ({ eventKey, refetchOnLoad }) => {
         return a.getNaturalOrder() - b.getNaturalOrder();
       }),
     [unsortedMatches]
+  );
+  // Playoff matches
+  const playoffMatches = React.useMemo(
+    () => matches.filter(m => m.get("comp_level") !== "qm"),
+    [matches]
   );
 
   if (!event) {
@@ -58,14 +113,83 @@ const Event = ({ eventKey, refetchOnLoad }) => {
         </>
       }
       isLoading={
-        eventFetchStatus === "fetching" || matchesFetchStatus === "fetching"
+        eventFetchStatus === "fetching" ||
+        matchesFetchStatus === "fetching" ||
+        alliancesFetchStatus === "fetching"
       }
       refreshFunction={handleRefresh}
     >
-      <Typography variant="h4">{event.name}</Typography>
-      {matches.map(match => (
-        <MatchRow key={match.key} eventKey={eventKey} match={match} />
-      ))}
+      <Typography variant="h4">
+        {event.name} {event.year}
+      </Typography>
+
+      <div className={classes.eventInfoContainer}>
+        <Typography className={classes.eventInfo}>
+          <EventIcon fontSize="inherit" className={classes.icon} />{" "}
+          {event.getDateString()}
+        </Typography>
+        <Typography className={classes.eventInfo}>
+          <PlaceIcon fontSize="inherit" className={classes.icon} />
+          <Link
+            href={event.gmaps_url}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {event.location_name}
+          </Link>
+          <span>{` in ${event.getCityStateCountry()}`}</span>
+        </Typography>
+        <Typography className={classes.eventInfo}>
+          <LinkIcon fontSize="inherit" className={classes.icon} />
+          <Link href={event.website} target="_blank" rel="noopener noreferrer">
+            {event.website}
+          </Link>
+        </Typography>
+      </div>
+
+      <PageTabs value={tabIndex} onChange={handleTabChange}>
+        <Tab label="Results" />
+        <Tab label="Rankings" />
+        <Tab label="Awards" />
+        <Tab label="Teams" />
+        <Tab label="Insights" />
+        <Tab label="Media" />
+      </PageTabs>
+      <div hidden={tabIndex !== 0}>
+        <Grid container>
+          <Grid xs={12} sm={6} style={{ padding: 8 }} item>
+            <Paper>
+              <StickySectionHeader offset={47}>
+                Qualification Results
+              </StickySectionHeader>
+              <MatchList matches={matches} showSubheaders={false} justQuals />
+            </Paper>
+          </Grid>
+          <Grid xs={12} sm={6} style={{ padding: 8 }} item>
+            <Paper className={classes.sectionCard}>
+              <StickySectionHeader offset={47}>Alliances</StickySectionHeader>
+              <EventAllianceTable eventKey={eventKey} alliances={alliances} />
+            </Paper>
+            <Paper className={classes.sectionCard}>
+              <StickySectionHeader offset={47}>
+                Playoff Results
+              </StickySectionHeader>
+              <MatchList matches={matches} justPlayoff />
+            </Paper>
+            <Paper className={classes.sectionCard}>
+              <StickySectionHeader offset={47}>
+                Playoff Bracket
+              </StickySectionHeader>
+              <EventPlayoffBracket
+                eventKey={eventKey}
+                alliances={alliances}
+                playoffMatches={playoffMatches}
+                playoffType={event.playoff_type}
+              />
+            </Paper>
+          </Grid>
+        </Grid>
+      </div>
       <EventPageDialog eventKey={eventKey} />
       {event.structuredData()}
     </Page>
@@ -79,6 +203,8 @@ Event.getInitialProps = async ({ reduxStore, query }) => {
   const eventFetchInitial = getEventFetchStatus(state, eventKey) !== "success";
   const eventMatchesFetchInitial =
     getEventMatchesFetchStatus(state, eventKey) !== "success";
+  const eventAlliancesFetchInitial =
+    getEventAlliancesFetchStatus(state, eventKey) !== "success";
 
   const fetchPromises = [];
   if (eventFetchInitial) {
@@ -87,6 +213,9 @@ Event.getInitialProps = async ({ reduxStore, query }) => {
   if (eventMatchesFetchInitial) {
     fetchPromises.push(reduxStore.dispatch(fetchEventMatches(eventKey)));
   }
+  if (eventAlliancesFetchInitial) {
+    fetchPromises.push(reduxStore.dispatch(fetchEventAlliances(eventKey)));
+  }
   await Promise.all(fetchPromises);
 
   return {
@@ -94,6 +223,7 @@ Event.getInitialProps = async ({ reduxStore, query }) => {
     refetchOnLoad: {
       event: !eventFetchInitial,
       eventMatches: !eventMatchesFetchInitial,
+      eventAlliances: !eventAlliancesFetchInitial,
     },
   };
 };

@@ -24,6 +24,7 @@
     "@next/bundle-analyzer": "^8.1.1-canary.51",
     "@zeit/next-source-maps": "0.0.4-canary.1",
     "clipboard-polyfill": "^2.8.1",
+    "clsx": "^1.0.4",
     "compression": "^1.7.4",
     "cross-env": "^5.2.0",
     "dotenv": "^8.0.0",
@@ -70,6 +71,7 @@
     "lint-staged": "^8.2.0",
     "prettier": "^1.18.2",
     "svg-url-loader": "^2.3.2",
+    "timezone-mock": "^1.0.5",
     "url-loader": "^2.0.0"
   },
   "husky": {
