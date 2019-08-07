@@ -77,7 +77,6 @@ const nextConfig = {
       loader: "svg-url-loader",
       options: {
         limit: 5 * 1024, // Images larger than 5 KB won’t be inlined
-        noquotes: true,
         context: "",
         outputPath: "static",
         publicPath: "/_next/static",
