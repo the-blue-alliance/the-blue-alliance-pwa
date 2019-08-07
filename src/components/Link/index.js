@@ -14,12 +14,13 @@ const useStyles = makeStyles(theme => ({
 // A styled version of the Next.js Link component:
 // https://nextjs.org/docs/#with-link
 function Link(props) {
-  const { ...other } = props;
+  const { href, ...other } = props;
   const classes = useStyles();
 
   return (
     <MuiLink
-      component={NextComposedLink}
+      href={href}
+      component={href && href.startsWith("http") ? "a" : NextComposedLink}
       classes={{ root: classes.link }}
       {...other}
     />
