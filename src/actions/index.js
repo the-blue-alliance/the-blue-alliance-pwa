@@ -158,36 +158,21 @@ export const fetchMatch = matchKey => dispatch => {
 };
 
 // Team list page
-export const fetchAllTeamsHelper = pageNum => {
-  return tracedFetch(`${baseURL}/api/v3/teams/${pageNum}`, fetchOptions).then(
-    handleErrors
-  );
-};
-
-export const fetchAllTeams = () => (dispatch, getState) => {
+export const fetchAllTeams = () => dispatch => {
   dispatch({
     type: types.FETCH_ALL_TEAMS_REQUEST,
   });
-
-  const state = getState();
-  const maxPage = state.getIn(["apiStatus", "max_teams_page"]);
-
-  const fetchPromises = [];
-  for (let pageNum = 0; pageNum < maxPage; pageNum++) {
-    fetchPromises.push(fetchAllTeamsHelper(pageNum));
-  }
-  return Promise.all(fetchPromises)
-    .then(pageOfTeams => {
-      let allTeams = [];
-      pageOfTeams.forEach(page => (allTeams = allTeams.concat(page)));
+  return tracedFetch(`${baseURL}/api/v3/teams/all`, fetchOptions)
+    .then(handleErrors)
+    .then(teams =>
       dispatch({
         type: types.FETCH_ALL_TEAMS_SUCCESS,
-        data: allTeams,
-      });
-    })
-    .catch(() =>
+        data: teams,
+      })
+    )
+    .catch(() => {
       dispatch({
         type: types.FETCH_ALL_TEAMS_ERROR,
-      })
-    );
+      });
+    });
 };
