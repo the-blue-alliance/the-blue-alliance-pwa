@@ -11,8 +11,8 @@
     "build": "rm -rf .next; next build src",
     "deploy": "gcloud --project tbatv-prod-hrd app deploy --version 1 --quiet",
     "start": "cross-env NODE_ENV=production node server.js",
-    "prettier": "prettier '**/*.{js,json,md,yaml}' --check --ignore-path .gitignore",
-    "lint": "eslint '**/*.js'",
+    "prettier": "prettier \"**/*.{js,json,md,yaml}\" --check --ignore-path .gitignore",
+    "lint": "eslint \"**/*.js\"",
     "test": "jest --coverage --verbose",
     "test:watch": "jest --coverage --verbose --watch",
     "analyze": "cross-env ANALYZE=true next build src"
