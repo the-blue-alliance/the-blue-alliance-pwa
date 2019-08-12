@@ -46,13 +46,25 @@ jobs:
   deploy:
     name: Deploy
     runs-on: ubuntu-latest
-    # needs: test
+    needs: test
     steps:
       - uses: actions/checkout@v1
-      - name: Is not [nodeploy]
+      - uses: actions/setup-node@v1
+        with:
+          version: 10
+      - name: Should deploy check
+        if: github.event_name == 'push' && github.base_ref == 'master'
         uses: ./.github/actions/filter-commit-message
         with:
           args: -n \[nodeploy\]
+      - name: Build
+        env:
+          FIREBASE_API_KEY: ${{ secrets.FIREBASE_API_KEY }}
+          FIREBASE_APP_ID: ${{ secrets.FIREBASE_APP_ID }}
+          FIREBASE_PROJECT_ID: ${{ secrets.FIREBASE_PROJECT_ID }}
+          STACKDRIVER_API_KEY: ${{ secrets.STACKDRIVER_API_KEY }}
+          TBA_API_AUTH_KEY: ${{ secrets.TBA_API_AUTH_KEY }}
+        run: npm run build
       - name: Authenticate Google Cloud
         uses: actions/gcloud/auth@ba93088eb19c4a04638102a838312bb32de0b052
         env:
