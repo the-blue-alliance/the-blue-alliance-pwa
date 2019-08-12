@@ -1,9 +1,6 @@
 name: Node CI
 
 on:
-  pull_request:
-    branches:
-      - master
   push:
     branches:
       - master
@@ -52,11 +49,12 @@ jobs:
       - uses: actions/setup-node@v1
         with:
           version: 10
-      - name: Should deploy check
-        if: github.event_name == 'push' && github.base_ref == 'master'
+      - name: Is not [nodeploy]
         uses: ./.github/actions/filter-commit-message
         with:
           args: -n \[nodeploy\]
+      - name: Install
+        run: npm install
       - name: Build
         env:
           FIREBASE_API_KEY: ${{ secrets.FIREBASE_API_KEY }}
