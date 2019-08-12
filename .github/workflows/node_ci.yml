@@ -45,7 +45,7 @@ jobs:
     needs: test
     steps:
       - name: Is not [nodeploy]
-        uses: .github/actions/filter-commit-message
+        uses: ./.github/actions/filter-commit-message
         with:
           args: -n \[nodeploy\]
       - name: Authenticate Google Cloud
