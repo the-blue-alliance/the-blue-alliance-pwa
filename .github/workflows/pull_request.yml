@@ -1,4 +1,4 @@
-name: CI
+name: On pull request
 
 on:
   pull_request:
@@ -8,10 +8,7 @@ on:
 jobs:
   test:
     name: Test
-    strategy:
-      matrix:
-        os: [ubuntu-latest, windows-latest, macOS-latest]
-    runs-on: ${{ matrix.os }}
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
       - uses: actions/setup-node@v1
@@ -23,14 +20,33 @@ jobs:
         env:
           CI: "true"
         run: npm test
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - uses: actions/setup-node@v1
+        with:
+          version: 10
+      - name: Install
+        run: npm install
       - name: Check lint
         run: npm run lint
       - name: Check formatting
         run: npm run prettier
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - uses: actions/setup-node@v1
+        with:
+          version: 10
+      - name: Install
+        run: npm install
       - name: Build
         run: npm run build
       - name: Upload coverage to Codecov
-        if: matrix.os == 'ubuntu-latest'
         uses: codecov/codecov-action@v1.0.0
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
