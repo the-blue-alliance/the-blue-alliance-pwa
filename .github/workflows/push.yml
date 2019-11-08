@@ -21,7 +21,6 @@ jobs:
           path: node_modules
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
       - name: Install
-        if: steps.cache.outputs.cache-hit != 'true'
         run: npm install
       - name: Test
         env:
@@ -63,7 +62,6 @@ jobs:
           path: node_modules
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
       - name: Install
-        if: steps.cache.outputs.cache-hit != 'true'
         run: npm install
       - name: Build
         env:
