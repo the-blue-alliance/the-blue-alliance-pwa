@@ -8,6 +8,7 @@ on:
 jobs:
   test:
     name: Test
+    if: contains(github.event.commits[0].message, '[clowntown]') == false
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
@@ -61,7 +62,7 @@ jobs:
           token: ${{ secrets.CODECOV_TOKEN }}
       - name: Deploy with Google Cloud Platform
         uses: actions-hub/gcloud@268.0.0
-        if: contains(github.event.commits[0].message, '[nodeploy]') != true
+        if: contains(github.event.commits[0].message, '[nodeploy]') == false
         env:
           PROJECT_ID: ${{ secrets.FIREBASE_PROJECT_ID }}
           APPLICATION_CREDENTIALS: ${{ secrets.GCLOUD_AUTH }}
