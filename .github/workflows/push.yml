@@ -8,28 +8,34 @@ on:
 jobs:
   test:
     name: Test
-    if: contains(github.event.commits[0].message, '[clowntown]') == false
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
+        if: contains(github.event.commits[0].message, '[clowntown]') == false
       - uses: actions/setup-node@v1
+        if: contains(github.event.commits[0].message, '[clowntown]') == false
         with:
           node-version: "10.x"
       - name: Cache node modules
+        if: contains(github.event.commits[0].message, '[clowntown]') == false
         id: cache
         uses: actions/cache@v1
         with:
           path: node_modules
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
       - name: Install
+        if: contains(github.event.commits[0].message, '[clowntown]') == false
         run: npm install
       - name: Test
+        if: contains(github.event.commits[0].message, '[clowntown]') == false
         env:
           CI: true
         run: npm test
       - name: Check lint
+        if: contains(github.event.commits[0].message, '[clowntown]') == false
         run: npm run lint
       - name: Check formatting
+        if: contains(github.event.commits[0].message, '[clowntown]') == false
         run: npm run prettier
   deploy:
     name: Build & Deploy
