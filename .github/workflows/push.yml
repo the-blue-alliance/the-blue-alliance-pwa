@@ -59,12 +59,9 @@ jobs:
         uses: codecov/codecov-action@v1.0.0
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
-      - name: Is not [nodeploy]
-        uses: ./.github/actions/filter-commit-message
-        with:
-          args: -n \[nodeploy\]
       - name: Deploy with Google Cloud Platform
         uses: actions-hub/gcloud@268.0.0
+        if: ${{ !contains(github.event.commits[0].message, '[nodeploy]') }}
         env:
           PROJECT_ID: ${{ secrets.FIREBASE_PROJECT_ID }}
           APPLICATION_CREDENTIALS: ${{ secrets.GCLOUD_AUTH }}
