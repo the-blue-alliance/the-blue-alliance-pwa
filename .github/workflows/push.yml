@@ -63,11 +63,10 @@ jobs:
         uses: ./.github/actions/filter-commit-message
         with:
           args: -n \[nodeploy\]
-      - name: Authenticate Google Cloud
-        uses: actions/gcloud/auth@master
+      - name: Deploy with Google Cloud Platform
+        uses: actions-hub/gcloud@268.0.0
         env:
-          GCLOUD_AUTH: ${{ secrets.GCLOUD_AUTH }}
-      - name: Deploy
-        uses: actions/gcloud/cli@master
+          PROJECT_ID: ${{ secrets.FIREBASE_PROJECT_ID }}
+          APPLICATION_CREDENTIALS: ${{ secrets.GCLOUD_AUTH }}
         with:
-          args: app deploy --project tbatv-prod-hrd --version 1 --quiet
+          args: app deploy --version 1 --quiet
