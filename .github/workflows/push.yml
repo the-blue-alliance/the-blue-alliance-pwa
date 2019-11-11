@@ -45,6 +45,11 @@ jobs:
         uses: codecov/codecov-action@v1.0.0
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
+      - name: Archive production artifacts
+        uses: actions/upload-artifact@v1
+        with:
+          name: dist
+          path: .next
       - name: Deploy with Google Cloud Platform
         uses: actions-hub/gcloud@268.0.0
         if: contains(github.event.commits[0].message, '[nodeploy]') == false
