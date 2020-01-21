@@ -13,7 +13,10 @@ const useStyles = makeStyles(theme => ({
     display: "flex",
     flexDirection: "column",
     textAlign: "center",
-    backgroundColor: theme.palette.grey[100],
+    backgroundColor:
+      theme.palette.type === "light"
+        ? theme.palette.grey[100]
+        : theme.palette.grey[900],
     borderRadius: theme.spacing(0.5),
     boxShadow: theme.shadows[1],
     overflow: "hidden",
