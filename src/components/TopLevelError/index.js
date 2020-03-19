@@ -39,7 +39,7 @@ const Error = () => {
           href="/"
           fullWidth
         >
-          Reload THe Blue Alliance
+          Reload The Blue Alliance
         </Button>
       </Paper>
     </div>
