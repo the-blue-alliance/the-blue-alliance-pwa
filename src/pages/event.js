@@ -89,6 +89,11 @@ const Event = ({ eventKey, refetchOnLoad }) => {
       }),
     [unsortedMatches]
   );
+  // Quals matches
+  const qualsMatches = React.useMemo(
+    () => matches.filter(m => m.get("comp_level") === "qm"),
+    [matches]
+  );
   // Playoff matches
   const playoffMatches = React.useMemo(
     () => matches.filter(m => m.get("comp_level") !== "qm"),
@@ -139,12 +144,18 @@ const Event = ({ eventKey, refetchOnLoad }) => {
           </Link>
           <span>{` in ${event.getCityStateCountry()}`}</span>
         </Typography>
-        <Typography className={classes.eventInfo}>
-          <LinkIcon fontSize="inherit" className={classes.icon} />
-          <Link href={event.website} target="_blank" rel="noopener noreferrer">
-            {event.website}
-          </Link>
-        </Typography>
+        {event.website && (
+          <Typography className={classes.eventInfo}>
+            <LinkIcon fontSize="inherit" className={classes.icon} />
+            <Link
+              href={event.website}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {event.website}
+            </Link>
+          </Typography>
+        )}
       </div>
 
       <PageTabs value={tabIndex} onChange={handleTabChange}>
@@ -158,36 +169,64 @@ const Event = ({ eventKey, refetchOnLoad }) => {
       <div hidden={tabIndex !== 0}>
         <Grid container>
           <Grid xs={12} sm={6} style={{ padding: 8 }} item>
-            <Paper>
-              <StickySectionHeader offset={47}>
-                Qualification Results
-              </StickySectionHeader>
-              <MatchList matches={matches} showSubheaders={false} justQuals />
-            </Paper>
+            {(qualsMatches.count() > 0 || matches.count() === 0) && (
+              <Paper>
+                <StickySectionHeader offset={47}>
+                  Qualification Results
+                </StickySectionHeader>
+                <MatchList matches={matches} showSubheaders={false} justQuals />
+              </Paper>
+            )}
+            {qualsMatches.count() === 0 && playoffMatches.count() > 0 && (
+              <Paper>
+                <StickySectionHeader offset={47}>
+                  Playoff Results
+                </StickySectionHeader>
+                <MatchList
+                  matches={matches}
+                  showSubheaders={false}
+                  justPlayoff
+                />
+              </Paper>
+            )}
           </Grid>
-          <Grid xs={12} sm={6} style={{ padding: 8 }} item>
-            <Paper className={classes.sectionCard}>
-              <StickySectionHeader offset={47}>Alliances</StickySectionHeader>
-              <EventAllianceTable eventKey={eventKey} alliances={alliances} />
-            </Paper>
-            <Paper className={classes.sectionCard}>
-              <StickySectionHeader offset={47}>
-                Playoff Results
-              </StickySectionHeader>
-              <MatchList matches={matches} justPlayoff />
-            </Paper>
-            <Paper className={classes.sectionCard}>
-              <StickySectionHeader offset={47}>
-                Playoff Bracket
-              </StickySectionHeader>
-              <EventPlayoffBracket
-                eventKey={eventKey}
-                alliances={alliances}
-                playoffMatches={playoffMatches}
-                playoffType={event.playoff_type}
-              />
-            </Paper>
-          </Grid>
+          {((alliances && alliances.size > 0) ||
+            (playoffMatches.count() > 0 && qualsMatches.count() > 0)) && (
+            <Grid xs={12} sm={6} style={{ padding: 8 }} item>
+              {alliances && alliances.size > 0 && (
+                <Paper className={classes.sectionCard}>
+                  <StickySectionHeader offset={47}>
+                    Alliances
+                  </StickySectionHeader>
+                  <EventAllianceTable
+                    eventKey={eventKey}
+                    alliances={alliances}
+                  />
+                </Paper>
+              )}
+              {playoffMatches.count() > 0 && qualsMatches.count() > 0 && (
+                <Paper className={classes.sectionCard}>
+                  <StickySectionHeader offset={47}>
+                    Playoff Results
+                  </StickySectionHeader>
+                  <MatchList matches={matches} justPlayoff />
+                </Paper>
+              )}
+              {alliances && alliances.size > 0 && playoffMatches.count() > 0 && (
+                <Paper className={classes.sectionCard}>
+                  <StickySectionHeader offset={47}>
+                    Playoff Bracket
+                  </StickySectionHeader>
+                  <EventPlayoffBracket
+                    eventKey={eventKey}
+                    alliances={alliances}
+                    playoffMatches={playoffMatches}
+                    playoffType={event.playoff_type}
+                  />
+                </Paper>
+              )}
+            </Grid>
+          )}
         </Grid>
       </div>
       <EventPageDialog eventKey={eventKey} />
