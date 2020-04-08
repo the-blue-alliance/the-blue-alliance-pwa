@@ -9,12 +9,10 @@ const withSourceMaps = require("@zeit/next-source-maps")();
 const nextConfig = {
   // Build one level up from ./src
   distDir: "../.next",
-  // Workbox
+  // Workbox options for next-offline
   workboxOpts: {
     clientsClaim: true,
     skipWaiting: true,
-    globDirectory: "./public",
-    globPatterns: ["**/*.{ico,json}"],
   },
   // Webpack
   webpack: (config, { dev, webpack }) => {
