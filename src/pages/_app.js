@@ -1,6 +1,6 @@
 import "../lib/init";
 import React from "react";
-import App, { Container } from "next/app";
+import App from "next/app";
 import { Provider } from "react-redux";
 import withReduxStore from "../lib/withReduxStore";
 import errorReporter from "../lib/errorReporter";
@@ -32,22 +32,20 @@ class MyApp extends App {
     const { Component, pageProps, reduxStore } = this.props;
     const { hasError } = this.state;
     return (
-      <Container>
-        <Provider store={reduxStore}>
-          <ThemeProvider>
-            <CssBaseline />
-            {hasError ? (
-              <TopLevelError />
-            ) : (
-              <>
-                <RouteChangeProgress />
-                <Navigation />
-                <Component {...pageProps} />
-              </>
-            )}
-          </ThemeProvider>
-        </Provider>
-      </Container>
+      <Provider store={reduxStore}>
+        <ThemeProvider>
+          <CssBaseline />
+          {hasError ? (
+            <TopLevelError />
+          ) : (
+            <>
+              <RouteChangeProgress />
+              <Navigation />
+              <Component {...pageProps} />
+            </>
+          )}
+        </ThemeProvider>
+      </Provider>
     );
   }
 }
