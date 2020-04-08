@@ -223,7 +223,8 @@ const MatchRow = ({ match, selectedTeamKey, favoriteTeamKeys }) => {
       </div>
       <Link
         className={classes.matchName}
-        href={`/match/${matchKey}`}
+        href={`/match?matchKey=${matchKey}`}
+        as={`/match/${matchKey}`}
         onClick={openMatchModal}
       >
         {match.getDisplayName(true)}
@@ -384,7 +385,8 @@ const TeamLink = ({ match, teamKey, selected, favorite }) => {
           [classes.selectedTeamDQ]: selected && dq,
           [classes.surrogate]: surrogate,
         })}
-        href={`/team/${teamKey.substring(3)}/${match.getYear()}`}
+        href={`/team?teamKey=${teamKey}&year=${match.getYear()}`}
+        as={`/team/${teamKey.substring(3)}/${match.getYear()}`}
         onClick={openTeamModal}
       >
         {teamEl}
