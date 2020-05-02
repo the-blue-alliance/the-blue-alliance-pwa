@@ -16,6 +16,7 @@ import * as clipboard from "clipboard-polyfill";
 import { sideNavWidth } from "../../constants/Config";
 import PageHead from "../PageHead";
 import TBALogoSVG from "../../icons/tba_lamp.svg";
+import Search from "./Search";
 
 const useStyles = makeStyles(theme => ({
   toolbar: {
@@ -130,6 +131,7 @@ const Page = ({
           >
             {title ? title : "The Blue Alliance"}
           </Typography>
+          <Search />
           {isLoading && (
             <div className={classes.progress}>
               <CircularProgress
