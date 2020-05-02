@@ -1,12 +1,9 @@
 /* eslint-env jest */
 import React from "react";
-import { Provider } from "react-redux";
 import { mount } from "enzyme";
-import getOrCreateStore from "../../lib/store";
 import mockNextUseRouter from "../../lib/mockNextUseRouter";
 import Component from "./index.js";
-
-const reduxStore = getOrCreateStore();
+import DarkModeContext from "../ThemeProvider/DarkModeContext";
 
 it("Renders without crashing", () => {
   const router = {
@@ -18,8 +15,8 @@ it("Renders without crashing", () => {
   mockNextUseRouter(router);
 
   mount(
-    <Provider store={reduxStore}>
+    <DarkModeContext.Provider value={{ isDark: false }}>
       <Component />
-    </Provider>
+    </DarkModeContext.Provider>
   );
 });

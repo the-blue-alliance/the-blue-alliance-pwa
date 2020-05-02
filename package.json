@@ -48,7 +48,8 @@
     "redux-immutable": "^4.0.0",
     "redux-thunk": "^2.3.0",
     "reselect": "^4.0.0",
-    "stackdriver-errors-js": "^0.7.0"
+    "stackdriver-errors-js": "^0.7.0",
+    "use-dark-mode": "^2.3.1"
   },
   "devDependencies": {
     "babel-eslint": "^10.1.0",

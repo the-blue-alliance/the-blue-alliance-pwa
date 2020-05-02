@@ -1,6 +1,5 @@
 // App
 export const SET_HISTORY_STATE = "SET_HISTORY_STATE";
-export const TOGGLE_THEME = "TOGGLE_THEME";
 
 // Fetching
 export const FETCH_YEAR_EVENTS_REQUEST = "FETCH_YEAR_EVENTS_REQUEST";

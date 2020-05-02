@@ -1,10 +1,11 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { useSelector } from "react-redux";
 import amber from "@material-ui/core/colors/amber";
 import indigo from "@material-ui/core/colors/indigo";
 import { createMuiTheme } from "@material-ui/core/styles";
 import { ThemeProvider } from "@material-ui/styles";
+import useDarkMode from "use-dark-mode";
+import DarkModeContext from "./DarkModeContext";
 
 const createTheme = darkTheme => {
   return createMuiTheme({
@@ -20,11 +21,17 @@ const lightTheme = createTheme(false);
 const darkTheme = createTheme(true);
 
 const TBAThemeProvider = ({ children }) => {
-  const isDarkTheme = useSelector(state => state.getIn(["app", "darkTheme"]));
+  const [isDark, setDark] = React.useState(false);
+  const darkMode = useDarkMode(false, {
+    onChange: value => setDark(value),
+  });
+
   return (
-    <ThemeProvider theme={isDarkTheme ? darkTheme : lightTheme}>
-      {children}
-    </ThemeProvider>
+    <DarkModeContext.Provider value={{ isDark, toggleDark: darkMode.toggle }}>
+      <ThemeProvider theme={isDark ? darkTheme : lightTheme}>
+        {children}
+      </ThemeProvider>
+    </DarkModeContext.Provider>
   );
 };
 

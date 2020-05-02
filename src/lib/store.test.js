@@ -13,7 +13,6 @@ const defaultState = fromJS({
   },
   app: {
     historyState: {},
-    darkTheme: false,
   },
   models: {},
 });
