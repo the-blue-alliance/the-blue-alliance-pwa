@@ -124,6 +124,18 @@ const models = (state = Map(), action) => {
       return state.setIn(["teamsStatus", "collections", "all"], "success");
     case types.FETCH_ALL_TEAMS_ERROR:
       return state.setIn(["teamsStatus", "collections", "all"], "error");
+    case types.FETCH_ALL_EVENTS_REQUEST:
+      return state.setIn(["eventsStatus", "collections", "all"], "fetching");
+    case types.FETCH_ALL_EVENTS_SUCCESS:
+      state = updateMulti(
+        state,
+        "events",
+        ["all"],
+        fromJS(action.data).map(o => new Event(o))
+      );
+      return state.setIn(["eventsStatus", "collections", "all"], "success");
+    case types.FETCH_ALL_EVENTS_ERROR:
+      return state.setIn(["eventsStatus", "collections", "all"], "error");
     default:
       return state;
   }

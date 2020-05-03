@@ -169,3 +169,23 @@ export const fetchAllTeams = () => dispatch => {
       });
     });
 };
+
+// event list page
+export const fetchAllEvents = () => dispatch => {
+  dispatch({
+    type: types.FETCH_ALL_EVENTS_REQUEST,
+  });
+  return tracedFetch(`${baseURL}/api/v3/events/all`, fetchOptions)
+    .then(handleErrors)
+    .then(events =>
+      dispatch({
+        type: types.FETCH_ALL_EVENTS_SUCCESS,
+        data: events,
+      })
+    )
+    .catch(() => {
+      dispatch({
+        type: types.FETCH_ALL_EVENTS_ERROR,
+      });
+    });
+};

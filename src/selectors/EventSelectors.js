@@ -23,3 +23,19 @@ export const getEventFetchStatus = (state, eventKey) =>
 
 export const getEvent = (state, eventKey) =>
   state.getIn(["models", "events", "byKey", eventKey]);
+
+const getAllEventKeys = state =>
+  state.getIn(["models", "events", "collections", "all"]);
+
+export const getAllEventsFetchStatus = state =>
+  state.getIn(["models", "eventsStatus", "collections", "all"]);
+
+export const getAllEvents = createSelector(
+  getEventsByKey,
+  getAllEventKeys,
+  (eventsByKey, keys) => {
+    if (keys) {
+      return keys.toSeq().map(key => eventsByKey.get(key));
+    }
+  }
+);

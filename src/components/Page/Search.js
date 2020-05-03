@@ -10,12 +10,16 @@ import SearchIcon from "@material-ui/icons/Search";
 import Autocomplete, {
   createFilterOptions,
 } from "@material-ui/lab/Autocomplete";
-import { fetchAllTeams } from "../../actions";
+import { fetchAllTeams, fetchAllEvents } from "../../actions";
 import useData from "../../lib/useData";
 import {
   getAllTeamsFetchStatus,
   getAllTeams,
 } from "../../selectors/TeamSelectors";
+import {
+  getAllEventsFetchStatus,
+  getAllEvents,
+} from "../../selectors/EventSelectors";
 
 const useStyles = makeStyles(theme => ({
   search: {
@@ -66,22 +70,41 @@ const Search = () => {
   const router = useRouter();
   React.useEffect(() => {
     store.dispatch(fetchAllTeams());
+    store.dispatch(fetchAllEvents());
   }, []);
   const [teams, teamsFetchStatus, _] = useData(
     state => getAllTeamsFetchStatus(state),
     state => getAllTeams(state)
   );
+  const [events, eventsFetchStatus, __] = useData(
+    state => getAllEventsFetchStatus(state),
+    state => getAllEvents(state)
+  );
   const [activated, setActivated] = React.useState(false);
 
   const options = React.useMemo(() => {
-    if (activated && teams !== undefined) {
-      return teams.toJS().map(team => {
-        team.typeLabel = "Teams";
-        return team;
-      });
+    if (activated && teams !== undefined && events !== undefined) {
+      return teams
+        .map(team => {
+          const ret = team.toJS();
+          ret.typeLabel = "Teams";
+          ret.label = `${team.team_number} | ${team.nickname}`;
+          return ret;
+        })
+        .concat(
+          events.map(event => {
+            const ret = event.toJS();
+            ret.typeLabel = "Events";
+            ret.label = `${
+              event.year
+            } ${event.safeShortName()} [${event.event_code.toUpperCase()}]`;
+            return ret;
+          })
+        )
+        .toJS();
     }
     return [];
-  }, [activated, teams]);
+  }, [activated, teams, events]);
 
   return (
     <div className={classes.search}>
@@ -92,13 +115,18 @@ const Search = () => {
         options={options.sort((a, b) => a.team_number < b.team_number)}
         filterOptions={filterOptions}
         groupBy={option => option.typeLabel}
-        getOptionLabel={option => `${option.team_number} | ${option.nickname}`}
-        onChange={(object, value) =>
-          router.push(
-            `/team?teamKey=${value.key}`,
-            `/team/${value.team_number}`
-          )
-        }
+        getOptionLabel={option => option.label}
+        onChange={(object, value) => {
+          if (value.typeLabel == "Teams") {
+            router.push(
+              `/team?teamKey=${value.key}`,
+              `/team/${value.team_number}`
+            );
+          }
+          if (value.typeLabel == "Events") {
+            router.push(`/event?eventKey=${value.key}`, `/event/${value.key}`);
+          }
+        }}
         autoHighlight
         renderInput={({ InputProps, inputProps }) => {
           return (
