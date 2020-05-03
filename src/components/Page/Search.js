@@ -62,6 +62,7 @@ const useStyles = makeStyles(theme => ({
 
 const filterOptions = createFilterOptions({
   limit: 5,
+  stringify: option => option.matchString,
 });
 
 const Search = () => {
@@ -84,24 +85,29 @@ const Search = () => {
 
   const options = React.useMemo(() => {
     if (activated && teams !== undefined && events !== undefined) {
-      return teams
+      const teamOptions = teams
         .map(team => {
           const ret = team.toJS();
           ret.typeLabel = "Teams";
           ret.label = `${team.team_number} | ${team.nickname}`;
+          ret.matchString = `${team.team_number} ${team.nickname}`;
           return ret;
         })
-        .concat(
-          events.map(event => {
-            const ret = event.toJS();
-            ret.typeLabel = "Events";
-            ret.label = `${
-              event.year
-            } ${event.safeShortName()} [${event.event_code.toUpperCase()}]`;
-            return ret;
-          })
-        )
         .toJS();
+
+      const eventOptions = events
+        .map(event => {
+          const ret = event.toJS();
+          ret.typeLabel = "Events";
+          ret.label = `${
+            event.year
+          } ${event.safeShortName()} [${event.event_code.toUpperCase()}]`;
+          ret.matchString = `${event.year}${event.event_code} ${event.year} ${event.name}`;
+          return ret;
+        })
+        .toJS()
+        .sort((a, b) => b.year - a.year);
+      return teamOptions.concat(eventOptions);
     }
     return [];
   }, [activated, teams, events]);
@@ -112,7 +118,7 @@ const Search = () => {
         <SearchIcon />
       </div>
       <Autocomplete
-        options={options.sort((a, b) => a.team_number < b.team_number)}
+        options={options}
         filterOptions={filterOptions}
         groupBy={option => option.typeLabel}
         getOptionLabel={option => option.label}
