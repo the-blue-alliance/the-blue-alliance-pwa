@@ -10,6 +10,8 @@ import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles(theme => ({
   subHeader: {
+    display: "flex",
+    alignItems: "center",
     height: "32px",
     lineHeight: "32px",
     backgroundColor:
