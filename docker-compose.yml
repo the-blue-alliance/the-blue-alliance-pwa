@@ -1,0 +1,19 @@
+version: "3"
+
+volumes:
+  pwa_node_modules:
+
+services:
+  pwa:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    tty: true
+    command: npm run dev
+    env_file:
+      - .env
+    ports:
+      - 3000:3000
+    volumes:
+      - ./:/app:delegated
+      - pwa_node_modules:/app/node_modules
