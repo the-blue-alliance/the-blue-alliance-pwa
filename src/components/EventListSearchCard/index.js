@@ -44,6 +44,17 @@ const useStyles = makeStyles(theme => ({
   button: {
     marginLeft: theme.spacing(1),
   },
+  closed: {
+    transform: "rotate(90deg)",
+  },
+  open: {
+    transform: "rotate(0)",
+  },
+  filterIcon: {
+    transition: theme.transitions.create(["transform"], {
+      duration: theme.transitions.duration.short,
+    }),
+  },
 }));
 
 const EventListSearchCard = ({ events }) => {
@@ -89,7 +100,13 @@ const EventListSearchCard = ({ events }) => {
           margin="none"
         />
         {hasDistricts && (
-          <IconButton onClick={toggleFilterOpen}>
+          <IconButton
+            onClick={toggleFilterOpen}
+            className={[
+              classes.filterIcon,
+              filterOpen ? classes.open : classes.closed,
+            ]}
+          >
             <Badge badgeContent={filters.size} color="secondary">
               <FilterListIcon />
             </Badge>
