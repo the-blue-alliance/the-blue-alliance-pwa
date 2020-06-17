@@ -93,7 +93,7 @@ const Events = ({ year, refetchOnLoad }) => {
 };
 
 Events.getInitialProps = async ({ reduxStore, query }) => {
-  let year = 2019;
+  let year = 2020;
   if (query.year) {
     year = parseInt(query.year, 10);
   }
