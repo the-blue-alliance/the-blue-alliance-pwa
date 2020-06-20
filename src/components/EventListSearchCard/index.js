@@ -105,7 +105,7 @@ const EventListSearchCard = ({ events }) => {
             className={[
               classes.filterIcon,
               filterOpen ? classes.open : classes.closed,
-            ]}
+            ].join(" ")}
           >
             <Badge badgeContent={filters.size} color="secondary">
               <FilterListIcon />
