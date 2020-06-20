@@ -71,9 +71,7 @@ jobs:
           TBA_API_AUTH_KEY: ${{ secrets.TBA_API_AUTH_KEY }}
         run: npm run build
       - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v1.0.0
-        with:
-          token: ${{ secrets.CODECOV_TOKEN }}
+        uses: codecov/codecov-action@v1.0.7
       - name: Archive production artifacts
         uses: actions/upload-artifact@v1
         with:
