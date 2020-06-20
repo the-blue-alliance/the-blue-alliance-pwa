@@ -75,10 +75,7 @@ const Events = ({ year, refetchOnLoad }) => {
       </Typography>
       <Grid container spacing={2}>
         <Grid item xs={12} md={3} lg={2}>
-          <EventYearPicker
-            selectedYear={year}
-            years={[2020, 2019, 2018, 2017]}
-          />
+          <EventYearPicker selectedYear={year} />
         </Grid>
         <Grid item xs={12} md={9} lg={10}>
           <EventListSearchCard events={rawEvents} />
