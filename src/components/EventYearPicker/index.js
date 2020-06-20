@@ -4,6 +4,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import MenuItem from "@material-ui/core/MenuItem";
 import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
+import Router from "next/router";
 
 const useStyles = makeStyles(theme => ({
   formControl: {
@@ -11,24 +12,25 @@ const useStyles = makeStyles(theme => ({
     minWidth: 120,
   },
   selectEmpty: {
-    marginTop: theme.spacing(2),
+    marginTop: theme.spacing(5),
   },
 }));
 
-const EventYearPicker = ({ years }) => {
+const EventYearPicker = ({ selectedYear, years }) => {
   const classes = useStyles();
-  const [year, setYear] = React.useState(2020);
 
-  const updateYear = React.useCallback(
-    event => {
-      setYear(event.target.value);
-    },
-    [setYear]
-  );
+  const updateYear = React.useCallback(event => {
+    const year = event.target.value;
+    const as = `/events/${year}`;
+
+    Router.push(`/events/${year}`, as, {
+      shallow: true,
+    });
+  }, []);
 
   return (
     <FormControl className={classes.formControl}>
-      <Select value={year} onChange={updateYear}>
+      <Select value={selectedYear} onChange={updateYear}>
         {years.map(year => (
           <MenuItem key={year} value={year}>
             {year}
@@ -40,6 +42,7 @@ const EventYearPicker = ({ years }) => {
 };
 
 EventYearPicker.propTypes = {
+  selectedYear: PropTypes.number,
   years: PropTypes.array,
 };
 
