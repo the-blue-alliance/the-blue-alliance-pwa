@@ -150,6 +150,32 @@ export const fetchMatch = matchKey => dispatch => {
     });
 };
 
+// Event details page
+export const fetchEventRankings = eventKey => dispatch => {
+  dispatch({
+    type: types.FETCH_RANKING_REQUEST,
+    eventKey,
+  });
+  return tracedFetch(
+    `${baseURL}/api/v3/event/${eventKey}/rankings`,
+    fetchOptions
+  )
+    .then(handleErrors)
+    .then(ranking =>
+      dispatch({
+        type: types.FETCH_RANKING_SUCCESS,
+        eventKey,
+        data: ranking,
+      })
+    )
+    .catch(() => {
+      dispatch({
+        type: types.FETCH_RANKING_ERROR,
+        eventKey,
+      });
+    });
+};
+
 // Team list page
 export const fetchAllTeams = () => dispatch => {
   dispatch({
