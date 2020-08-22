@@ -73,7 +73,7 @@ const Event = ({ eventKey, refetchOnLoad }) => {
     React.useMemo(() => fetchEvent(eventKey), [eventKey]),
     refetchOnLoad.event
   );
-  const [rankings, rankingFetchStatus, refetchRankings] = useData(
+  const [rankings, rankingsFetchStatus, refetchRankings] = useData(
     state => getEventRankingsFetchStatus(state, eventKey),
     state => getEventRankings(state, eventKey),
     React.useMemo(() => fetchEventRankings(eventKey), [eventKey]),
@@ -139,7 +139,7 @@ const Event = ({ eventKey, refetchOnLoad }) => {
         eventFetchStatus === "fetching" ||
         matchesFetchStatus === "fetching" ||
         alliancesFetchStatus === "fetching" ||
-        rankingFetchStatus === "fetching"
+        rankingsFetchStatus === "fetching"
       }
       refreshFunction={handleRefresh}
     >

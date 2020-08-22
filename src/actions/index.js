@@ -153,7 +153,7 @@ export const fetchMatch = matchKey => dispatch => {
 // Event details page
 export const fetchEventRankings = eventKey => dispatch => {
   dispatch({
-    type: types.FETCH_RANKING_REQUEST,
+    type: types.FETCH_EVENT_RANKINGS_REQUEST,
     eventKey,
   });
   return tracedFetch(
@@ -163,14 +163,14 @@ export const fetchEventRankings = eventKey => dispatch => {
     .then(handleErrors)
     .then(ranking =>
       dispatch({
-        type: types.FETCH_RANKING_SUCCESS,
+        type: types.FETCH_EVENT_RANKINGS_SUCCESS,
         eventKey,
         data: ranking,
       })
     )
     .catch(() => {
       dispatch({
-        type: types.FETCH_RANKING_ERROR,
+        type: types.FETCH_EVENT_RANKINGS_ERROR,
         eventKey,
       });
     });

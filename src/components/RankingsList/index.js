@@ -43,6 +43,8 @@ const useStyles = makeStyles(theme => ({
 
 const RankingsList = ({ rankings, eventKey }) => {
   const classes = useStyles();
+
+  //deep copies all nested arrays and maps into accessable JSON
   rankings = rankings ? JSON.parse(JSON.stringify(rankings)) : null;
 
   if (!rankings || !rankings["rankings"] || rankings["rankings"].length === 0) {
