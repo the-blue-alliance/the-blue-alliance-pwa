@@ -36,7 +36,7 @@
     "lru-cache": "^5.1.1",
     "luxon": "^1.23.0",
     "match-sorter": "^4.1.0",
-    "next": "^9.3.6",
+    "next": "^9.5.2",
     "next-offline": "^5.0.0",
     "prop-types": "^15.7.2",
     "react": "16.8.6",
