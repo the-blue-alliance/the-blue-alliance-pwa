@@ -138,6 +138,27 @@ const models = (state = Map(), action) => {
       return state.setIn(["eventsStatus", "collections", "all"], "error");
     default:
       return state;
+    case types.FETCH_EVENT_RANKINGS_REQUEST:
+      return state.setIn(
+        ["eventRankingsStatus", "byKey", `${action.eventKey}`],
+        "fetching"
+      );
+    case types.FETCH_EVENT_RANKINGS_SUCCESS:
+      state = updateSingle(
+        state,
+        "rankings",
+        action.eventKey,
+        fromJS(action.data)
+      );
+      return state.setIn(
+        ["eventRankingsStatus", "byKey", `${action.eventKey}`],
+        "success"
+      );
+    case types.FETCH_EVENT_RANKINGS_ERROR:
+      return state.setIn(
+        ["eventRankingsStatus", "byKey", `${action.eventKey}`],
+        "error"
+      );
   }
 };
 export default models;

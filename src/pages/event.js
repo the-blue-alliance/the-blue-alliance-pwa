@@ -9,7 +9,16 @@ import {
   getEventAlliancesFetchStatus,
   getEventAlliances,
 } from "../selectors/AllianceSelectors";
-import { fetchEvent, fetchEventMatches, fetchEventAlliances } from "../actions";
+import {
+  getEventRankingsFetchStatus,
+  getEventRankings,
+} from "../selectors/RankingSelectors";
+import {
+  fetchEvent,
+  fetchEventMatches,
+  fetchEventAlliances,
+  fetchEventRankings,
+} from "../actions";
 import useData from "../lib/useData";
 import notFoundError from "../lib/notFoundError";
 import Paper from "@material-ui/core/Paper";
@@ -28,6 +37,7 @@ import { makeStyles } from "@material-ui/core/styles/index";
 import EventIcon from "@material-ui/icons/Event";
 import LinkIcon from "@material-ui/icons/Link";
 import PlaceIcon from "@material-ui/icons/Place";
+import RankingsList from "../components/RankingsList";
 
 const useStyles = makeStyles(theme => ({
   eventInfoContainer: {
@@ -63,6 +73,12 @@ const Event = ({ eventKey, refetchOnLoad }) => {
     React.useMemo(() => fetchEvent(eventKey), [eventKey]),
     refetchOnLoad.event
   );
+  const [rankings, rankingsFetchStatus, refetchRankings] = useData(
+    state => getEventRankingsFetchStatus(state, eventKey),
+    state => getEventRankings(state, eventKey),
+    React.useMemo(() => fetchEventRankings(eventKey), [eventKey]),
+    refetchOnLoad.eventRankings
+  );
   const [unsortedMatches, matchesFetchStatus, refetchMatches] = useData(
     state => getEventMatchesFetchStatus(state, eventKey),
     state => getEventMatches(state, eventKey),
@@ -79,7 +95,8 @@ const Event = ({ eventKey, refetchOnLoad }) => {
     refetchEvent();
     refetchMatches();
     refetchAlliances();
-  }, [refetchEvent, refetchMatches, refetchAlliances]);
+    refetchRankings();
+  }, [refetchEvent, refetchMatches, refetchAlliances, refetchRankings]);
 
   // Sort matches
   const matches = React.useMemo(
@@ -89,6 +106,7 @@ const Event = ({ eventKey, refetchOnLoad }) => {
       }),
     [unsortedMatches]
   );
+
   // Quals matches
   const qualsMatches = React.useMemo(
     () => matches.filter(m => m.get("comp_level") === "qm"),
@@ -120,7 +138,8 @@ const Event = ({ eventKey, refetchOnLoad }) => {
       isLoading={
         eventFetchStatus === "fetching" ||
         matchesFetchStatus === "fetching" ||
-        alliancesFetchStatus === "fetching"
+        alliancesFetchStatus === "fetching" ||
+        rankingsFetchStatus === "fetching"
       }
       refreshFunction={handleRefresh}
     >
@@ -229,7 +248,12 @@ const Event = ({ eventKey, refetchOnLoad }) => {
           )}
         </Grid>
       </div>
-      <EventPageDialog eventKey={eventKey} />
+      <div hidden={tabIndex !== 1}>
+        <Paper>
+          <RankingsList rankings={rankings} eventKey={eventKey} />
+        </Paper>
+      </div>
+      <EventPageDialog eventKey={eventKey ? eventKey : {}} />
       {event.structuredData()}
     </Page>
   );
@@ -244,6 +268,8 @@ Event.getInitialProps = async ({ reduxStore, query }) => {
     getEventMatchesFetchStatus(state, eventKey) !== "success";
   const eventAlliancesFetchInitial =
     getEventAlliancesFetchStatus(state, eventKey) !== "success";
+  const eventRankingsFetchInitial =
+    getEventRankingsFetchStatus(state, eventKey) !== "success";
 
   const fetchPromises = [];
   if (eventFetchInitial) {
@@ -255,6 +281,9 @@ Event.getInitialProps = async ({ reduxStore, query }) => {
   if (eventAlliancesFetchInitial) {
     fetchPromises.push(reduxStore.dispatch(fetchEventAlliances(eventKey)));
   }
+  if (eventRankingsFetchInitial) {
+    fetchPromises.push(reduxStore.dispatch(fetchEventRankings(eventKey)));
+  }
   await Promise.all(fetchPromises);
 
   return {
@@ -263,6 +292,7 @@ Event.getInitialProps = async ({ reduxStore, query }) => {
       event: !eventFetchInitial,
       eventMatches: !eventMatchesFetchInitial,
       eventAlliances: !eventAlliancesFetchInitial,
+      eventRankings: !eventRankingsFetchInitial,
     },
   };
 };
