@@ -27,7 +27,7 @@ jobs:
           CI: true
         run: npm test
       - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v1.0.7
+        uses: codecov/codecov-action@v1.0.13
         with:
           directory: ./coverage/
   lint:
