@@ -44,10 +44,11 @@ const useStyles = makeStyles(theme => ({
 const RankingsList = ({ rankings, eventKey }) => {
   const classes = useStyles();
 
-  //deep copies all nested arrays and maps into accessable JSON
-  rankings = rankings ? JSON.parse(JSON.stringify(rankings)) : null;
-
-  if (!rankings || !rankings["rankings"] || rankings["rankings"].length === 0) {
+  if (
+    !rankings ||
+    !rankings.get("rankings") ||
+    rankings.get("rankings").size === 0
+  ) {
     return (
       <div className={classes.zeroDataContainer}>
         <VideogameAssetRounded className={classes.zeroDataIcon} />
@@ -59,79 +60,87 @@ const RankingsList = ({ rankings, eventKey }) => {
   const sort_categories = [],
     extra_stats = [];
 
-  for (let sort_info in rankings["sort_order_info"])
+  rankings.get("sort_order_info").forEach(sortOrder =>
     sort_categories.push({
-      id: rankings["sort_order_info"][sort_info].name.toLowerCase(),
-      display: rankings["sort_order_info"][sort_info].name,
-      precision: rankings["sort_order_info"][sort_info].precision,
-    });
-  for (let extra_stat in rankings["extra_stats_info"])
+      id: sortOrder.get("name").toLowerCase(),
+      display: sortOrder.get("name"),
+      precision: sortOrder.get("precision"),
+    })
+  );
+  rankings.get("extra_stats_info").forEach(extraStat =>
     extra_stats.push({
-      id: rankings["extra_stats_info"][extra_stat].name.toLowerCase(),
-      display: rankings["extra_stats_info"][extra_stat].name + "*",
-      precision: rankings["extra_stats_info"][extra_stat].precision,
-    });
+      id: extraStat.get("name").toLowerCase(),
+      display: extraStat.get("name") + "*",
+      precision: extraStat.get("precision"),
+    })
+  );
 
   const computeRankings = () => {
     const table = [];
-    rankings["rankings"].forEach(team => {
+    rankings.get("rankings").forEach(team => {
       const row = [];
-      row.push(<strong>{team["rank"]}</strong>);
+      row.push(<strong>{team.get("rank")}</strong>);
       row.push(
         <Link
-          href={`/event?eventKey=${eventKey}&teamKey=${team["team_key"].substr(
-            3
-          )}`}
-          as={`/team/${team["team_key"].substr(3)}/${String(eventKey).slice(
+          href={`/event?eventKey=${eventKey}&teamKey=${team
+            .get("team_key")
+            .substr(3)}`}
+          as={`/team/${team.get("team_key").substr(3)}/${String(eventKey).slice(
             0,
             4
           )}`}
         >
-          {team["team_key"].substr(3)}
+          {team.get("team_key").substr(3)}
         </Link>
       );
-      sort_categories.forEach((cat, idx) =>
-        row.push(
-          cat.precision
-            ? team["sort_orders"][idx].toFixed(cat.precision)
-            : team["sort_orders"][idx]
-        )
-      );
+
+      team.get("sort_orders").forEach((so, idx) => {
+        if (idx < sort_categories.length)
+          row.push(
+            sort_categories[idx].precision
+              ? so.toFixed(sort_categories[idx].precision)
+              : so
+          );
+      });
+
       row.push(
-        team["record"]["wins"] +
+        team.get("record").get("wins") +
           "-" +
-          team["record"]["losses"] +
+          team.get("record").get("losses") +
           "-" +
-          team["record"]["ties"],
-        team["dq"],
-        team["matches_played"]
+          team.get("record").get("ties"),
+        team.get("dq"),
+        team.get("matches_played")
       );
-      extra_stats.forEach((stat, idx) =>
-        row.push(
-          stat.precision
-            ? team["extra_stats"][idx].toFixed(stat.precision)
-            : team["extra_stats"][idx]
-        )
-      );
+
+      team.get("extra_stats").forEach((es, idx) => {
+        if (idx < extra_stats.length)
+          row.push(
+            extra_stats[idx].precision
+              ? es.toFixed(extra_stats[idx].precision)
+              : es
+          );
+      });
+
       table.push(row);
     });
     return table;
   };
 
   const columns = new Array().concat(
-    [
-      { id: "rank", display: "Rank" },
-      { id: "team", display: "Team" },
-    ],
-    sort_categories,
-    [
-      { id: "record", display: "Record (W-L-T)" },
-      { id: "dq", display: "DQ" },
-      { id: "played", display: "Played" },
-    ],
-    extra_stats
-  );
-  const table = computeRankings();
+      [
+        { id: "rank", display: "Rank" },
+        { id: "team", display: "Team" },
+      ],
+      sort_categories,
+      [
+        { id: "record", display: "Record (W-L-T)" },
+        { id: "dq", display: "DQ" },
+        { id: "played", display: "Played" },
+      ],
+      extra_stats
+    ),
+    table = computeRankings();
 
   return (
     <List component="div" disablePadding>
