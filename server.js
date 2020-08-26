@@ -9,7 +9,7 @@ const compression = require("compression");
 const LRUCache = require("lru-cache");
 
 const port = parseInt(process.env.PORT, 10) || (dev ? 3000 : 3001);
-const app = next({ dir: "./src", dev });
+const app = next({ dev });
 const handle = app.getRequestHandler();
 
 // Prepare LRU cache

@@ -7,8 +7,7 @@ const withBundleAnalyzer = require("@next/bundle-analyzer")({
 const withSourceMaps = require("@zeit/next-source-maps")();
 
 const nextConfig = {
-  // Build one level up from ./src
-  distDir: "../.next",
+  distDir: ".next",
   // Workbox options for next-offline
   workboxOpts: {
     clientsClaim: true,

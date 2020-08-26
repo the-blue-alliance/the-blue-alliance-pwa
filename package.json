@@ -8,14 +8,14 @@
   "license": "MIT",
   "scripts": {
     "dev": "node server.js",
-    "build": "rm -rf .next; next build src",
+    "build": "rm -rf .next; next build",
     "deploy": "gcloud --project tbatv-prod-hrd app deploy --version 1 --quiet",
     "start": "cross-env NODE_ENV=production node server.js",
     "prettier": "prettier \"**/*.{js,json,md,yaml}\" --check --ignore-path .gitignore",
     "lint": "eslint \"**/*.js\"",
     "test": "jest --coverage --verbose",
     "test:watch": "jest --coverage --verbose --watch",
-    "analyze": "cross-env ANALYZE=true next build src"
+    "analyze": "cross-env ANALYZE=true next build"
   },
   "dependencies": {
     "@google-cloud/trace-agent": "^4.2.5",
@@ -36,11 +36,11 @@
     "lru-cache": "^5.1.1",
     "luxon": "^1.23.0",
     "match-sorter": "^4.1.0",
-    "next": "^9.3.6",
+    "next": "^9.5.2",
     "next-offline": "^5.0.0",
     "prop-types": "^15.7.2",
-    "react": "16.8.6",
-    "react-dom": "16.8.6",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
     "react-intersection-observer": "^8.26.1",
     "react-redux": "^7.2.0",
     "react-virtualized": "^9.21.2",
