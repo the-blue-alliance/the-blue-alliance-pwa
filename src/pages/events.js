@@ -10,19 +10,14 @@ import useQueryParam from "../lib/useQueryParam";
 import useQueryParamSet from "../lib/useQueryParamSet";
 import notFoundError from "../lib/notFoundError";
 import Page from "../components/Page";
-import { makeStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import EventListSearchCard from "../components/EventListSearchCard";
+import EventYearPicker from "../components/EventYearPicker";
 import GroupedEventList from "../components/GroupedEventList";
 import Event from "../database/Event";
 
-const useStyles = makeStyles({
-  sideNav: {},
-});
-
 const Events = ({ year, refetchOnLoad }) => {
-  const classes = useStyles();
   const [rawEvents, eventsFetchStatus, refetchEvents] = useData(
     state => getYearEventsFetchStatus(state, year),
     state => getYearEvents(state, year),
@@ -80,7 +75,7 @@ const Events = ({ year, refetchOnLoad }) => {
       </Typography>
       <Grid container spacing={2}>
         <Grid item xs={12} md={3} lg={2}>
-          <div className={classes.sideNav}>TODO: YEAR PICKER & SECTIONS</div>
+          <EventYearPicker selectedYear={year} />
         </Grid>
         <Grid item xs={12} md={9} lg={10}>
           <EventListSearchCard events={rawEvents} />
@@ -93,7 +88,7 @@ const Events = ({ year, refetchOnLoad }) => {
 };
 
 Events.getInitialProps = async ({ reduxStore, query }) => {
-  let year = 2019;
+  let year = 2020; // TODO: pull this from the /status endpoint
   if (query.year) {
     year = parseInt(query.year, 10);
   }
