@@ -34,7 +34,7 @@
     "immutable": "^4.0.0-rc.12",
     "isomorphic-unfetch": "^3.0.0",
     "lru-cache": "^5.1.1",
-    "luxon": "^1.23.0",
+    "luxon": "^1.28.1",
     "match-sorter": "^4.1.0",
     "next": "^9.5.2",
     "next-offline": "^5.0.0",
