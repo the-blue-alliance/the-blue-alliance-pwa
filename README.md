@@ -34,6 +34,13 @@ Fill out `.env.sample` and save it as `.env`.
 
 `npm start` to run the production server at port 3001 (or a specified PORT).
 
+### Using Docker
+
+```bash
+$ docker compose create
+$ docker compose up
+```
+
 ## Developer notes
 
 We use [Husky](https://github.com/typicode/husky) to manage Git hooks.
